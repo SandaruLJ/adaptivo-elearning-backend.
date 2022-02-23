@@ -33,11 +33,7 @@ const CourseSchema = new Schema(
             required:true,
             trim:true
         },
-        category:{
-            type:String,
-            required:true,
-            trim:true
-        },
+        category:{type:Schema.Types.ObjectId,required:true,ref:'categories'},
         image:{
             type:String,
             required:true,
