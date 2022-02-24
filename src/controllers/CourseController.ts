@@ -21,7 +21,6 @@ export default class CourseController{
 
         if(req.body){
 
-            let image = "";
             const Course:ICourse = JSON.parse(req.body.data);
             await this.CourseService.createCourse(Course)
                 .then(data => {
