@@ -3,6 +3,7 @@ import CourseController from "../controllers/CourseController";
 import HealthController from  "../controllers/HealthController";
 import LessonController from "../controllers/LessonController";
 import ConceptController from "../controllers/ConceptController";
+import LearningResourceController from "../controllers/LearningResourceController";
 
 export default function setRoutes(app:any){
 
@@ -11,6 +12,7 @@ export default function setRoutes(app:any){
     const healthControl = new HealthController();
     const lessonControl = new LessonController();
     const conceptControl = new ConceptController();
+    const learningResourceControl = new LearningResourceController();
 
 
     app.use("/api",router);
@@ -38,6 +40,13 @@ export default function setRoutes(app:any){
     router.route('/concepts/:id').get(conceptControl.getConceptById);
     router.route('/concepts/:id').put(conceptControl.updateConcept);
     router.route('/concepts/:id').delete(conceptControl.deleteConcept);
+
+    //Learning Resource Routes
+    router.route('/learningResources').post(learningResourceControl.createLearningResource);
+    router.route('/learningResources').get(learningResourceControl.getAllLearningResources);
+    router.route('/learningResources/:id').get(learningResourceControl.getLearningResourceById);
+    router.route('/learningResources/:id').put(learningResourceControl.updateLearningResource);
+    router.route('/learningResources/:id').delete(learningResourceControl.deleteLearningResource);
 
 
 }
