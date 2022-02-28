@@ -21,7 +21,7 @@ export default class LearningResourceController{
 
         if(req.body){
 
-            const LearningResource:ILearningResource = JSON.parse(req.body.data);
+            const LearningResource:ILearningResource = req.body;
             await this.LearningResourceService.createLearningResource(LearningResource)
                 .then(data => {
                     res.status(200).send(data);
@@ -64,7 +64,7 @@ export default class LearningResourceController{
 
         if(req.body) {
 
-            const LearningResource: ILearningResource = JSON.parse(req.body.data);
+            const LearningResource: ILearningResource = req.body;
 
             await this.LearningResourceService.updateLearningResource(id, LearningResource)
                 .then(data => {

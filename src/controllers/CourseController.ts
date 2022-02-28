@@ -19,9 +19,11 @@ export default class CourseController{
     public async createCourse(req:any,res:any){
         this.logger.info("CourseController - createCourse()");
 
+        console.log(req.body);
+
         if(req.body){
 
-            const Course:ICourse = JSON.parse(req.body.data);
+            const Course:ICourse = req.body;
             await this.CourseService.createCourse(Course)
                 .then(data => {
                     res.status(200).send(data);
@@ -64,7 +66,7 @@ export default class CourseController{
 
         if(req.body) {
 
-            const Course: ICourse = JSON.parse(req.body.data);
+            const Course: ICourse = req.body;
 
             await this.CourseService.updateCourse(id, Course)
                 .then(data => {

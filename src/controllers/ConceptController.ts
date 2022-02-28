@@ -21,7 +21,7 @@ export default class ConceptController{
 
         if(req.body){
 
-            const Concept:IConcept = JSON.parse(req.body.data);
+            const Concept:IConcept = req.body;
             await this.ConceptService.createConcept(Concept)
                 .then(data => {
                     res.status(200).send(data);
@@ -64,7 +64,7 @@ export default class ConceptController{
 
         if(req.body) {
 
-            const Concept: IConcept = JSON.parse(req.body.data);
+            const Concept: IConcept = req.body;
 
             await this.ConceptService.updateConcept(id, Concept)
                 .then(data => {

@@ -21,7 +21,7 @@ export default class LessonController{
 
         if(req.body){
 
-            const Lesson:ILesson = JSON.parse(req.body.data);
+            const Lesson:ILesson = req.body;
             await this.LessonService.createLesson(Lesson)
                 .then(data => {
                     res.status(200).send(data);
@@ -64,7 +64,7 @@ export default class LessonController{
 
         if(req.body) {
 
-            const Lesson: ILesson = JSON.parse(req.body.data);
+            const Lesson: ILesson = req.body;
 
             await this.LessonService.updateLesson(id, Lesson)
                 .then(data => {

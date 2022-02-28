@@ -21,7 +21,7 @@ export default class LearningObjectController{
 
         if(req.body){
 
-            const LearningObject:ILearningObject = JSON.parse(req.body.data);
+            const LearningObject:ILearningObject = req.body;
             await this.LearningObjectService.createLearningObject(LearningObject)
                 .then(data => {
                     res.status(200).send(data);
@@ -64,7 +64,7 @@ export default class LearningObjectController{
 
         if(req.body) {
 
-            const LearningObject: ILearningObject = JSON.parse(req.body.data);
+            const LearningObject: ILearningObject = req.body;
 
             await this.LearningObjectService.updateLearningObject(id, LearningObject)
                 .then(data => {
