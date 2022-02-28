@@ -8,7 +8,7 @@ async function startServer() {
     const logger = Logger.getInstance();
     await require('./loaders').default(app);
 
-    app.listen(config.port, () => {
+    app.listen(config.port,"0.0.0.0", () => {
         logger.info(`Server is running on port ${config.port}`);
     }).on("error",(err)=>{
         logger.error(err.toString());

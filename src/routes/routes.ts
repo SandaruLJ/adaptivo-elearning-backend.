@@ -1,15 +1,19 @@
 import * as express from "express";
 import CourseController from "../controllers/CourseController";
 import UserController from '../controllers/UserController';
+import HealthController from  "../controllers/HealthController";
+
 
 export default function setRoutes(app:any){
 
     const router = express();
     const courseControl = new CourseController();
     const userControl = new UserController();
+    const healthControl = new HealthController();
 
 
     app.use("/api",router);
+    app.use("/health",healthControl.displayHealth);
 
     //Routes
     
