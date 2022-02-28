@@ -1,30 +1,28 @@
 import {Logger} from "../loaders/logger";
-import {CourseService} from "../services/CourseService";
-import {ICourse} from "../interfaces/ICourse";
-import {ICourseService} from "../services/interfaces/ICourseService";
+import {LearningObjectService} from "../services/LearningObjectService";
+import {ILearningObject} from "../interfaces/ILearningObject";
+import {ILearningObjectService} from "../services/interfaces/ILearningObjectService";
 const autoBind = require('auto-bind');
 
 
-export default class CourseController{
+export default class LearningObjectController{
 
     private logger:Logger;
-    private CourseService:ICourseService;
+    private LearningObjectService:ILearningObjectService;
 
     constructor(){
         this.logger = Logger.getInstance();
-        this.CourseService = CourseService.getInstance();
+        this.LearningObjectService = LearningObjectService.getInstance();
         autoBind(this);
     }
 
-    public async createCourse(req:any,res:any){
-        this.logger.info("CourseController - createCourse()");
-
-        console.log(req.body);
+    public async createLearningObject(req:any,res:any){
+        this.logger.info("LearningObjectController - createLearningObject()");
 
         if(req.body){
 
-            const Course:ICourse = req.body;
-            await this.CourseService.createCourse(Course)
+            const LearningObject:ILearningObject = req.body;
+            await this.LearningObjectService.createLearningObject(LearningObject)
                 .then(data => {
                     res.status(200).send(data);
                 })
@@ -35,10 +33,10 @@ export default class CourseController{
                 })
         }
     }
-    public async getAllCourses(req:any,res:any) {
-        this.logger.info("CourseController - getAllCourse()");
+    public async getAllLearningObjects(req:any,res:any) {
+        this.logger.info("LearningObjectController - getAllLearningObjects()");
 
-        await this.CourseService.getAllCourse()
+        await this.LearningObjectService.getAllLearningObject()
             .then(data => {
                 res.status(200).send(data);
             })
@@ -47,10 +45,10 @@ export default class CourseController{
                 res.status(500).send({err: error.message});
             })
     }
-    public async getCourseById(req:any,res:any) {
-        this.logger.info("CourseController - getCourseById()");
+    public async getLearningObjectById(req:any,res:any) {
+        this.logger.info("LearningObjectController - getLearningObjectById()");
         const id = req.params.id;
-        await this.CourseService.getCourseById(id)
+        await this.LearningObjectService.getLearningObjectById(id)
             .then(data => {
                 res.status(200).send(data);
             })
@@ -60,15 +58,15 @@ export default class CourseController{
             })
     }
 
-    public async updateCourse(req:any,res:any) {
-        this.logger.info("CourseController - updateCourse()");
+    public async updateLearningObject(req:any,res:any) {
+        this.logger.info("LearningObjectController - updateLearningObject()");
         const id = req.params.id;
 
         if(req.body) {
 
-            const Course: ICourse = req.body;
+            const LearningObject: ILearningObject = req.body;
 
-            await this.CourseService.updateCourse(id, Course)
+            await this.LearningObjectService.updateLearningObject(id, LearningObject)
                 .then(data => {
                     res.status(200).send(data);
                 })
@@ -81,10 +79,10 @@ export default class CourseController{
         }
     }
 
-    public async deleteCourse(req:any,res:any) {
-        this.logger.info("CourseController - deleteCourse()");
+    public async deleteLearningObject(req:any,res:any) {
+        this.logger.info("LearningObjectController - deleteLearningObject()");
         const id = req.params.id;
-        await this.CourseService.deleteCourse(id)
+        await this.LearningObjectService.deleteLearningObject(id)
             .then(data => {
                 res.status(200).send(data);
             })

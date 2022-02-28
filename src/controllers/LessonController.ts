@@ -1,30 +1,28 @@
 import {Logger} from "../loaders/logger";
-import {CourseService} from "../services/CourseService";
-import {ICourse} from "../interfaces/ICourse";
-import {ICourseService} from "../services/interfaces/ICourseService";
+import {LessonService} from "../services/LessonService";
+import {ILesson} from "../interfaces/ILesson";
+import {ILessonService} from "../services/interfaces/ILessonService";
 const autoBind = require('auto-bind');
 
 
-export default class CourseController{
+export default class LessonController{
 
     private logger:Logger;
-    private CourseService:ICourseService;
+    private LessonService:ILessonService;
 
     constructor(){
         this.logger = Logger.getInstance();
-        this.CourseService = CourseService.getInstance();
+        this.LessonService = LessonService.getInstance();
         autoBind(this);
     }
 
-    public async createCourse(req:any,res:any){
-        this.logger.info("CourseController - createCourse()");
-
-        console.log(req.body);
+    public async createLesson(req:any,res:any){
+        this.logger.info("LessonController - createLesson()");
 
         if(req.body){
 
-            const Course:ICourse = req.body;
-            await this.CourseService.createCourse(Course)
+            const Lesson:ILesson = req.body;
+            await this.LessonService.createLesson(Lesson)
                 .then(data => {
                     res.status(200).send(data);
                 })
@@ -35,10 +33,10 @@ export default class CourseController{
                 })
         }
     }
-    public async getAllCourses(req:any,res:any) {
-        this.logger.info("CourseController - getAllCourse()");
+    public async getAllLessons(req:any,res:any) {
+        this.logger.info("LessonController - getAllLesson()");
 
-        await this.CourseService.getAllCourse()
+        await this.LessonService.getAllLesson()
             .then(data => {
                 res.status(200).send(data);
             })
@@ -47,10 +45,10 @@ export default class CourseController{
                 res.status(500).send({err: error.message});
             })
     }
-    public async getCourseById(req:any,res:any) {
-        this.logger.info("CourseController - getCourseById()");
+    public async getLessonById(req:any,res:any) {
+        this.logger.info("LessonController - getLessonById()");
         const id = req.params.id;
-        await this.CourseService.getCourseById(id)
+        await this.LessonService.getLessonById(id)
             .then(data => {
                 res.status(200).send(data);
             })
@@ -60,15 +58,15 @@ export default class CourseController{
             })
     }
 
-    public async updateCourse(req:any,res:any) {
-        this.logger.info("CourseController - updateCourse()");
+    public async updateLesson(req:any,res:any) {
+        this.logger.info("LessonController - updateLesson()");
         const id = req.params.id;
 
         if(req.body) {
 
-            const Course: ICourse = req.body;
+            const Lesson: ILesson = req.body;
 
-            await this.CourseService.updateCourse(id, Course)
+            await this.LessonService.updateLesson(id, Lesson)
                 .then(data => {
                     res.status(200).send(data);
                 })
@@ -81,10 +79,10 @@ export default class CourseController{
         }
     }
 
-    public async deleteCourse(req:any,res:any) {
-        this.logger.info("CourseController - deleteCourse()");
+    public async deleteLesson(req:any,res:any) {
+        this.logger.info("LessonController - deleteLesson()");
         const id = req.params.id;
-        await this.CourseService.deleteCourse(id)
+        await this.LessonService.deleteLesson(id)
             .then(data => {
                 res.status(200).send(data);
             })
