@@ -5,7 +5,7 @@ import LessonController from "../controllers/LessonController";
 import ConceptController from "../controllers/ConceptController";
 import LearningResourceController from "../controllers/LearningResourceController";
 import LearningObjectController from "../controllers/LearningObjectController";
-import CategoryController from "../controllers/categoryController";
+import CategoryController from "../controllers/CategoryController";
 
 
 export default function setRoutes(app:any){
