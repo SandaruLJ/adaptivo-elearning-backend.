@@ -5,4 +5,9 @@ export default interface IUser {
     email: string;
     phone: string;
     dob: string;
+    devices: string[];
+    preferredLanguage: string;
+    isSchoolStudent: boolean;
+    grade: number;
+    school: string;
 }

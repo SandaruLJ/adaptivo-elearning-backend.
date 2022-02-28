@@ -27,6 +27,28 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true
+    },
+    devices: [{
+        type: String,
+        required: true,
+        trim: true
+    }],
+    preferredLanguage: {
+        type: String,
+        enum: ['en', 'si', 'ta'],
+        required: true,
+        default: 'en'
+    },
+    isSchoolStudent: {
+        type: Boolean,
+        required: true
+    },
+    grade: {
+        type: Number,
+    },
+    school: {
+        type: String,
+        trim: true
     }
 });
 
