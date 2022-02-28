@@ -5,11 +5,14 @@ import LessonController from "../controllers/LessonController";
 import ConceptController from "../controllers/ConceptController";
 import LearningResourceController from "../controllers/LearningResourceController";
 import LearningObjectController from "../controllers/LearningObjectController";
+import CategoryController from "../controllers/categoryController";
+
 
 export default function setRoutes(app:any){
 
     const router = express();
     const courseControl = new CourseController();
+    const categoryControl = new CategoryController();
     const healthControl = new HealthController();
     const lessonControl = new LessonController();
     const conceptControl = new ConceptController();
@@ -56,5 +59,13 @@ export default function setRoutes(app:any){
     router.route('/learningObjects/:id').put(learningObjectControl.updateLearningObject);
     router.route('/learningObjects/:id').delete(learningObjectControl.deleteLearningObject);
 
+
+
+    //Category Routes
+    router.route('/categories').post(categoryControl.createCategory);
+    router.route('/categories').get(categoryControl.getAllCategory);
+    router.route('/categories/:id').get(categoryControl.getCategoryById);
+    router.route('/categories/:id').put(categoryControl.updateCategory);
+    router.route('/categories/:id').delete(categoryControl.deleteCategory);
 
 }
