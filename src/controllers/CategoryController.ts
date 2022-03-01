@@ -1,44 +1,43 @@
 import {Logger} from "../loaders/logger";
-import {CourseService} from "../services/CourseService";
-import {ICourse} from "../interfaces/ICourse";
-import {ICourseService} from "../services/interfaces/ICourseService";
+import {CategoryService} from "../services/CategoryService";
+import {ICategory} from "../interfaces/ICategory";
+import {ICategoryService} from "../services/interfaces/ICategoryService";
+import Category from "../models/Category";
 const autoBind = require('auto-bind');
 
 
-export default class CourseController{
+export default class CategoryController{
 
     private logger:Logger;
-    private CourseService:ICourseService;
+    private CategoryService:ICategoryService;
 
     constructor(){
         this.logger = Logger.getInstance();
-        this.CourseService = CourseService.getInstance();
+        this.CategoryService = CategoryService.getInstance();
         autoBind(this);
     }
 
-    public async createCourse(req:any,res:any){
-        this.logger.info("CourseController - createCourse()");
-
-        console.log(req.body);
+    public async createCategory(req:any,res:any){
+        this.logger.info("CategoryController - createCategory()");
 
         if(req.body){
 
-            const Course:ICourse = req.body;
-            await this.CourseService.createCourse(Course)
+
+            const Category:ICategory = req.body;
+
+            await this.CategoryService.createCategory(Category)
                 .then(data => {
                     res.status(200).send(data);
-                })
-
-                .catch(error => {
+                }).catch(error => {
                     this.logger.error(error.message);
                     res.status(500).send({err:error.message});
                 })
         }
     }
-    public async getAllCourses(req:any,res:any) {
-        this.logger.info("CourseController - getAllCourse()");
+    public async getAllCategory(req:any,res:any) {
+        this.logger.info("CategoryController - getAllCategory()");
 
-        await this.CourseService.getAllCourse()
+        await this.CategoryService.getAllCategory()
             .then(data => {
                 res.status(200).send(data);
             })
@@ -47,10 +46,10 @@ export default class CourseController{
                 res.status(500).send({err: error.message});
             })
     }
-    public async getCourseById(req:any,res:any) {
-        this.logger.info("CourseController - getCourseById()");
+    public async getCategoryById(req:any,res:any) {
+        this.logger.info("CategoryController - getCategoryById()");
         const id = req.params.id;
-        await this.CourseService.getCourseById(id)
+        await this.CategoryService.getCategoryById(id)
             .then(data => {
                 res.status(200).send(data);
             })
@@ -60,15 +59,15 @@ export default class CourseController{
             })
     }
 
-    public async updateCourse(req:any,res:any) {
-        this.logger.info("CourseController - updateCourse()");
+    public async updateCategory(req:any,res:any) {
+        this.logger.info("CategoryController - updateCategory()");
         const id = req.params.id;
 
         if(req.body) {
 
-            const Course: ICourse = req.body;
+            const Category: ICategory = req.body;
 
-            await this.CourseService.updateCourse(id, Course)
+            await this.CategoryService.updateCategory(id,Category)
                 .then(data => {
                     res.status(200).send(data);
                 })
@@ -81,10 +80,10 @@ export default class CourseController{
         }
     }
 
-    public async deleteCourse(req:any,res:any) {
-        this.logger.info("CourseController - deleteCourse()");
+    public async deleteCategory(req:any,res:any) {
+        this.logger.info("CategoryController - deleteCategory()");
         const id = req.params.id;
-        await this.CourseService.deleteCourse(id)
+        await this.CategoryService.deleteCategory(id)
             .then(data => {
                 res.status(200).send(data);
             })

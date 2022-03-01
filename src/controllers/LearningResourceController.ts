@@ -1,30 +1,28 @@
 import {Logger} from "../loaders/logger";
-import {CourseService} from "../services/CourseService";
-import {ICourse} from "../interfaces/ICourse";
-import {ICourseService} from "../services/interfaces/ICourseService";
+import {LearningResourceService} from "../services/LearningResourceService";
+import {ILearningResource} from "../interfaces/ILearningResource";
+import {ILearningResourceService} from "../services/interfaces/ILearningResourceService";
 const autoBind = require('auto-bind');
 
 
-export default class CourseController{
+export default class LearningResourceController{
 
     private logger:Logger;
-    private CourseService:ICourseService;
+    private LearningResourceService:ILearningResourceService;
 
     constructor(){
         this.logger = Logger.getInstance();
-        this.CourseService = CourseService.getInstance();
+        this.LearningResourceService = LearningResourceService.getInstance();
         autoBind(this);
     }
 
-    public async createCourse(req:any,res:any){
-        this.logger.info("CourseController - createCourse()");
-
-        console.log(req.body);
+    public async createLearningResource(req:any,res:any){
+        this.logger.info("LearningResourceController - createLearningResource()");
 
         if(req.body){
 
-            const Course:ICourse = req.body;
-            await this.CourseService.createCourse(Course)
+            const LearningResource:ILearningResource = req.body;
+            await this.LearningResourceService.createLearningResource(LearningResource)
                 .then(data => {
                     res.status(200).send(data);
                 })
@@ -35,10 +33,10 @@ export default class CourseController{
                 })
         }
     }
-    public async getAllCourses(req:any,res:any) {
-        this.logger.info("CourseController - getAllCourse()");
+    public async getAllLearningResources(req:any,res:any) {
+        this.logger.info("LearningResourceController - getAllLearningResources()");
 
-        await this.CourseService.getAllCourse()
+        await this.LearningResourceService.getAllLearningResource()
             .then(data => {
                 res.status(200).send(data);
             })
@@ -47,10 +45,10 @@ export default class CourseController{
                 res.status(500).send({err: error.message});
             })
     }
-    public async getCourseById(req:any,res:any) {
-        this.logger.info("CourseController - getCourseById()");
+    public async getLearningResourceById(req:any,res:any) {
+        this.logger.info("LearningResourceController - getLearningResourceById()");
         const id = req.params.id;
-        await this.CourseService.getCourseById(id)
+        await this.LearningResourceService.getLearningResourceById(id)
             .then(data => {
                 res.status(200).send(data);
             })
@@ -60,15 +58,15 @@ export default class CourseController{
             })
     }
 
-    public async updateCourse(req:any,res:any) {
-        this.logger.info("CourseController - updateCourse()");
+    public async updateLearningResource(req:any,res:any) {
+        this.logger.info("LearningResourceController - updateLearningResource()");
         const id = req.params.id;
 
         if(req.body) {
 
-            const Course: ICourse = req.body;
+            const LearningResource: ILearningResource = req.body;
 
-            await this.CourseService.updateCourse(id, Course)
+            await this.LearningResourceService.updateLearningResource(id, LearningResource)
                 .then(data => {
                     res.status(200).send(data);
                 })
@@ -81,10 +79,10 @@ export default class CourseController{
         }
     }
 
-    public async deleteCourse(req:any,res:any) {
-        this.logger.info("CourseController - deleteCourse()");
+    public async deleteLearningResource(req:any,res:any) {
+        this.logger.info("LearningResourceController - deleteLearningResource()");
         const id = req.params.id;
-        await this.CourseService.deleteCourse(id)
+        await this.LearningResourceService.deleteLearningResource(id)
             .then(data => {
                 res.status(200).send(data);
             })

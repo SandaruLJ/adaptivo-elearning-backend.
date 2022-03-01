@@ -52,7 +52,7 @@ export class CourseService implements ICourseService{
 
 
     public async updateCourse(id:string,Course:ICourse):Promise<ICourse | Object>{
-        this.logger.info("Customer Services - updateCustomer()");
+        this.logger.info("CourseService - updateCourse()");
         return  this.CourseDao.update(id,Course)
             .then(data=>{
                 return data;
