@@ -11,7 +11,7 @@ export default class UserService implements IUserService {
 
     
     public static getInstance(): UserService {
-        if (this.instance === null) {
+        if (!this.instance) {
             this.instance = new UserService();
         }
 
