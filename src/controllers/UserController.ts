@@ -1,8 +1,8 @@
-import autoBind from 'auto-bind';
 import { Logger } from '../loaders/logger';
 import IUser from '../interfaces/IUser';
 import IUserService from '../services/interfaces/IUserService';
 import UserService from '../services/UserService';
+import autoBind = require('auto-bind');
 
 export default class UserController {
     private logger: Logger;
