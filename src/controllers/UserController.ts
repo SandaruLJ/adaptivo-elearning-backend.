@@ -89,8 +89,8 @@ export default class UserController {
         const id = req.params.id;
 
         await this.userService.deleteUser(id)
-            .then(data => {
-                res.status(204).send(data);
+            .then(() => {
+                res.status(204).send();
             })
             .catch(error => {
                 this.logger.error(error.message);
