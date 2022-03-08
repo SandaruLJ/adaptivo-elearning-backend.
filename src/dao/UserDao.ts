@@ -72,7 +72,7 @@ export default class UserDao {
     public async update(id: string, user: IUser) {
         this.logger.info('UserDao - update()');
 
-        return await User.findByIdAndUpdate(id, {$set: user}, {new: true})
+        return await User.findByIdAndUpdate(id, user, {new: true})
             .then(data => {
                 if (data) {
                     this.logger.info(`User "${data.firstname} ${data.lastname}" updated successfully`);

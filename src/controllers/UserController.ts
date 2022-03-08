@@ -18,7 +18,7 @@ export default class UserController {
         this.logger.info('UserController - createUser()');
 
         if (req.body) {
-            const user: IUser = JSON.parse(req.body.data);
+            const user: IUser = req.body;
             await this.userService.createUser(user)
                 .then(data => {
                     res.status(201).send(data);
@@ -67,11 +67,11 @@ export default class UserController {
         const id = req.params.id;
 
         if (req.body) {
-            const user: IUser = JSON.parse(req.body.data);
+            const user: IUser = req.body;
 
             await this.userService.updateUser(id, user)
-                .then(data => {
-                    res.status(204).send(data);
+                .then(() => {
+                    res.status(204).send();
                 })
                 .catch(error => {
                     this.logger.error(error.message);
