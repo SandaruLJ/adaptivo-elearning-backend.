@@ -8,6 +8,8 @@ import LearningResourceController from "../controllers/LearningResourceControlle
 import LearningObjectController from "../controllers/LearningObjectController";
 import CategoryController from "../controllers/CategoryController";
 
+import validateAuth from '../middleware/auth';
+
 
 export default function setRoutes(app:any){
 
@@ -34,8 +36,8 @@ export default function setRoutes(app:any){
     router.route('/courses/:id').delete(courseControl.deleteCourse);
 
     // User routes
-    router.route('/users').post(userControl.createUser);
-    router.route('/users').get(userControl.getAllUsers);
+    router.route('/users').post(validateAuth, userControl.createUser);
+    router.route('/users').get(validateAuth, userControl.getAllUsers);
     router.route('/users/:id').get(userControl.getUserById);
     router.route('/users/:id').put(userControl.updateUser);
     router.route('/users/:id').delete(userControl.deleteUser);
