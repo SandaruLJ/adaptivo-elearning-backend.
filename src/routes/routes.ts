@@ -1,6 +1,7 @@
 import * as express from "express";
 import CourseController from "../controllers/CourseController";
 import UserController from '../controllers/UserController';
+import InstructorController from '../controllers/InstructorController';
 import HealthController from  "../controllers/HealthController";
 import LessonController from "../controllers/LessonController";
 import ConceptController from "../controllers/ConceptController";
@@ -16,6 +17,7 @@ export default function setRoutes(app:any){
     const router = express();
     const courseControl = new CourseController();
     const userControl = new UserController();
+    const instructorControl = new InstructorController();
     const categoryControl = new CategoryController();
     const healthControl = new HealthController();
     const lessonControl = new LessonController();
@@ -36,11 +38,18 @@ export default function setRoutes(app:any){
     router.route('/courses/:id').delete(courseControl.deleteCourse);
 
     // User routes
-    router.route('/users').post(validateAuth, userControl.createUser);
-    router.route('/users').get(validateAuth, userControl.getAllUsers);
+    router.route('/users').post(userControl.createUser);
+    router.route('/users').get(userControl.getAllUsers);
     router.route('/users/:id').get(userControl.getUserById);
     router.route('/users/:id').put(userControl.updateUser);
     router.route('/users/:id').delete(userControl.deleteUser);
+
+    // Instructor routes
+    router.route('/instructors').post(instructorControl.createInstructor);
+    router.route('/instructors').get(instructorControl.getAllInstructors);
+    router.route('/instructors/:id').get(instructorControl.getInstructorById);
+    router.route('/instructors/:id').put(instructorControl.updateInstructor);
+    router.route('/instructors/:id').delete(instructorControl.deleteInstructor);
 
     //Lesson Routes
     router.route('/lessons').post(lessonControl.createLesson);
