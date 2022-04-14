@@ -1,8 +1,8 @@
-import { Logger } from "../loaders/logger";
-import { ConceptService } from "../services/ConceptService";
-import { IConcept } from "../interfaces/IConcept";
-import { IConceptService } from "../services/interfaces/IConceptService";
-const autoBind = require("auto-bind");
+import { Logger } from "../loaders/logger.js";
+import { ConceptService } from "../services/ConceptService.js";
+import { IConcept } from "../interfaces/IConcept.js";
+import { IConceptService } from "../services/interfaces/IConceptService.js";
+import autoBind from "auto-bind";
 
 export default class ConceptController {
   private logger: Logger;

@@ -1,32 +1,28 @@
-import {ICategory} from "../interfaces/ICategory";
-import * as mongoose from "mongoose";
+import { ICategory } from "../interfaces/ICategory.js";
+import mongoose from "mongoose";
 const Schema = mongoose.Schema;
-const CategorySchema = new Schema(
+const CategorySchema = new Schema({
+  title: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  description: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+
+  image: {
+    type: String,
+    required: true,
+  },
+  course: [
     {
-        title:{
-            type:String,
-            required:true,
-            trim:true
-        },
-        description:{
-            type:String,
-            required:true,
-            trim:true,
-        },
-
-        image:{
-            type:String,
-            required:true,
-        },
-        course:[{
-            type:String,
-            required:false,
-            trim:true
-        }]
-
-    }
-
-
-
-);
-export default mongoose.model<ICategory & mongoose.Document>('categories',CategorySchema)
+      type: String,
+      required: false,
+      trim: true,
+    },
+  ],
+});
+export default mongoose.model<ICategory & mongoose.Document>("categories", CategorySchema);

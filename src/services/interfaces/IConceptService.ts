@@ -1,4 +1,4 @@
-import { IConcept } from "../../interfaces/IConcept";
+import { IConcept } from "../../interfaces/IConcept.js";
 
 export interface IConceptService {
   createConcept(request: IConcept): Promise<IConcept>;

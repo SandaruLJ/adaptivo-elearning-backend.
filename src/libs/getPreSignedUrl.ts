@@ -1,7 +1,7 @@
 // Import the required AWS SDK clients and commands for Node.js
-const { CreateBucketCommand, DeleteObjectCommand, PutObjectCommand, DeleteBucketCommand } = require("@aws-sdk/client-s3");
-import { s3Client } from "./s3Client";
-const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
+import { CreateBucketCommand, DeleteObjectCommand, PutObjectCommand, DeleteBucketCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { s3Client } from "./s3Client.js";
 
 // Set parameters
 // Create a random name for the Amazon Simple Storage Service (Amazon S3) bucket and key

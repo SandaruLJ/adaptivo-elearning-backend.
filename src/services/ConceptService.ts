@@ -1,8 +1,8 @@
-import { IConcept } from "../interfaces/IConcept";
-import { Logger } from "../loaders/logger";
-import { IConceptService } from "./interfaces/IConceptService";
-import { ConceptDao } from "../dao/ConceptDao";
-import { getPreSignedUrl } from "../libs/getPreSignedUrl";
+import { IConcept } from "../interfaces/IConcept.js";
+import { Logger } from "../loaders/logger.js";
+import { IConceptService } from "./interfaces/IConceptService.js";
+import { ConceptDao } from "../dao/ConceptDao.js";
+import { getPreSignedUrl } from "../libs/getPreSignedUrl.js";
 
 export class ConceptService implements IConceptService {
   private logger = Logger.getInstance();

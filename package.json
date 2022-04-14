@@ -2,7 +2,11 @@
   "name": "elearning-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "./dist/server.js",
+  "exports": "./dist/server.js",
+  "type": "module",
+  "engines": {
+    "node": "^12.20.0 || >=14.13.1"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./dist/server.js",

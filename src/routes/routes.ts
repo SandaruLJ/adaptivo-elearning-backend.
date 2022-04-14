@@ -1,12 +1,12 @@
-import * as express from "express";
-import CourseController from "../controllers/CourseController";
-import UserController from "../controllers/UserController";
-import HealthController from "../controllers/HealthController";
-import LessonController from "../controllers/LessonController";
-import ConceptController from "../controllers/ConceptController";
-import LearningResourceController from "../controllers/LearningResourceController";
-import LearningObjectController from "../controllers/LearningObjectController";
-import CategoryController from "../controllers/CategoryController";
+import express from "express";
+import CourseController from "../controllers/CourseController.js";
+import UserController from "../controllers/UserController.js";
+import HealthController from "../controllers/HealthController.js";
+import LessonController from "../controllers/LessonController.js";
+import ConceptController from "../controllers/ConceptController.js";
+import LearningResourceController from "../controllers/LearningResourceController.js";
+import LearningObjectController from "../controllers/LearningObjectController.js";
+import CategoryController from "../controllers/CategoryController.js";
 
 export default function setRoutes(app: any) {
   const router = express();
