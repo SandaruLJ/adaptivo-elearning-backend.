@@ -7,6 +7,7 @@ import ConceptController from "../controllers/ConceptController.js";
 import LearningResourceController from "../controllers/LearningResourceController.js";
 import LearningObjectController from "../controllers/LearningObjectController.js";
 import CategoryController from "../controllers/CategoryController.js";
+import QuizContoller from "../controllers/QuizController";
 
 export default function setRoutes(app: any) {
   const router = express();
@@ -18,6 +19,7 @@ export default function setRoutes(app: any) {
   const conceptControl = new ConceptController();
   const learningResourceControl = new LearningResourceController();
   const learningObjectControl = new LearningObjectController();
+  const quizControl = new QuizContoller();
 
   app.use("/api", router);
   app.use("/health", healthControl.displayHealth);
@@ -75,4 +77,10 @@ export default function setRoutes(app: any) {
   router.route("/categories/:id").get(categoryControl.getCategoryById);
   router.route("/categories/:id").put(categoryControl.updateCategory);
   router.route("/categories/:id").delete(categoryControl.deleteCategory);
+  //Quiz Routes
+  router.route("/quizes").post(quizControl.createQuiz);
+  router.route("/quizes").get(quizControl.getAllQuiz);
+  router.route("/quizes/:id").get(quizControl.getQuizById);
+  router.route("/quizes/:id").put(quizControl.updateQuiz);
+  router.route("/quizes/:id").delete(quizControl.deleteQuiz);
 }
