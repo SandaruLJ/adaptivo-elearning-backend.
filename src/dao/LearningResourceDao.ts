@@ -19,7 +19,7 @@ export class LearningResourceDao {
     return learningResource
       .save()
       .then((data) => {
-        this.logger.info(`LearningResource ${data.title} Added Successfully`);
+        this.logger.info(`LearningResource ${data.name} Added Successfully`);
         return data;
       })
       .catch((error) => {
@@ -49,7 +49,7 @@ export class LearningResourceDao {
     return LearningResource.findById(id)
       .then((data) => {
         if (data) {
-          this.logger.info(`${data.title} LearningResource Retrieved Successfully`);
+          this.logger.info(`${data.name} LearningResource Retrieved Successfully`);
           return data;
         } else {
           this.logger.info(`LearningResource ${id} Not Found`);
@@ -67,7 +67,7 @@ export class LearningResourceDao {
     return LearningResource.findByIdAndUpdate(id, { $set: LearningResource }, { new: true })
       .then((data) => {
         if (data) {
-          this.logger.info(`${data.title} LearningResource Updated Successfully`);
+          this.logger.info(`${data.name} LearningResource Updated Successfully`);
           return data;
         } else {
           this.logger.info(`LearningResource ${id} Not Found`);
@@ -85,7 +85,7 @@ export class LearningResourceDao {
     return LearningResource.findByIdAndDelete(id)
       .then((data) => {
         if (data) {
-          this.logger.info(`${data.title} LearningResource Deleted Successfully`);
+          this.logger.info(`${data.name} LearningResource Deleted Successfully`);
           return data;
         } else {
           this.logger.info(`LearningResource ${id} Not Found`);

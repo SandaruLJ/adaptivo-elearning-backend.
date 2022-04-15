@@ -19,7 +19,7 @@ export class ConceptDao {
     return concept
       .save()
       .then((data) => {
-        this.logger.info(`Concept ${data.title} Added Successfully`);
+        this.logger.info(`Concept ${data.name} Added Successfully`);
         return data;
       })
       .catch((error) => {
@@ -49,7 +49,7 @@ export class ConceptDao {
     return Concept.findById(id)
       .then((data) => {
         if (data) {
-          this.logger.info(`${data.title} Concept Retrieved Successfully`);
+          this.logger.info(`${data.name} Concept Retrieved Successfully`);
           return data;
         } else {
           this.logger.info(`Concept ${id} Not Found`);
@@ -67,7 +67,7 @@ export class ConceptDao {
     return Concept.findByIdAndUpdate(id, { $set: concept }, { new: true })
       .then((data) => {
         if (data) {
-          this.logger.info(`${data.title} Concept Updated Successfully`);
+          this.logger.info(`${data.name} Concept Updated Successfully`);
           return data;
         } else {
           this.logger.info(`Concept ${id} Not Found`);
@@ -85,7 +85,7 @@ export class ConceptDao {
     return Concept.findByIdAndDelete(id)
       .then((data) => {
         if (data) {
-          this.logger.info(`${data.title} Concept Deleted Successfully`);
+          this.logger.info(`${data.name} Concept Deleted Successfully`);
           return data;
         } else {
           this.logger.info(`Concept ${id} Not Found`);

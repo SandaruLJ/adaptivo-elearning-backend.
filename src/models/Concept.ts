@@ -2,12 +2,12 @@ import { IConcept } from "../interfaces/IConcept.js";
 import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 const conceptSchema = new Schema({
-  title: {
+  name: {
     type: String,
     required: true,
     trim: true,
   },
-  lessonId: { type: Schema.Types.ObjectId, required: true, ref: "lessons" },
-  courseId: { type: Schema.Types.ObjectId, required: true, ref: "courses" },
+  preRequisites: [{ type: Schema.Types.ObjectId, required: true, ref: "concepts" }],
+  learningObjects: { type: Schema.Types.ObjectId, required: true, ref: "LearningObjects" },
 });
 export default mongoose.model<IConcept & mongoose.Document>("concepts", conceptSchema);

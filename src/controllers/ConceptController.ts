@@ -17,18 +17,21 @@ export default class ConceptController {
   public async createConcept(req: any, res: any) {
     this.logger.info("ConceptController - createConcept()");
 
-    if (req.body) {
-      const Concept: IConcept = req.body;
-      await this.ConceptService.createConcept(Concept)
-        .then((data) => {
-          res.status(200).send(data);
-        })
+    console.log(req.body);
+    res.status(200).send({ status: "success" });
 
-        .catch((error) => {
-          this.logger.error(error.message);
-          res.status(500).send({ err: error.message });
-        });
-    }
+    // if (req.body) {
+    //   const Concept: IConcept = req.body;
+    //   await this.ConceptService.createConcept(Concept)
+    //     .then((data) => {
+    //       res.status(200).send(data);
+    //     })
+
+    //     .catch((error) => {
+    //       this.logger.error(error.message);
+    //       res.status(500).send({ err: error.message });
+    //     });
+    // }
   }
   public async getAllConcepts(req: any, res: any) {
     this.logger.info("ConceptController - getAllConcept()");
@@ -87,10 +90,22 @@ export default class ConceptController {
         res.status(500).send({ err: error.message });
       });
   }
-  public async getSignedUrl(req: any, res: any) {
-    this.logger.info("ConceptController - getSignedUrl()");
+  public async getVideoSignedUrl(req: any, res: any) {
+    this.logger.info("ConceptController - getVideoSignedUrl()");
+    console.log(req.params.fileName);
 
-    await this.ConceptService.getSignedUrl()
+    await this.ConceptService.getVideoSignedUrl(req.params.fileName)
+      .then((data) => {
+        res.status(200).send(data);
+      })
+      .catch((error) => {
+        this.logger.error(error.message);
+        res.status(500).send({ err: error.message });
+      });
+  }
+  public async getAudioSignedUrl(req: any, res: any) {
+    this.logger.info("ConceptController - getAudioSignedUrl()");
+    await this.ConceptService.getAudioSignedUrl(req.params.fileName)
       .then((data) => {
         res.status(200).send(data);
       })

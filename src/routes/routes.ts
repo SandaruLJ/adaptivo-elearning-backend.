@@ -48,7 +48,9 @@ export default function setRoutes(app: any) {
   //Concept Routes
   router.route("/concepts").post(conceptControl.createConcept);
   router.route("/concepts").get(conceptControl.getAllConcepts);
-  router.route("/concepts/url").get(conceptControl.getSignedUrl);
+  router.route("/concepts/url/video/:fileName").get(conceptControl.getVideoSignedUrl);
+  router.route("/concepts/url/audio/:fileName").get(conceptControl.getAudioSignedUrl);
+
   router.route("/concepts/:id").get(conceptControl.getConceptById);
   router.route("/concepts/:id").put(conceptControl.updateConcept);
   router.route("/concepts/:id").delete(conceptControl.deleteConcept);

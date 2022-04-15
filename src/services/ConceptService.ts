@@ -73,8 +73,34 @@ export class ConceptService implements IConceptService {
       });
   }
 
-  public async getSignedUrl() {
-    const response = await getPreSignedUrl();
-    return response;
+  public async getVideoSignedUrl(fileName: string): Promise<Object> {
+    this.logger.info("ConceptService - getVideoSignedUrl()");
+
+    const bucketName = `spark-courses`;
+    const key = `62272fbfc8ea4d8b75b76aa2/concepts/videos/${fileName}`;
+
+    return getPreSignedUrl(bucketName, key)
+      .then((data) => {
+        return data;
+      })
+      .catch((error) => {
+        this.logger.error(error.message);
+        throw error;
+      });
+  }
+  public async getAudioSignedUrl(fileName: string): Promise<Object> {
+    this.logger.info("ConceptService - getAudioSignedUrl()");
+
+    const bucketName = `62272fbfc8ea4d8b75b76aa2`;
+    const key = `concepts/audio/${fileName}`;
+
+    return getPreSignedUrl(bucketName, key)
+      .then((data) => {
+        return data;
+      })
+      .catch((error) => {
+        this.logger.error(error.message);
+        throw error;
+      });
   }
 }

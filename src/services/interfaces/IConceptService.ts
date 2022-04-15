@@ -6,5 +6,6 @@ export interface IConceptService {
   getConceptById(id: string): Promise<IConcept | Object>;
   updateConcept(id: string, product: IConcept): Promise<IConcept | Object>;
   deleteConcept(id: string): Promise<IConcept | Object>;
-  getSignedUrl();
+  getVideoSignedUrl(fileName: string): Promise<Object>;
+  getAudioSignedUrl(fileName: string): Promise<Object>;
 }

@@ -1,5 +1,5 @@
-export interface IConcept{
-    title:string;
-    lessonId:string;
-    courseId:string;
+export interface IConcept {
+  name: string;
+  preRequisite: string[];
+  learningObjects: string[];
 }

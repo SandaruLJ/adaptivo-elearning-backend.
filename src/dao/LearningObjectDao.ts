@@ -19,7 +19,7 @@ export class LearningObjectDao {
     return learningObject
       .save()
       .then((data) => {
-        this.logger.info(`LearningObject ${data.title} Added Successfully`);
+        this.logger.info(`LearningObject ${data.name} Added Successfully`);
         return data;
       })
       .catch((error) => {
@@ -49,7 +49,7 @@ export class LearningObjectDao {
     return LearningObject.findById(id)
       .then((data) => {
         if (data) {
-          this.logger.info(`${data.title} LearningObject Retrieved Successfully`);
+          this.logger.info(`${data.name} LearningObject Retrieved Successfully`);
           return data;
         } else {
           this.logger.info(`LearningObject ${id} Not Found`);
@@ -67,7 +67,7 @@ export class LearningObjectDao {
     return LearningObject.findByIdAndUpdate(id, { $set: learningObject }, { new: true })
       .then((data) => {
         if (data) {
-          this.logger.info(`${data.title} LearningObject Updated Successfully`);
+          this.logger.info(`${data.name} LearningObject Updated Successfully`);
           return data;
         } else {
           this.logger.info(`LearningObject ${id} Not Found`);
@@ -85,7 +85,7 @@ export class LearningObjectDao {
     return LearningObject.findByIdAndDelete(id)
       .then((data) => {
         if (data) {
-          this.logger.info(`${data.title} LearningObject Deleted Successfully`);
+          this.logger.info(`${data.name} LearningObject Deleted Successfully`);
           return data;
         } else {
           this.logger.info(`LearningObject ${id} Not Found`);

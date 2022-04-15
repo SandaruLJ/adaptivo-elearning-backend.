@@ -1,6 +1,5 @@
-export interface ILearningResource{
-    title:string;
-    type:string;
-    lessonId:string;
-    courseId:string;
+export interface ILearningResource {
+  name: string;
+  type: string;
+  url: string;
 }
