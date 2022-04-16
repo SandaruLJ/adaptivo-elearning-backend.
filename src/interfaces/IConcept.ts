@@ -1,5 +1,6 @@
 export interface IConcept {
+  _id?: string;
   name: string;
-  preRequisite: string[];
+  preRequisites: string[];
   learningObjects: string[];
 }

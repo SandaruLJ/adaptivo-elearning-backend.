@@ -7,7 +7,7 @@ import ConceptController from "../controllers/ConceptController.js";
 import LearningResourceController from "../controllers/LearningResourceController.js";
 import LearningObjectController from "../controllers/LearningObjectController.js";
 import CategoryController from "../controllers/CategoryController.js";
-import QuizContoller from "../controllers/QuizController";
+import QuizContoller from "../controllers/QuizController.js";
 
 export default function setRoutes(app: any) {
   const router = express();

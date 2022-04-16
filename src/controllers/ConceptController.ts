@@ -17,21 +17,18 @@ export default class ConceptController {
   public async createConcept(req: any, res: any) {
     this.logger.info("ConceptController - createConcept()");
 
-    console.log(req.body);
-    res.status(200).send({ status: "success" });
+    if (req.body) {
+      const Concept: IConcept = req.body;
+      await this.ConceptService.createConcept(Concept)
+        .then((data) => {
+          res.status(200).send(data);
+        })
 
-    // if (req.body) {
-    //   const Concept: IConcept = req.body;
-    //   await this.ConceptService.createConcept(Concept)
-    //     .then((data) => {
-    //       res.status(200).send(data);
-    //     })
-
-    //     .catch((error) => {
-    //       this.logger.error(error.message);
-    //       res.status(500).send({ err: error.message });
-    //     });
-    // }
+        .catch((error) => {
+          this.logger.error(error.message);
+          res.status(500).send({ err: error.message });
+        });
+    }
   }
   public async getAllConcepts(req: any, res: any) {
     this.logger.info("ConceptController - getAllConcept()");
