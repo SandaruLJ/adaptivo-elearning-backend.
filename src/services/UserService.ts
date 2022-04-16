@@ -24,10 +24,6 @@ export default class UserService implements IUserService {
         return this.userDao.save(request)
             .then(data => {
                 return data;
-            })
-            .catch(error => {
-                this.logger.error(error.message);
-                throw error;
             });
     }
 
@@ -37,10 +33,6 @@ export default class UserService implements IUserService {
         return this.userDao.getAll()
             .then(data => {
                 return data;
-            })
-            .catch(error => {
-                this.logger.error(error.message);
-                throw error;
             });
     }
 
@@ -50,10 +42,6 @@ export default class UserService implements IUserService {
         return this.userDao.getById(id)
             .then(data => {
                 return data;
-            })
-            .catch(error => {
-                this.logger.error(error.message);
-                throw error;
             });
     }
 
@@ -63,10 +51,6 @@ export default class UserService implements IUserService {
         return this.userDao.update(id, user)
             .then(data => {
                 return data;
-            })
-            .catch(error => {
-                this.logger.error(error.message);
-                throw error;
             });
     }
 
@@ -76,10 +60,6 @@ export default class UserService implements IUserService {
         return this.userDao.delete(id)
             .then(data => {
                 return data;
-            })
-            .catch(error => {
-                this.logger.error(error.message);
-                throw error;
             });
     }
 

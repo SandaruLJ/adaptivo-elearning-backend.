@@ -1,6 +1,7 @@
 import { Logger } from '../loaders/logger';
 import IUser from '../interfaces/IUser';
 import User from '../models/User';
+import UserNotFoundError from '../errors/UserNotFoundError';
 
 
 export default class UserDao {
@@ -24,10 +25,6 @@ export default class UserDao {
             .then(data => {
                 this.logger.info(`User "${data.firstname} ${data.lastname}" inserted successfully.`);
                 return data;
-            })
-            .catch(error => {
-                this.logger.error(`Error occurred while inserting user: ${error.message}`);
-                throw error;
             });
     }
 
@@ -43,10 +40,6 @@ export default class UserDao {
                 }
 
                 return data;
-            })
-            .catch(error => {
-                this.logger.error(`Error occurred while retrieving users: ${error.message}`);
-                throw error;
             });
     }
 
@@ -59,13 +52,8 @@ export default class UserDao {
                     this.logger.info(`User "${data.firstname} ${data.lastname}" retrieved successfully.`);
                     return data;
                 } else {
-                    this.logger.info(`User "${id}" not found.`);
-                    return { msg: 'User not found' };
+                    throw new UserNotFoundError(`User '${id}' not found`);
                 }
-            })
-            .catch(error => {
-                this.logger.error(`Error occurred while retrieving user "${id}": ${error.message}`);
-                throw error;
             });
     }
 
@@ -78,13 +66,8 @@ export default class UserDao {
                     this.logger.info(`User "${data.firstname} ${data.lastname}" updated successfully`);
                     return data;
                 } else {
-                    this.logger.info(`User "${id}" not found.`);
-                    return { msg: 'User not found' };
+                    throw new UserNotFoundError(`User '${id}' not found`);
                 }
-            })
-            .catch(error => {
-                this.logger.error(`Error occurred while updating user "${id}": ${error.message}`);
-                throw error;
             });
     }
 
@@ -97,13 +80,8 @@ export default class UserDao {
                     this.logger.info(`User "${data.firstname} ${data.lastname}" deleted successfully.`);
                     return data;
                 } else {
-                    this.logger.info(`User "${id}" not found.`);
-                    return { msg: 'User not found' };
+                    throw new UserNotFoundError(`User '${id}' not found`);
                 }
-            })
-            .catch(error => {
-                this.logger.error(`Error occurred while deleting user "${id}": ${error.message}`);
-                throw error;
             });
     }
 }

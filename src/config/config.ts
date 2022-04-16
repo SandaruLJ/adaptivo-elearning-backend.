@@ -13,5 +13,8 @@ export default {
     port: parseInt(process.env.PORT||"3005", 10),
     dbURL: process.env.MONGODB_URI,
     secret: process.env.SECRET,
-    version:process.env.BE_VERSION
+    version:process.env.BE_VERSION,
+    awsRegion: process.env.AWS_DEFAULT_REGION,
+    userPoolId: process.env.USER_POOL_ID,
+    adminPoolId: process.env.ADMIN_POOL_ID
 }
