@@ -1,6 +1,8 @@
-export interface ILearningObject{
-    title:string;
-    type:string;
-    lessonId:string;
-    courseId:string;
+export interface ILearningObject {
+  _id?: string;
+  name: string;
+  video: string;
+  audio: string;
+  resources: string[];
+  quiz: string[];
 }

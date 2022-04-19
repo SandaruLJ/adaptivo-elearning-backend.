@@ -1,16 +1,18 @@
-import {ILearningObject} from "../interfaces/ILearningObject";
-import * as mongoose from "mongoose";
+import { ILearningObject } from "../interfaces/ILearningObject.js";
+import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 const LearningObjectSchema = new Schema(
-    {
-        title:{
-            type:String,
-            required:true,
-            trim:true
-        },
-        lessonId:{type:Schema.Types.ObjectId,required:true,ref:'lessons'},
-        courseId:{type:Schema.Types.ObjectId,required:true,ref:'courses'},
-    }
-
+  {
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    video: { type: Schema.Types.ObjectId, required: true, ref: "LearningResources" },
+    audio: { type: Schema.Types.ObjectId, required: true, ref: "LearningResources" },
+    resources: [{ type: Schema.Types.ObjectId, required: true, ref: "LearningResources" }],
+    quiz: [{ type: Schema.Types.ObjectId, required: true, ref: "quiz" }],
+  },
+  { timestamps: true }
 );
-export default mongoose.model<ILearningObject & mongoose.Document>('LearningObjects',LearningObjectSchema)
+export default mongoose.model<ILearningObject & mongoose.Document>("LearningObjects", LearningObjectSchema);

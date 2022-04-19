@@ -2,7 +2,11 @@
   "name": "elearning-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "./dist/server.js",
+  "exports": "./dist/server.js",
+  "type": "module",
+  "engines": {
+    "node": "^12.20.0 || >=14.13.1"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./dist/server.js",
@@ -14,12 +18,18 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.67.0",
+    "@aws-sdk/s3-request-presigner": "^3.67.0",
+    "@types/node-fetch": "^2.6.1",
     "auto-bind": "^4.0.0",
+    "aws-sdk": "^2.1114.0",
     "body-parser": "^1.19.1",
+    "cognito-express": "^3.0.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "express": "^4.17.2",
     "mongoose": "^6.2.1",
+    "node-fetch": "^3.2.3",
     "winston": "^3.6.0"
   },
   "devDependencies": {

@@ -1,6 +1,6 @@
-import {Logger} from "../loaders/logger";
-import {ICourse} from "../interfaces/ICourse";
-import Course from "../models/Course";
+import {Logger} from "../loaders/logger.js";
+import {ICourse} from "../interfaces/ICourse.js";
+import Course from "../models/Course.js";
 
 export class CourseDao{
 

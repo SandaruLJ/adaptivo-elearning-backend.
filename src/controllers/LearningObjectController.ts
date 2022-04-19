@@ -1,94 +1,90 @@
-import {Logger} from "../loaders/logger";
-import {LearningObjectService} from "../services/LearningObjectService";
-import {ILearningObject} from "../interfaces/ILearningObject";
-import {ILearningObjectService} from "../services/interfaces/ILearningObjectService";
-const autoBind = require('auto-bind');
+import { Logger } from "../loaders/logger.js";
+import { LearningObjectService } from "../services/LearningObjectService.js";
+import { ILearningObject } from "../interfaces/ILearningObject.js";
+import { ILearningObjectService } from "../services/interfaces/ILearningObjectService.js";
+import autoBind from "auto-bind";
 
+export default class LearningObjectController {
+  private logger: Logger;
+  private LearningObjectService: ILearningObjectService;
 
-export default class LearningObjectController{
+  constructor() {
+    this.logger = Logger.getInstance();
+    this.LearningObjectService = LearningObjectService.getInstance();
+    autoBind(this);
+  }
 
-    private logger:Logger;
-    private LearningObjectService:ILearningObjectService;
+  public async createLearningObject(req: any, res: any) {
+    this.logger.info("LearningObjectController - createLearningObject()");
 
-    constructor(){
-        this.logger = Logger.getInstance();
-        this.LearningObjectService = LearningObjectService.getInstance();
-        autoBind(this);
+    if (req.body) {
+      const LearningObject: ILearningObject = req.body;
+      await this.LearningObjectService.createLearningObject(LearningObject)
+        .then((data) => {
+          res.status(200).send(data);
+        })
+
+        .catch((error) => {
+          this.logger.error(error.message);
+          res.status(500).send({ err: error.message });
+        });
     }
+  }
+  public async getAllLearningObjects(req: any, res: any) {
+    this.logger.info("LearningObjectController - getAllLearningObjects()");
 
-    public async createLearningObject(req:any,res:any){
-        this.logger.info("LearningObjectController - createLearningObject()");
+    await this.LearningObjectService.getAllLearningObject()
+      .then((data) => {
+        res.status(200).send(data);
+      })
+      .catch((error) => {
+        this.logger.error(error.message);
+        res.status(500).send({ err: error.message });
+      });
+  }
+  public async getLearningObjectById(req: any, res: any) {
+    this.logger.info("LearningObjectController - getLearningObjectById()");
+    const id = req.params.id;
+    await this.LearningObjectService.getLearningObjectById(id)
+      .then((data) => {
+        res.status(200).send(data);
+      })
+      .catch((error) => {
+        this.logger.error(error.message);
+        res.status(500).send({ err: error.message });
+      });
+  }
 
-        if(req.body){
+  public async updateLearningObject(req: any, res: any) {
+    this.logger.info("LearningObjectController - updateLearningObject()");
+    const id = req.params.id;
 
-            const LearningObject:ILearningObject = req.body;
-            await this.LearningObjectService.createLearningObject(LearningObject)
-                .then(data => {
-                    res.status(200).send(data);
-                })
+    if (req.body) {
+      const LearningObject: ILearningObject = req.body;
 
-                .catch(error => {
-                    this.logger.error(error.message);
-                    res.status(500).send({err:error.message});
-                })
-        }
+      await this.LearningObjectService.updateLearningObject(id, LearningObject)
+        .then((data) => {
+          res.status(200).send(data);
+        })
+        .catch((error) => {
+          this.logger.error(error.message);
+          res.status(500).send({ err: error.message });
+        });
+    } else {
+      res.status(404);
     }
-    public async getAllLearningObjects(req:any,res:any) {
-        this.logger.info("LearningObjectController - getAllLearningObjects()");
+  }
 
-        await this.LearningObjectService.getAllLearningObject()
-            .then(data => {
-                res.status(200).send(data);
-            })
-            .catch(error => {
-                this.logger.error(error.message);
-                res.status(500).send({err: error.message});
-            })
-    }
-    public async getLearningObjectById(req:any,res:any) {
-        this.logger.info("LearningObjectController - getLearningObjectById()");
-        const id = req.params.id;
-        await this.LearningObjectService.getLearningObjectById(id)
-            .then(data => {
-                res.status(200).send(data);
-            })
-            .catch(error => {
-                this.logger.error(error.message);
-                res.status(500).send({err: error.message});
-            })
-    }
-
-    public async updateLearningObject(req:any,res:any) {
-        this.logger.info("LearningObjectController - updateLearningObject()");
-        const id = req.params.id;
-
-        if(req.body) {
-
-            const LearningObject: ILearningObject = req.body;
-
-            await this.LearningObjectService.updateLearningObject(id, LearningObject)
-                .then(data => {
-                    res.status(200).send(data);
-                })
-                .catch(error => {
-                    this.logger.error(error.message);
-                    res.status(500).send({err: error.message});
-                })
-        }else {
-            res.status(404);
-        }
-    }
-
-    public async deleteLearningObject(req:any,res:any) {
-        this.logger.info("LearningObjectController - deleteLearningObject()");
-        const id = req.params.id;
-        await this.LearningObjectService.deleteLearningObject(id)
-            .then(data => {
-                res.status(200).send(data);
-            })
-            .catch(error => {
-                this.logger.error(error.message);
-                res.status(500).send({err: error.message});
-            })
-    }
+  public async deleteLearningObject(req: any, res: any) {
+    this.logger.info("LearningObjectController - deleteLearningObject()");
+    const id = req.params.id;
+    await this.LearningObjectService.deleteLearningObject(id)
+      .then((data) => {
+        res.status(200).send(data);
+      })
+      .catch((error) => {
+        this.logger.error(error.message);
+        res.status(500).send({ err: error.message });
+      });
+  }
 }

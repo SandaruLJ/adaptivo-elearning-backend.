@@ -1,16 +1,25 @@
-import {ILearningResource} from "../interfaces/ILearningResource";
-import * as mongoose from "mongoose";
+import { ILearningResource } from "../interfaces/ILearningResource.js";
+import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 const LearningResourceSchema = new Schema(
-    {
-        title:{
-            type:String,
-            required:true,
-            trim:true
-        },
-        lessonId:{type:Schema.Types.ObjectId,required:true,ref:'lessons'},
-        courseId:{type:Schema.Types.ObjectId,required:true,ref:'courses'},
-    }
-
+  {
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    type: {
+      type: String,
+      required: true,
+      trim: true,
+      enum: ["video", "audio", "file"],
+    },
+    url: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+  },
+  { timestamps: true }
 );
-export default mongoose.model<ILearningResource & mongoose.Document>('LearningResources',LearningResourceSchema)
+export default mongoose.model<ILearningResource & mongoose.Document>("LearningResources", LearningResourceSchema);

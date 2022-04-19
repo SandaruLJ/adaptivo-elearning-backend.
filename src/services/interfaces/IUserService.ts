@@ -1,4 +1,4 @@
-import IUser from '../../interfaces/IUser';
+import IUser from '../../interfaces/IUser.js';
 
 export default interface IUserService {
     createUser(request: IUser): Promise<IUser>;
