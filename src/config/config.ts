@@ -14,5 +14,7 @@ export default {
   dbURL: process.env.MONGODB_URI,
   secret: process.env.SECRET,
   version: process.env.BE_VERSION,
-  awsRegion: process.env.BE_AWS_REGION,
+  awsRegion: process.env.AWS_DEFAULT_REGION,
+  userPoolId: process.env.USER_POOL_ID,
+  adminPoolId: process.env.ADMIN_POOL_ID,
 };

@@ -8,6 +8,7 @@ import LearningResourceController from "../controllers/LearningResourceControlle
 import LearningObjectController from "../controllers/LearningObjectController.js";
 import CategoryController from "../controllers/CategoryController.js";
 import QuizContoller from "../controllers/QuizController.js";
+import validateAuth from "../middleware/auth.js";
 
 export default function setRoutes(app: any) {
   const router = express();
@@ -46,6 +47,12 @@ export default function setRoutes(app: any) {
   router.route("/lessons/:id").get(lessonControl.getLessonById);
   router.route("/lessons/:id").put(lessonControl.updateLesson);
   router.route("/lessons/:id").delete(lessonControl.deleteLesson);
+  // User routes
+  router.route("/users").post(validateAuth, userControl.createUser);
+  router.route("/users").get(validateAuth, userControl.getAllUsers);
+  router.route("/users/:id").get(userControl.getUserById);
+  router.route("/users/:id").put(userControl.updateUser);
+  router.route("/users/:id").delete(userControl.deleteUser);
 
   //Concept Routes
   router.route("/concepts").post(conceptControl.createConcept);
