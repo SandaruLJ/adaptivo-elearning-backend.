@@ -1,7 +1,7 @@
-import {ILearningResource} from "../interfaces/ILearningResource";
-import {Logger} from "../loaders/logger";
-import {ILearningResourceService} from "./interfaces/ILearningResourceService";
-import {LearningResourceDao} from "../dao/LearningResourceDao";
+import {ILearningResource} from "../interfaces/ILearningResource.js";
+import {Logger} from "../loaders/logger.js";
+import {ILearningResourceService} from "./interfaces/ILearningResourceService.js";
+import {LearningResourceDao} from "../dao/LearningResourceDao.js";
 
 export class LearningResourceService implements ILearningResourceService{
     private logger = Logger.getInstance();

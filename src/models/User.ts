@@ -1,55 +1,59 @@
-import IUser from '../interfaces/IUser';
-import * as mongoose from 'mongoose';
+import IUser from "../interfaces/IUser.js";
+import mongoose from "mongoose";
 
-
-const UserSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema(
+  {
     firstname: {
-        type: String,
-        required: true,
-        trim: true
+      type: String,
+      required: true,
+      trim: true,
     },
     lastname: {
-        type: String,
-        required: true,
-        trim: true
+      type: String,
+      required: true,
+      trim: true,
     },
     email: {
-        type: String,
-        required: true,
-        trim: true
+      type: String,
+      required: true,
+      trim: true,
     },
     phone: {
-        type: String,
-        required: true,
-        trim: true
+      type: String,
+      required: true,
+      trim: true,
     },
     dob: {
-        type: String,
-        required: true,
-        trim: true
+      type: String,
+      required: true,
+      trim: true,
     },
-    devices: [{
+    devices: [
+      {
         type: String,
         required: true,
-        trim: true
-    }],
+        trim: true,
+      },
+    ],
     preferredLanguage: {
-        type: String,
-        enum: ['en', 'si', 'ta'],
-        required: true,
-        default: 'en'
+      type: String,
+      enum: ["en", "si", "ta"],
+      required: true,
+      default: "en",
     },
     isSchoolStudent: {
-        type: Boolean,
-        required: true
+      type: Boolean,
+      required: true,
     },
     grade: {
-        type: Number,
+      type: Number,
     },
     school: {
-        type: String,
-        trim: true
-    }
-});
+      type: String,
+      trim: true,
+    },
+  },
+  { timestamps: true }
+);
 
-export default mongoose.model<IUser & mongoose.Document>('users', UserSchema);
+export default mongoose.model<IUser & mongoose.Document>("users", UserSchema);
