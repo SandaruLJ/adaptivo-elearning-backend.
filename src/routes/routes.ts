@@ -2,6 +2,7 @@ import express from "express";
 import CourseController from "../controllers/CourseController.js";
 import UserController from "../controllers/UserController.js";
 import HealthController from "../controllers/HealthController.js";
+import InstructorController from '../controllers/InstructorController.js';
 import LessonController from "../controllers/LessonController.js";
 import ConceptController from "../controllers/ConceptController.js";
 import LearningResourceController from "../controllers/LearningResourceController.js";
@@ -16,6 +17,7 @@ export default function setRoutes(app: any) {
   const userControl = new UserController();
   const categoryControl = new CategoryController();
   const healthControl = new HealthController();
+  const instructorControl = new InstructorController();
   const lessonControl = new LessonController();
   const conceptControl = new ConceptController();
   const learningResourceControl = new LearningResourceController();
@@ -41,18 +43,19 @@ export default function setRoutes(app: any) {
   router.route("/users/:id").put(userControl.updateUser);
   router.route("/users/:id").delete(userControl.deleteUser);
 
+  //Instructor Routes
+  router.route("/instructors").post(instructorControl.createInstructor);
+  router.route("/instructors").get(instructorControl.getAllInstructors);
+  router.route("/instructors/:id").get(instructorControl.getInstructorById);
+  router.route("/instructors/:id").put(instructorControl.updateInstructor);
+  router.route("/instructors/:id").delete(instructorControl.deleteInstructor);
+
   //Lesson Routes
   router.route("/lessons").post(lessonControl.createLesson);
   router.route("/lessons").get(lessonControl.getAllLessons);
   router.route("/lessons/:id").get(lessonControl.getLessonById);
   router.route("/lessons/:id").put(lessonControl.updateLesson);
   router.route("/lessons/:id").delete(lessonControl.deleteLesson);
-  // User routes
-  router.route("/users").post(validateAuth, userControl.createUser);
-  router.route("/users").get(validateAuth, userControl.getAllUsers);
-  router.route("/users/:id").get(userControl.getUserById);
-  router.route("/users/:id").put(userControl.updateUser);
-  router.route("/users/:id").delete(userControl.deleteUser);
 
   //Concept Routes
   router.route("/concepts").post(conceptControl.createConcept);
