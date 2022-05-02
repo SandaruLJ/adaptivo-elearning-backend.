@@ -10,6 +10,7 @@ import CategoryController from "../controllers/CategoryController.js";
 import QuizContoller from "../controllers/QuizController.js";
 import validateAuth from "../middleware/auth.js";
 import QandAController from "../controllers/QandAController.js";
+import DrmController from "../controllers/DrmController.js";
 
 export default function setRoutes(app: any) {
   const router = express();
@@ -23,6 +24,7 @@ export default function setRoutes(app: any) {
   const learningObjectControl = new LearningObjectController();
   const quizControl = new QuizContoller();
   const qandaControl = new QandAController();
+  const drmcontrol = new DrmController();
 
   app.use("/api", router);
   app.use("/health", healthControl.displayHealth);
@@ -100,7 +102,8 @@ router.route("/qanda/:id").get(qandaControl.getQandAById);
 router.route("/qanda/:id").put(qandaControl.updateQandA);
 router.route("/qanda/:id").delete(qandaControl.deleteQandA)
 
-
+//Drm Routes
+router.route("/drm").post(drmcontrol.generateLicenseToken);
 
 
 }

@@ -79,7 +79,7 @@ public static instance :DrmService= null;
 
   }
 
-  public async generateLiceneseToken(keyId:string){
+  public async generateLicenseToken(keyId:string){
 
       const communicationKey = "vUv1fYKVeX7Ek6d8gx1hN/tzPeUhwrUH2hFPgaxLL6Q="
       const communicationKeyId= "e8313580-8791-4f73-9b4f-ae7f00be2b91"
