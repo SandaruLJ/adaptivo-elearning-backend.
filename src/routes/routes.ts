@@ -2,6 +2,7 @@ import express from "express";
 import CourseController from "../controllers/CourseController.js";
 import UserController from "../controllers/UserController.js";
 import HealthController from "../controllers/HealthController.js";
+import InstructorController from '../controllers/InstructorController.js';
 import LessonController from "../controllers/LessonController.js";
 import ConceptController from "../controllers/ConceptController.js";
 import LearningResourceController from "../controllers/LearningResourceController.js";
@@ -18,6 +19,7 @@ export default function setRoutes(app: any) {
   const userControl = new UserController();
   const categoryControl = new CategoryController();
   const healthControl = new HealthController();
+  const instructorControl = new InstructorController();
   const lessonControl = new LessonController();
   const conceptControl = new ConceptController();
   const learningResourceControl = new LearningResourceController();
@@ -105,5 +107,30 @@ router.route("/qanda/:id").delete(qandaControl.deleteQandA)
 //Drm Routes
 router.route("/drm").post(drmcontrol.generateLicenseToken);
 
+  //Instructor Routes
+  router.route("/instructors").post(instructorControl.createInstructor);
+  router.route("/instructors").get(instructorControl.getAllInstructors);
+  router.route("/instructors/:id").get(instructorControl.getInstructorById);
+  router.route("/instructors/:id").put(instructorControl.updateInstructor);
+  router.route("/instructors/:id").delete(instructorControl.deleteInstructor);
 
+
+
+ 
+
+  
+ 
+
+  //Category Routes
+  router.route("/categories").post(categoryControl.createCategory);
+  router.route("/categories").get(categoryControl.getAllCategory);
+  router.route("/categories/:id").get(categoryControl.getCategoryById);
+  router.route("/categories/:id").put(categoryControl.updateCategory);
+  router.route("/categories/:id").delete(categoryControl.deleteCategory);
+  //Quiz Routes
+  router.route("/quizes").post(quizControl.createQuiz);
+  router.route("/quizes").get(quizControl.getAllQuiz);
+  router.route("/quizes/:id").get(quizControl.getQuizById);
+  router.route("/quizes/:id").put(quizControl.updateQuiz);
+  router.route("/quizes/:id").delete(quizControl.deleteQuiz);
 }

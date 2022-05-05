@@ -1,4 +1,3 @@
-
 import { Logger } from "../loaders/logger.js";
 import { CourseService } from "../services/CourseService.js";
 import { ICourse } from "../interfaces/ICourse.js";
