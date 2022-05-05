@@ -1,7 +1,7 @@
 import autoBind from "auto-bind";
-import { IDrmService } from "../services/interfaces/IDrmService";
-import { Logger } from "../loaders/logger";
-import { DrmService } from "../services/DrmService";
+import { IDrmService } from "../services/interfaces/IDrmService.js";
+import { Logger } from "../loaders/logger.js";
+import { DrmService } from "../services/DrmService.js";
 
 export default class DrmController{
     private logger:Logger;

@@ -1,9 +1,10 @@
-import { Logger } from "../loaders/logger";
-import { IDrmService } from "./interfaces/IDrmService";
+import { Logger } from "../loaders/logger.js";
+import { IDrmService } from "./interfaces/IDrmService.js";
 import { getServiceAccountToken } from '@axinom/mosaic-id-link-be'
-import { addListener } from "process";
 import moment from "moment";
-import { JsonWebTokenError } from "jsonwebtoken";
+import pkg from 'jsonwebtoken';
+const { sign } = pkg;
+
 
 export class DrmService implements IDrmService{
 
@@ -83,7 +84,7 @@ public static instance :DrmService= null;
 
       const communicationKey = "vUv1fYKVeX7Ek6d8gx1hN/tzPeUhwrUH2hFPgaxLL6Q="
       const communicationKeyId= "e8313580-8791-4f73-9b4f-ae7f00be2b91"
-      var jwt = require('jsonwebtoken');
+    
     let communicationKeyAsBuffer = Buffer.from(communicationKey, "base64");
 
     let now = moment();
@@ -148,12 +149,13 @@ public static instance :DrmService= null;
     console.log("Creating license token with payload: " + JSON.stringify(envelope));
 
     // The license token must be digitally signed to prove that it came from the token service.
-    let licenseToken = jwt.sign(envelope, communicationKeyAsBuffer, {
+    let licenseToken = sign(envelope, communicationKeyAsBuffer, {
         "algorithm": "HS256",
         "noTimestamp": true
     });
 
-    return licenseToken;
+    console.log(licenseToken);
+    return {token:licenseToken};
 
   }
 
