@@ -87,4 +87,28 @@ export default class LearningResourceController {
         res.status(500).send({ err: error.message });
       });
   }
+  public async getVideoSignedUrl(req: any, res: any) {
+    this.logger.info("LearningResourceController - getVideoSignedUrl()");
+    console.log(req.params.fileName);
+
+    await this.LearningResourceService.getVideoSignedUrl(req.params.fileName)
+      .then((data) => {
+        res.status(200).send(data);
+      })
+      .catch((error) => {
+        this.logger.error(error.message);
+        res.status(500).send({ err: error.message });
+      });
+  }
+  public async getAudioSignedUrl(req: any, res: any) {
+    this.logger.info("LearningResourceController - getAudioSignedUrl()");
+    await this.LearningResourceService.getAudioSignedUrl(req.params.fileName)
+      .then((data) => {
+        res.status(200).send(data);
+      })
+      .catch((error) => {
+        this.logger.error(error.message);
+        res.status(500).send({ err: error.message });
+      });
+  }
 }

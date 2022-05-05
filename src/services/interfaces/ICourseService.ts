@@ -6,4 +6,6 @@ export interface ICourseService {
   getCourseById(id: string): Promise<ICourse | Object>;
   updateCourse(id: string, product: ICourse): Promise<ICourse | Object>;
   deleteCourse(id: string): Promise<ICourse | Object>;
+  getThumbnailSignedUrl(fileName: string): Promise<Object>;
+  getTrailerSignedUrl(fileName: string): Promise<Object>;
 }

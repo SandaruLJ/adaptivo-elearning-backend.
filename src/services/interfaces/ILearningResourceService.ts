@@ -6,4 +6,6 @@ export interface ILearningResourceService {
   getLearningResourceById(id: string): Promise<ILearningResource | Object>;
   updateLearningResource(id: string, product: ILearningResource): Promise<ILearningResource | Object>;
   deleteLearningResource(id: string): Promise<ILearningResource | Object>;
+  getVideoSignedUrl(fileName: string): Promise<Object>;
+  getAudioSignedUrl(fileName: string): Promise<Object>;
 }
