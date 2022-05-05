@@ -36,6 +36,8 @@ export default function setRoutes(app: any) {
   //Course Routes
   router.route("/courses").post(courseControl.createCourse);
   router.route("/courses").get(courseControl.getAllCourses);
+  router.route("/courses/url/thumbnail/:fileName").get(courseControl.getThumbnailSignedUrl);
+  router.route("/courses/url/trailer/:fileName").get(courseControl.getTrailerSignedUrl);
   router.route("/courses/:id").get(courseControl.getCourseById);
   router.route("/courses/:id").put(courseControl.updateCourse);
   router.route("/courses/:id").delete(courseControl.deleteCourse);
@@ -73,6 +75,8 @@ export default function setRoutes(app: any) {
   //Learning Resource Routes
   router.route("/learningResources").post(learningResourceControl.createLearningResource);
   router.route("/learningResources").get(learningResourceControl.getAllLearningResources);
+  router.route("/learningResources/url/video/:fileName").get(learningResourceControl.getVideoSignedUrl);
+  router.route("/learningResources/url/audio/:fileName").get(learningResourceControl.getAudioSignedUrl);
   router.route("/learningResources/:id").get(learningResourceControl.getLearningResourceById);
   router.route("/learningResources/:id").put(learningResourceControl.updateLearningResource);
   router.route("/learningResources/:id").delete(learningResourceControl.deleteLearningResource);

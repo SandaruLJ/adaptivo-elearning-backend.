@@ -17,11 +17,12 @@ export default class CourseController {
   public async createCourse(req: any, res: any) {
     this.logger.info("CourseController - createCourse()");
 
-    console.log(req.body);
+    // console.log(req.body);
+    // res.status(200).send({ status: "Success" });
 
     if (req.body) {
-      const Course: ICourse = req.body;
-      await this.CourseService.createCourse(Course)
+      // const Course: ICourse = req.body;
+      await this.CourseService.createCourse(req.body)
         .then((data) => {
           res.status(200).send(data);
         })
@@ -81,6 +82,29 @@ export default class CourseController {
     this.logger.info("CourseController - deleteCourse()");
     const id = req.params.id;
     await this.CourseService.deleteCourse(id)
+      .then((data) => {
+        res.status(200).send(data);
+      })
+      .catch((error) => {
+        this.logger.error(error.message);
+        res.status(500).send({ err: error.message });
+      });
+  }
+
+  public async getThumbnailSignedUrl(req: any, res: any) {
+    this.logger.info("CourseController - getAudioSignedUrl()");
+    await this.CourseService.getThumbnailSignedUrl(req.params.fileName)
+      .then((data) => {
+        res.status(200).send(data);
+      })
+      .catch((error) => {
+        this.logger.error(error.message);
+        res.status(500).send({ err: error.message });
+      });
+  }
+  public async getTrailerSignedUrl(req: any, res: any) {
+    this.logger.info("CourseController - getAudioSignedUrl()");
+    await this.CourseService.getTrailerSignedUrl(req.params.fileName)
       .then((data) => {
         res.status(200).send(data);
       })

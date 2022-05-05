@@ -1,15 +1,21 @@
 export interface ICourse {
   _id?: string;
   title: string;
-  subTitle: string;
-  description: string;
-  language: string;
-  price: number;
-  currency: string;
+  subtitle: string;
   category: string;
-  image: string;
+  subCategory: string;
+  language: string;
   level: string;
+  thumbnail: object;
+  trailer: object;
+  description: string;
+  tier: string;
+  price: number;
+  welcome: string;
+  congratulations: string;
+  instructors: string[];
+  currency: string;
   curriculum: any;
-  learningOutcomes: string[];
-  preRequisites: string[];
+  outcomes: string[];
+  requirements: string[];
 }
