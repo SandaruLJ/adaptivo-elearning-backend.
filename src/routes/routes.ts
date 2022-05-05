@@ -10,6 +10,8 @@ import LearningObjectController from "../controllers/LearningObjectController.js
 import CategoryController from "../controllers/CategoryController.js";
 import QuizContoller from "../controllers/QuizController.js";
 import validateAuth from "../middleware/auth.js";
+import QandAController from "../controllers/QandAController.js";
+import DrmController from "../controllers/DrmController.js";
 
 export default function setRoutes(app: any) {
   const router = express();
@@ -23,6 +25,8 @@ export default function setRoutes(app: any) {
   const learningResourceControl = new LearningResourceController();
   const learningObjectControl = new LearningObjectController();
   const quizControl = new QuizContoller();
+  const qandaControl = new QandAController();
+  const drmcontrol = new DrmController();
 
   app.use("/api", router);
   app.use("/health", healthControl.displayHealth);
@@ -45,19 +49,18 @@ export default function setRoutes(app: any) {
   router.route("/users/:id").put(userControl.updateUser);
   router.route("/users/:id").delete(userControl.deleteUser);
 
-  //Instructor Routes
-  router.route("/instructors").post(instructorControl.createInstructor);
-  router.route("/instructors").get(instructorControl.getAllInstructors);
-  router.route("/instructors/:id").get(instructorControl.getInstructorById);
-  router.route("/instructors/:id").put(instructorControl.updateInstructor);
-  router.route("/instructors/:id").delete(instructorControl.deleteInstructor);
-
   //Lesson Routes
   router.route("/lessons").post(lessonControl.createLesson);
   router.route("/lessons").get(lessonControl.getAllLessons);
   router.route("/lessons/:id").get(lessonControl.getLessonById);
   router.route("/lessons/:id").put(lessonControl.updateLesson);
   router.route("/lessons/:id").delete(lessonControl.deleteLesson);
+  // User routes
+  router.route("/users").post(validateAuth, userControl.createUser);
+  router.route("/users").get(validateAuth, userControl.getAllUsers);
+  router.route("/users/:id").get(userControl.getUserById);
+  router.route("/users/:id").put(userControl.updateUser);
+  router.route("/users/:id").delete(userControl.deleteUser);
 
   //Concept Routes
   router.route("/concepts").post(conceptControl.createConcept);
@@ -84,6 +87,43 @@ export default function setRoutes(app: any) {
   router.route("/learningObjects/:id").get(learningObjectControl.getLearningObjectById);
   router.route("/learningObjects/:id").put(learningObjectControl.updateLearningObject);
   router.route("/learningObjects/:id").delete(learningObjectControl.deleteLearningObject);
+
+  //Category Routes
+  router.route("/categories").post(categoryControl.createCategory);
+  router.route("/categories").get(categoryControl.getAllCategory);
+  router.route("/categories/:id").get(categoryControl.getCategoryById);
+  router.route("/categories/:id").put(categoryControl.updateCategory);
+  router.route("/categories/:id").delete(categoryControl.deleteCategory);
+  //Quiz Routes
+  router.route("/quizes").post(quizControl.createQuiz);
+  router.route("/quizes").get(quizControl.getAllQuiz);
+  router.route("/quizes/:id").get(quizControl.getQuizById);
+  router.route("/quizes/:id").put(quizControl.updateQuiz);
+  router.route("/quizes/:id").delete(quizControl.deleteQuiz);
+
+//QandA Routes
+router.route("/qanda").post(qandaControl.createQandA);
+router.route("/qanda").get(qandaControl.getAllQandA);
+router.route("/qanda/:id").get(qandaControl.getQandAById);
+router.route("/qanda/:id").put(qandaControl.updateQandA);
+router.route("/qanda/:id").delete(qandaControl.deleteQandA)
+
+//Drm Routes
+router.route("/drm").post(drmcontrol.generateLicenseToken);
+
+  //Instructor Routes
+  router.route("/instructors").post(instructorControl.createInstructor);
+  router.route("/instructors").get(instructorControl.getAllInstructors);
+  router.route("/instructors/:id").get(instructorControl.getInstructorById);
+  router.route("/instructors/:id").put(instructorControl.updateInstructor);
+  router.route("/instructors/:id").delete(instructorControl.deleteInstructor);
+
+
+
+ 
+
+  
+ 
 
   //Category Routes
   router.route("/categories").post(categoryControl.createCategory);
