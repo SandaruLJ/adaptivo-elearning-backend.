@@ -30,6 +30,7 @@ export class ConceptDao {
   public async getAll() {
     this.logger.info("ConceptDao - getAll()");
     return Concept.find({})
+      .populate("learningObjects")
       .then((data) => {
         if (data.length > 0) {
           this.logger.info(`Concept Retrieved Successfully`);

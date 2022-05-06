@@ -1,63 +1,153 @@
 import { ICourse } from "../interfaces/ICourse.js";
 import mongoose from "mongoose";
+import mongooseAutoPopulate from "mongoose-autopopulate";
 const Schema = mongoose.Schema;
-const CourseSchema = new Schema({
-  title: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  subTitle: {
-    type: String,
-    required: false,
-    trim: true,
-  },
-  description: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  language: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  price: {
-    type: Number,
-    required: true,
-    trim: true,
-  },
-  currency: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  category: { type: Schema.Types.ObjectId, required: true, ref: "categories" },
-  image: {
-    type: String,
-    required: true,
-  },
-  level: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  // curriculum:{type:Schema.Types.ObjectId,required:true,ref:'curriculum'},
-  learningOutcomes: [
-    {
+const CourseSchema = new Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    subtitle: {
       type: String,
       required: false,
       trim: true,
     },
-  ],
-  preRequisites: [
-    {
+    category: { type: Schema.Types.ObjectId, required: true, ref: "categories" },
+    subCategory: { type: Schema.Types.ObjectId, required: true, ref: "categories" },
+    language: {
       type: String,
-      required: false,
+      required: true,
       trim: true,
     },
-  ],
-},
-{ timestamps: true }
+    level: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    thumbnail: {
+      type: Object,
+      required: true,
+      trim: true,
+    },
+    trailer: {
+      type: Object,
+      required: true,
+      trim: true,
+    },
+    description: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    tier: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    price: {
+      type: Number,
+      required: true,
+      trim: true,
+    },
+    currency: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    welcome: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    congratulations: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    // instructors: [{ type: Schema.Types.ObjectId, required: true, ref: "instructors" }],
+    // curriculum: {
+    //   type: [Object],
+    //   required: true,
+    //   trim: true,
+    // },
+    curriculum: [
+      {
+        name: {
+          type: String,
+          required: false,
+          trim: true,
+        },
+        units: [
+          {
+            name: {
+              type: String,
+              required: false,
+              trim: true,
+            },
+            isConceptLink: {
+              type: Boolean,
+              required: false,
+              trim: true,
+            },
+            type: {
+              type: String,
+              required: false,
+              trim: true,
+            },
+            note: {
+              type: String,
+              required: false,
+              trim: true,
+            },
+            video: {
+              type: Schema.Types.ObjectId,
+              required: false,
+              ref: "LearningResources",
+              autopopulate: true,
+            },
+            audio: {
+              type: Schema.Types.ObjectId,
+              required: false,
+              ref: "LearningResources",
+              autopopulate: true,
+            },
+            loId: {
+              type: Schema.Types.ObjectId,
+              required: false,
+              ref: "LearningObjects",
+              autopopulate: true,
+            },
+            quiz: [
+              {
+                type: Schema.Types.ObjectId,
+                required: false,
+                ref: "quiz",
+                autopopulate: true,
+              },
+            ],
+          },
+        ],
+      },
+    ],
+    // curriculum:{type:Schema.Types.ObjectId,required:true,ref:'curriculum'},
+    outcomes: [
+      {
+        type: String,
+        required: false,
+        trim: true,
+      },
+    ],
+    requirements: [
+      {
+        type: String,
+        required: false,
+        trim: true,
+      },
+    ],
+  },
+  { timestamps: true }
 );
+CourseSchema.plugin(mongooseAutoPopulate);
 export default mongoose.model<ICourse & mongoose.Document>("courses", CourseSchema);
