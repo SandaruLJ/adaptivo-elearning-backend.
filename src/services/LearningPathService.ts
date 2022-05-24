@@ -42,7 +42,7 @@ export class LearningPathService implements ILearningPathService {
             let learningPath = {};
 
             script.stdout.on('data', (data) => {
-                learningPath = data.toString();
+                learningPath = JSON.parse(data.toString());
             });
 
             script.stderr.on('data', (error) => {
