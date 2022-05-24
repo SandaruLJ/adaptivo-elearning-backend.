@@ -2,7 +2,7 @@ import express from "express";
 import CourseController from "../controllers/CourseController.js";
 import UserController from "../controllers/UserController.js";
 import HealthController from "../controllers/HealthController.js";
-import InstructorController from '../controllers/InstructorController.js';
+import InstructorController from "../controllers/InstructorController.js";
 import LessonController from "../controllers/LessonController.js";
 import ConceptController from "../controllers/ConceptController.js";
 import LearningResourceController from "../controllers/LearningResourceController.js";
@@ -12,6 +12,7 @@ import QuizContoller from "../controllers/QuizController.js";
 import validateAuth from "../middleware/auth.js";
 import QandAController from "../controllers/QandAController.js";
 import DrmController from "../controllers/DrmController.js";
+import UserActivityController from "../controllers/UserActivityController.js";
 
 export default function setRoutes(app: any) {
   const router = express();
@@ -27,6 +28,7 @@ export default function setRoutes(app: any) {
   const quizControl = new QuizContoller();
   const qandaControl = new QandAController();
   const drmcontrol = new DrmController();
+  const UserActivityControl = new UserActivityController();
 
   app.use("/api", router);
   app.use("/health", healthControl.displayHealth);
@@ -101,15 +103,15 @@ export default function setRoutes(app: any) {
   router.route("/quizes/:id").put(quizControl.updateQuiz);
   router.route("/quizes/:id").delete(quizControl.deleteQuiz);
 
-//QandA Routes
-router.route("/qanda").post(qandaControl.createQandA);
-router.route("/qanda").get(qandaControl.getAllQandA);
-router.route("/qanda/:id").get(qandaControl.getQandAById);
-router.route("/qanda/:id").put(qandaControl.updateQandA);
-router.route("/qanda/:id").delete(qandaControl.deleteQandA)
+  //QandA Routes
+  router.route("/qanda").post(qandaControl.createQandA);
+  router.route("/qanda").get(qandaControl.getAllQandA);
+  router.route("/qanda/:id").get(qandaControl.getQandAById);
+  router.route("/qanda/:id").put(qandaControl.updateQandA);
+  router.route("/qanda/:id").delete(qandaControl.deleteQandA);
 
-//Drm Routes
-router.route("/drm").post(drmcontrol.generateLicenseToken);
+  //Drm Routes
+  router.route("/drm").post(drmcontrol.generateLicenseToken);
 
   //Instructor Routes
   router.route("/instructors").post(instructorControl.createInstructor);
@@ -117,13 +119,6 @@ router.route("/drm").post(drmcontrol.generateLicenseToken);
   router.route("/instructors/:id").get(instructorControl.getInstructorById);
   router.route("/instructors/:id").put(instructorControl.updateInstructor);
   router.route("/instructors/:id").delete(instructorControl.deleteInstructor);
-
-
-
- 
-
-  
- 
 
   //Category Routes
   router.route("/categories").post(categoryControl.createCategory);
@@ -137,4 +132,8 @@ router.route("/drm").post(drmcontrol.generateLicenseToken);
   router.route("/quizes/:id").get(quizControl.getQuizById);
   router.route("/quizes/:id").put(quizControl.updateQuiz);
   router.route("/quizes/:id").delete(quizControl.deleteQuiz);
+
+  //Use Routes
+  router.route("/activity").post(UserActivityControl.createUserActivity);
+  router.route("/activity").get(UserActivityControl.getAllUserActivity);
 }

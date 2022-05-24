@@ -14,7 +14,7 @@ const CourseSchema = new Schema(
       required: false,
       trim: true,
     },
-    category: { type: Schema.Types.ObjectId, required: true, ref: "categories" },
+    category: { type: Schema.Types.ObjectId, required: true, ref: "categories", autopopulate: true },
     subCategory: { type: Schema.Types.ObjectId, required: true, ref: "categories" },
     language: {
       type: String,
