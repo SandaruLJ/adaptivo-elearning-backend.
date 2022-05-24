@@ -12,6 +12,7 @@ import QuizContoller from "../controllers/QuizController.js";
 import validateAuth from "../middleware/auth.js";
 import QandAController from "../controllers/QandAController.js";
 import DrmController from "../controllers/DrmController.js";
+import LearningPathController from '../controllers/learningPathController.js';
 
 export default function setRoutes(app: any) {
   const router = express();
@@ -27,6 +28,7 @@ export default function setRoutes(app: any) {
   const quizControl = new QuizContoller();
   const qandaControl = new QandAController();
   const drmcontrol = new DrmController();
+  const learningPathControl = new LearningPathController();
 
   app.use("/api", router);
   app.use("/health", healthControl.displayHealth);
@@ -137,4 +139,7 @@ router.route("/drm").post(drmcontrol.generateLicenseToken);
   router.route("/quizes/:id").get(quizControl.getQuizById);
   router.route("/quizes/:id").put(quizControl.updateQuiz);
   router.route("/quizes/:id").delete(quizControl.deleteQuiz);
+
+  // Learning Path Routes
+  router.route("/learning-path/:user/:target").get(learningPathControl.generateLearningPath);
 }
