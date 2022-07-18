@@ -44,7 +44,7 @@ export class CourseService implements ICourseService {
             const resource: ILearningResource = {
               name: unit[unit.type]["name"],
               type: unit.type,
-              url: `https://spark-courses.s3.ap-south-1.amazonaws.com/62272fbfc8ea4d8b75b76aa2/resouces/videos/${unit[unit.type]["name"]}`,
+              url: `https://spark-courses.s3.ap-south-1.amazonaws.com/62272fbfc8ea4d8b75b76aa2/resources/videos/${unit[unit.type]["name"]}`,
             };
             const response = await LearningResourceService.getInstance().createLearningResource(resource);
             tempUnit[unit.type] = response._id;
