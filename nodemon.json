@@ -2,5 +2,5 @@
   "watch": ["src"],
   "ext": "ts",
   "ignore": ["src/**/*.spec.ts"],
-  "exec": "npm run build && node ./dist/server.js"
+  "exec": "npm run build && npm run copy-files && node ./dist/server.js"
 }

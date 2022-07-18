@@ -13,6 +13,7 @@ import validateAuth from "../middleware/auth.js";
 import QandAController from "../controllers/QandAController.js";
 import DrmController from "../controllers/DrmController.js";
 import UserActivityController from "../controllers/UserActivityController.js";
+import LearningPathController from "../controllers/learningPathController.js";
 
 export default function setRoutes(app: any) {
   const router = express();
@@ -29,9 +30,8 @@ export default function setRoutes(app: any) {
   const qandaControl = new QandAController();
   const drmcontrol = new DrmController();
   const UserActivityControl = new UserActivityController();
-
+  const learningPathControl = new LearningPathController();
   app.use("/api", router);
-  app.use("/health", healthControl.displayHealth);
 
   //Routes
 
@@ -136,4 +136,6 @@ export default function setRoutes(app: any) {
   //Use Routes
   router.route("/activity").post(UserActivityControl.createUserActivity);
   router.route("/activity").get(UserActivityControl.getAllUserActivity);
+  // Learning Path Routes
+  router.route("/learning-path/:user/:target").get(learningPathControl.generateLearningPath);
 }
