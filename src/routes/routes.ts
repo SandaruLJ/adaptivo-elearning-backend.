@@ -14,6 +14,7 @@ import QandAController from "../controllers/QandAController.js";
 import DrmController from "../controllers/DrmController.js";
 import UserActivityController from "../controllers/UserActivityController.js";
 import LearningPathController from "../controllers/learningPathController.js";
+import PreferenceController from "../controllers/PreferenceController.js";
 
 export default function setRoutes(app: any) {
   const router = express();
@@ -31,6 +32,7 @@ export default function setRoutes(app: any) {
   const drmcontrol = new DrmController();
   const UserActivityControl = new UserActivityController();
   const learningPathControl = new LearningPathController();
+  const preferenceControl = new PreferenceController();
   app.use("/api", router);
 
   //Routes
@@ -90,12 +92,6 @@ export default function setRoutes(app: any) {
   router.route("/learningObjects/:id").put(learningObjectControl.updateLearningObject);
   router.route("/learningObjects/:id").delete(learningObjectControl.deleteLearningObject);
 
-  //Category Routes
-  router.route("/categories").post(categoryControl.createCategory);
-  router.route("/categories").get(categoryControl.getAllCategory);
-  router.route("/categories/:id").get(categoryControl.getCategoryById);
-  router.route("/categories/:id").put(categoryControl.updateCategory);
-  router.route("/categories/:id").delete(categoryControl.deleteCategory);
   //Quiz Routes
   router.route("/quizes").post(quizControl.createQuiz);
   router.route("/quizes").get(quizControl.getAllQuiz);
@@ -138,4 +134,11 @@ export default function setRoutes(app: any) {
   router.route("/activity").get(UserActivityControl.getAllUserActivity);
   // Learning Path Routes
   router.route("/learning-path/:user/:target").get(learningPathControl.generateLearningPath);
+
+  //Preference Routes
+  router.route("/preferences").post(preferenceControl.createPreference);
+  router.route("/preferences").get(preferenceControl.getAllPreference);
+  router.route("/preferences/:id").get(preferenceControl.getPreferenceById);
+  router.route("/preferences/:id").put(preferenceControl.updatePreference);
+  router.route("/preferences/:id").delete(preferenceControl.deletePreference);
 }
