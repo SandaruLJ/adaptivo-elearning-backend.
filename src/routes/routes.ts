@@ -15,6 +15,7 @@ import DrmController from "../controllers/DrmController.js";
 import UserActivityController from "../controllers/UserActivityController.js";
 import LearningPathController from "../controllers/learningPathController.js";
 import PreferenceController from "../controllers/PreferenceController.js";
+import QuizSelectionController from '../controllers/QuizSelectionController.js';
 
 export default function setRoutes(app: any) {
   const router = express();
@@ -33,6 +34,7 @@ export default function setRoutes(app: any) {
   const UserActivityControl = new UserActivityController();
   const learningPathControl = new LearningPathController();
   const preferenceControl = new PreferenceController();
+  const quizSelectionControl = new QuizSelectionController();
   app.use("/api", router);
 
   //Routes
@@ -141,4 +143,7 @@ export default function setRoutes(app: any) {
   router.route("/preferences/:id").get(preferenceControl.getPreferenceById);
   router.route("/preferences/:id").put(preferenceControl.updatePreference);
   router.route("/preferences/:id").delete(preferenceControl.deletePreference);
+
+  // Quiz Selection Routes
+  router.route("/quiz-selection/:target/:prevConcept/:prevLearningObject/:answerCorrect").get(quizSelectionControl.selectQuiz);
 }
