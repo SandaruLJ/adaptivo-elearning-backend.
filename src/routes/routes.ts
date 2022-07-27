@@ -15,6 +15,7 @@ import DrmController from "../controllers/DrmController.js";
 import UserActivityController from "../controllers/UserActivityController.js";
 import LearningPathController from "../controllers/learningPathController.js";
 import PreferenceController from "../controllers/PreferenceController.js";
+import LearningStyleController from "../controllers/LearningStyleController.js";
 
 export default function setRoutes(app: any) {
   const router = express();
@@ -33,6 +34,7 @@ export default function setRoutes(app: any) {
   const UserActivityControl = new UserActivityController();
   const learningPathControl = new LearningPathController();
   const preferenceControl = new PreferenceController();
+  const learningStyleControl = new LearningStyleController();
   app.use("/api", router);
 
   //Routes
@@ -141,4 +143,12 @@ export default function setRoutes(app: any) {
   router.route("/preferences/:id").get(preferenceControl.getPreferenceById);
   router.route("/preferences/:id").put(preferenceControl.updatePreference);
   router.route("/preferences/:id").delete(preferenceControl.deletePreference);
+
+  //Learning Style Routes
+  router.route("/learningstyles").post(learningStyleControl.createLearningStyle);
+  router.route("/learningstyles/onboarding").post(learningStyleControl.analyzeInitialUserPreference);
+  router.route("/learningstyles").get(learningStyleControl.getAllLearningStyle);
+  router.route("/learningstyles/:id").get(learningStyleControl.getLearningStyleById);
+  router.route("/learningstyles/:id").put(learningStyleControl.updateLearningStyle);
+  router.route("/learningstyles/:id").delete(learningStyleControl.deleteLearningStyle);
 }
