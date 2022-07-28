@@ -16,6 +16,7 @@ import UserActivityController from "../controllers/UserActivityController.js";
 import LearningPathController from "../controllers/learningPathController.js";
 import PreferenceController from "../controllers/PreferenceController.js";
 import LearningStyleController from "../controllers/LearningStyleController.js";
+import UserCourseController from "../controllers/UserCourseController.js";
 
 export default function setRoutes(app: any) {
   const router = express();
@@ -35,6 +36,8 @@ export default function setRoutes(app: any) {
   const learningPathControl = new LearningPathController();
   const preferenceControl = new PreferenceController();
   const learningStyleControl = new LearningStyleController();
+  const userCourseControl = new UserCourseController();
+
   app.use("/api", router);
 
   //Routes
@@ -151,4 +154,11 @@ export default function setRoutes(app: any) {
   router.route("/learningstyles/:id").get(learningStyleControl.getLearningStyleById);
   router.route("/learningstyles/:id").put(learningStyleControl.updateLearningStyle);
   router.route("/learningstyles/:id").delete(learningStyleControl.deleteLearningStyle);
+
+  //UserCourse Routes
+  router.route("/usercourse").post(userCourseControl.createUserCourse);
+  router.route("/usercourse").get(userCourseControl.getAllUserCourse);
+  router.route("/usercourse/:id").get(userCourseControl.getUserCourseById);
+  router.route("/usercourse/:id").put(userCourseControl.updateUserCourse);
+  router.route("/usercourse/:id").delete(userCourseControl.deleteUserCourse);
 }
