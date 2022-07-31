@@ -132,7 +132,9 @@ export default function setRoutes(app: any) {
   //Use Routes
   router.route("/activity").post(UserActivityControl.createUserActivity);
   router.route("/activity").get(UserActivityControl.getAllUserActivity);
+
   // Learning Path Routes
+  router.route("/learning-path/recommendations/:user").post(learningPathControl.generateRecommendations);
   router.route("/learning-path/:user/:target").get(learningPathControl.generateLearningPath);
 
   //Preference Routes

@@ -29,4 +29,26 @@ export default class LearningPathController {
                 res.status(500).send({ err: error.message });
             });
     }
+
+    public async generateRecommendations(req: any, res: any): Promise<void> {
+        this.logger.info('LearningPathController - generateRecommendations()');
+
+        const userId = req.params.userId;
+
+        if (req.body && req.body.concepts) {
+            const targetConcepts = req.body.concepts;
+
+            await this.learningPathService.getRecommendations(userId, targetConcepts)
+                .then((data) => {
+                    res.status(200).send(data);
+                })
+                .catch((error) => {
+                    this.logger.error(error);
+                    res.status(500).send({ err: error });
+                });
+        } else {
+            this.logger.error('No request body.');
+            res.status(400).send({ err: 'No request body' });
+        }
+    }
 }
