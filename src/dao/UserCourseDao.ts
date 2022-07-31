@@ -62,6 +62,23 @@ export class UserCourseDao {
       });
   }
 
+  public async getByUserId(id: string) {
+    this.logger.info("UserCourseDao - getByUserId()");
+    return UserCourse.find({ userId: id })
+      .then((data) => {
+        if (data.length > 0) {
+          this.logger.info(`UserCourse Retrieved Successfully`);
+        } else {
+          this.logger.info(`UserCourse Not Found`);
+        }
+        return data;
+      })
+      .catch((error) => {
+        this.logger.error("Error in retrieving UserCourse" + error.message);
+        throw error;
+      });
+  }
+
   public async update(id: string, course: IUserCourse) {
     this.logger.info("UserCourseDao - update()");
     return UserCourse.findByIdAndUpdate(id, { $set: course }, { new: true })

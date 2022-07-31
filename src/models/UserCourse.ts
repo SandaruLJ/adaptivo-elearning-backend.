@@ -15,7 +15,7 @@ const UserCourseSchema = new Schema(
       required: true,
       trim: true,
       ref: "courses",
-      //   autopopulate: true,
+      autopopulate: true,
     },
     learningPath: [
       {
@@ -91,6 +91,20 @@ const UserCourseSchema = new Schema(
       required: true,
       trim: true,
       default: 0,
+    },
+    currentUnit: {
+      sectionNum: {
+        type: Number,
+        required: true,
+        trim: true,
+        default: 0,
+      },
+      unitNum: {
+        type: Number,
+        required: true,
+        trim: true,
+        default: 0,
+      },
     },
   },
   { timestamps: true }
