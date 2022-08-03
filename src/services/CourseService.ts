@@ -40,11 +40,28 @@ export class CourseService implements ICourseService {
         } else {
           tempUnit.type = unit.type;
 
-          if (unit.type != "quiz" && unit.type != "note") {
+          if (unit.type == "video") {
             const resource: ILearningResource = {
               name: unit[unit.type]["name"],
               type: unit.type,
+              style: "visual",
+              subStyle: "video",
+              size: unit[unit.type].size,
+              duration: unit[unit.type].duration,
               url: `https://spark-courses.s3.ap-south-1.amazonaws.com/62272fbfc8ea4d8b75b76aa2/resources/videos/${unit[unit.type]["name"]}`,
+            };
+            const response = await LearningResourceService.getInstance().createLearningResource(resource);
+            tempUnit[unit.type] = response._id;
+          }
+          if (unit.type == "file") {
+            const resource: ILearningResource = {
+              name: unit[unit.type]["name"],
+              type: unit.type,
+              style: "verbal",
+              subStyle: "textRichFile",
+              size: unit[unit.type].size,
+              duration: "00:05:00",
+              url: `https://spark-courses.s3.ap-south-1.amazonaws.com/62272fbfc8ea4d8b75b76aa2/resources/files/${unit[unit.type]["name"]}`,
             };
             const response = await LearningResourceService.getInstance().createLearningResource(resource);
             tempUnit[unit.type] = response._id;
@@ -66,6 +83,9 @@ export class CourseService implements ICourseService {
           }
           if (unit.type == "note") {
             tempUnit.note = unit.note;
+          }
+          if (unit.type == "preTest") {
+            tempUnit.preTest = unit.preTest;
           }
         }
         tempSection.units.push(tempUnit);

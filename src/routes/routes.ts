@@ -75,7 +75,7 @@ export default function setRoutes(app: any) {
   router.route("/concepts").post(conceptControl.createConcept);
   router.route("/concepts").get(conceptControl.getAllConcepts);
   router.route("/concepts/url/video/:fileName").get(conceptControl.getVideoSignedUrl);
-  router.route("/concepts/url/audio/:fileName").get(conceptControl.getAudioSignedUrl);
+  router.route("/concepts/url/file/:fileName").get(conceptControl.getFileSignedUrl);
 
   router.route("/concepts/:id").get(conceptControl.getConceptById);
   router.route("/concepts/:id").put(conceptControl.updateConcept);
@@ -86,6 +86,7 @@ export default function setRoutes(app: any) {
   router.route("/learningResources").get(learningResourceControl.getAllLearningResources);
   router.route("/learningResources/url/video/:fileName").get(learningResourceControl.getVideoSignedUrl);
   router.route("/learningResources/url/audio/:fileName").get(learningResourceControl.getAudioSignedUrl);
+  router.route("/learningResources/url/file/:fileName").get(learningResourceControl.getFileSignedUrl);
   router.route("/learningResources/:id").get(learningResourceControl.getLearningResourceById);
   router.route("/learningResources/:id").put(learningResourceControl.updateLearningResource);
   router.route("/learningResources/:id").delete(learningResourceControl.deleteLearningResource);
@@ -158,7 +159,7 @@ export default function setRoutes(app: any) {
   //UserCourse Routes
   router.route("/usercourse").post(userCourseControl.createUserCourse);
   router.route("/usercourse").get(userCourseControl.getAllUserCourse);
-  router.route("/usercourse/user/:id").get(userCourseControl.getUserCourseByUserId);
+  router.route("/usercourse/user/:email").get(userCourseControl.getUserCourseByUserId);
   router.route("/usercourse/:id").get(userCourseControl.getUserCourseById);
   router.route("/usercourse/markcomplete").put(userCourseControl.markIsCompleted);
   router.route("/usercourse/markduration").put(userCourseControl.markDuration);

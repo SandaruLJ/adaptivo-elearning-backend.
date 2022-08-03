@@ -4,6 +4,7 @@ import { IUserCourseService } from "./interfaces/IUserCourseService.js";
 import { UserCourseDao } from "../dao/UserCourseDao.js";
 import { CourseService } from "./CourseService.js";
 import { ICourse } from "../interfaces/ICourse.js";
+import UserService from "./UserService.js";
 
 export class UserCourseService implements IUserCourseService {
   private logger = Logger.getInstance();
@@ -132,9 +133,10 @@ export class UserCourseService implements IUserCourseService {
         throw error;
       });
   }
-  public async getUserCourseByUserId(id: string): Promise<IUserCourse[]> {
+  public async getUserCourseByUserId(email: string): Promise<IUserCourse[]> {
     this.logger.info("UserCourseService - getUserCourseByUserId()");
-    return this.UserCourseDao.getByUserId(id)
+    const userId = await UserService.getInstance().getUserIdByEmail("johndoe@email.com");
+    return this.UserCourseDao.getByUserId(userId)
       .then((data) => {
         return data;
       })

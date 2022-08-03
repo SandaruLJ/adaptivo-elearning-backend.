@@ -59,8 +59,8 @@ export default class UserCourseController {
 
   public async getUserCourseByUserId(req: any, res: any) {
     this.logger.info("UserCourseController - getUserCourseByUserId()");
-    const id = req.params.id;
-    await this.UserCourseService.getUserCourseByUserId(id)
+    const email = req.params.email;
+    await this.UserCourseService.getUserCourseByUserId(email)
       .then((data) => {
         res.status(200).send(data);
       })

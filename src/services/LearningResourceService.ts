@@ -103,4 +103,19 @@ export class LearningResourceService implements ILearningResourceService {
         throw error;
       });
   }
+  public async getFileSignedUrl(fileName: string): Promise<Object> {
+    this.logger.info("LearningResourceService - getAudioSignedUrl()");
+
+    const bucketName = `spark-courses`;
+    const key = `62272fbfc8ea4d8b75b76aa2/resources/files/${fileName}`;
+
+    return getPreSignedUrl(bucketName, key)
+      .then((data) => {
+        return data;
+      })
+      .catch((error) => {
+        this.logger.error(error.message);
+        throw error;
+      });
+  }
 }

@@ -62,6 +62,12 @@ const UserCourseSchema = new Schema(
               ref: "LearningResources",
               autopopulate: true,
             },
+            file: {
+              type: Schema.Types.ObjectId,
+              required: false,
+              ref: "LearningResources",
+              autopopulate: true,
+            },
             audio: {
               type: Schema.Types.ObjectId,
               required: false,
