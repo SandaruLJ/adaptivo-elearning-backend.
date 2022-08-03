@@ -15,7 +15,7 @@ const UserCourseSchema = new Schema(
       required: true,
       trim: true,
       ref: "courses",
-      //   autopopulate: true,
+      autopopulate: true,
     },
     learningPath: [
       {
@@ -62,6 +62,12 @@ const UserCourseSchema = new Schema(
               ref: "LearningResources",
               autopopulate: true,
             },
+            file: {
+              type: Schema.Types.ObjectId,
+              required: false,
+              ref: "LearningResources",
+              autopopulate: true,
+            },
             audio: {
               type: Schema.Types.ObjectId,
               required: false,
@@ -91,6 +97,20 @@ const UserCourseSchema = new Schema(
       required: true,
       trim: true,
       default: 0,
+    },
+    currentUnit: {
+      sectionNum: {
+        type: Number,
+        required: true,
+        trim: true,
+        default: 0,
+      },
+      unitNum: {
+        type: Number,
+        required: true,
+        trim: true,
+        default: 0,
+      },
     },
   },
   { timestamps: true }

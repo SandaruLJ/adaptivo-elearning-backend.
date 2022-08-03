@@ -100,9 +100,9 @@ export default class ConceptController {
         res.status(500).send({ err: error.message });
       });
   }
-  public async getAudioSignedUrl(req: any, res: any) {
-    this.logger.info("ConceptController - getAudioSignedUrl()");
-    await this.ConceptService.getAudioSignedUrl(req.params.fileName)
+  public async getFileSignedUrl(req: any, res: any) {
+    this.logger.info("ConceptController - getFileSignedUrl()");
+    await this.ConceptService.getFileSignedUrl(req.params.fileName)
       .then((data) => {
         res.status(200).send(data);
       })

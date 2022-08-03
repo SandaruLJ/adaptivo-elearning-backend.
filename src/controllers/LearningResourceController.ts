@@ -111,4 +111,15 @@ export default class LearningResourceController {
         res.status(500).send({ err: error.message });
       });
   }
+  public async getFileSignedUrl(req: any, res: any) {
+    this.logger.info("LearningResourceController - getFileSignedUrl()");
+    await this.LearningResourceService.getFileSignedUrl(req.params.fileName)
+      .then((data) => {
+        res.status(200).send(data);
+      })
+      .catch((error) => {
+        this.logger.error(error.message);
+        res.status(500).send({ err: error.message });
+      });
+  }
 }
