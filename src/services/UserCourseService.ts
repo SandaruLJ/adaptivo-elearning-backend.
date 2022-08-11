@@ -34,6 +34,11 @@ export class UserCourseService implements IUserCourseService {
             unitNum: 0,
             duration: 0,
           },
+          quiz: {
+            questions: unit._doc.quiz,
+            score: 0,
+            analysis: {},
+          },
         };
         temp[sectionCount]["units"][unitCount]._doc = newUnit;
 

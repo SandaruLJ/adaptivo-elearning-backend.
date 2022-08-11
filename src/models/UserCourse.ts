@@ -80,14 +80,26 @@ const UserCourseSchema = new Schema(
               ref: "LearningObjects",
               autopopulate: true,
             },
-            quiz: [
-              {
-                type: Schema.Types.ObjectId,
+            quiz: {
+              questions: [
+                {
+                  type: Schema.Types.ObjectId,
+                  required: false,
+                  ref: "quiz",
+                  autopopulate: true,
+                },
+              ],
+              score: {
+                type: String,
                 required: false,
-                ref: "quiz",
-                autopopulate: true,
+                trim: true,
               },
-            ],
+              analysis: {
+                type: Object,
+                required: false,
+                trim: true,
+              },
+            },
           },
         ],
       },
