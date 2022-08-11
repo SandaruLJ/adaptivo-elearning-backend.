@@ -51,6 +51,20 @@ export default class UserDao {
     });
   }
 
+  public async getIdByEmail(email: string) {
+    this.logger.info("UserDao - getIdByEmail()");
+
+    return await User.find({ email }).then((data) => {
+      if (data.length > 0) {
+        this.logger.info("Users retrieved successfully.");
+        return data[0]._id;
+      } else {
+        this.logger.error("Users not found.");
+        throw new UserNotFoundError(`User '${email}' not found`);
+      }
+    });
+  }
+
   public async update(id: string, user: IUser) {
     this.logger.info("UserDao - update()");
 

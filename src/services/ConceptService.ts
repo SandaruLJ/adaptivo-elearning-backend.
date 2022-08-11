@@ -33,18 +33,165 @@ export class ConceptService implements IConceptService {
     });
 
     var promises = request.learningObjects.map(async (lo: any, index) => {
+      const learningObject: ILearningObject = {
+        name: lo.name,
+        visual: {},
+        verbal: {},
+        sensing: {},
+        intuitive: {},
+        active: {
+          quiz: [],
+        },
+        quiz: [],
+      };
+
       let quizIds = [];
-      const video: ILearningResource = {
-        name: lo.video.name,
-        type: "video",
-        url: `https://spark-courses.s3.ap-south-1.amazonaws.com/62272fbfc8ea4d8b75b76aa2/concepts/videos/${lo.video.name}`,
-      };
-      const audio: ILearningResource = {
-        name: lo.audio.name,
-        type: "audio",
-        url: `https://spark-courses.s3.ap-south-1.amazonaws.com/62272fbfc8ea4d8b75b76aa2/concepts/audios/${lo.audio.name}`,
-      };
-      await lo.quiz.map(async (quiz) => {
+
+      if (lo.visual.hasOwnProperty("video")) {
+        const name = lo.visual.video.name.replace(/ /g, "+");
+        const visualVideo: ILearningResource = {
+          name: lo.visual.video.name,
+          type: "video",
+          style: "visual",
+          subStyle: "video",
+          size: lo.visual.video.size,
+          duration: lo.visual.video.duration,
+          url: `https://spark-courses.s3.ap-south-1.amazonaws.com/62272fbfc8ea4d8b75b76aa2/concepts/videos/${name}`,
+        };
+        const response = await LearningResourceService.getInstance().createLearningResource(visualVideo);
+        learningObject.visual.video = response._id;
+      }
+      if (lo.visual.hasOwnProperty("visualNotes")) {
+        const name = lo.visual.visualNotes.name.replace(/ /g, "+");
+
+        const visualNotes: ILearningResource = {
+          name: lo.visual.visualNotes.name,
+          type: "file",
+          style: "visual",
+          subStyle: "visualNotes",
+          size: lo.visual.visualNotes.size,
+          duration: "00:05:00",
+          url: `https://spark-courses.s3.ap-south-1.amazonaws.com/62272fbfc8ea4d8b75b76aa2/concepts/files/${name}`,
+        };
+        const response = await LearningResourceService.getInstance().createLearningResource(visualNotes);
+        learningObject.visual.visualNote = response._id;
+      }
+      if (lo.visual.hasOwnProperty("mindmap")) {
+        const name = lo.visual.mindmap.name.replace(/ /g, "+");
+
+        const mindmap: ILearningResource = {
+          name: lo.visual.mindmap.name,
+          type: "file",
+          style: "visual",
+          subStyle: "mindmap",
+          size: lo.visual.mindmap.size,
+          duration: "00:05:00",
+          url: `https://spark-courses.s3.ap-south-1.amazonaws.com/62272fbfc8ea4d8b75b76aa2/concepts/files/${name}`,
+        };
+        const response = await LearningResourceService.getInstance().createLearningResource(mindmap);
+        learningObject.visual.mindmap = response._id;
+      }
+      if (lo.verbal.hasOwnProperty("textRichFile")) {
+        const name = lo.verbal.textRichFile.name.replace(/ /g, "+");
+
+        const textRichFile: ILearningResource = {
+          name: lo.verbal.textRichFile.name,
+          type: "file",
+          style: "verbal",
+          subStyle: "textRichFile",
+          size: lo.verbal.textRichFile.size,
+          duration: "00:05:00",
+          url: `https://spark-courses.s3.ap-south-1.amazonaws.com/62272fbfc8ea4d8b75b76aa2/concepts/files/${name}`,
+        };
+        const response = await LearningResourceService.getInstance().createLearningResource(textRichFile);
+        learningObject.verbal.textRichFile = response._id;
+      }
+      if (lo.sensing.hasOwnProperty("realExampleVideo")) {
+        const name = lo.sensing.realExampleVideo.name.replace(/ /g, "+");
+
+        const realExampleVideo: ILearningResource = {
+          name: lo.sensing.realExampleVideo.name,
+          type: "video",
+          style: "sensing",
+          subStyle: "realExampleVideo",
+          size: lo.sensing.realExampleVideo.size,
+          duration: lo.sensing.realExampleVideo.duration,
+          url: `https://spark-courses.s3.ap-south-1.amazonaws.com/62272fbfc8ea4d8b75b76aa2/concepts/files/${name}`,
+        };
+        const response = await LearningResourceService.getInstance().createLearningResource(realExampleVideo);
+        learningObject.sensing.realExampleVideo = response._id;
+      }
+      if (lo.sensing.hasOwnProperty("realExampleDoc")) {
+        const name = lo.sensing.realExampleDoc.name.replace(/ /g, "+");
+
+        const realExampleDoc: ILearningResource = {
+          name: lo.sensing.realExampleDoc.name,
+          type: "file",
+          style: "sensing",
+          subStyle: "realExampleDoc",
+          size: lo.sensing.realExampleDoc.size,
+          duration: "00:05:00",
+          url: `https://spark-courses.s3.ap-south-1.amazonaws.com/62272fbfc8ea4d8b75b76aa2/concepts/files/${name}`,
+        };
+        const response = await LearningResourceService.getInstance().createLearningResource(realExampleDoc);
+        learningObject.sensing.realExampleDoc = response._id;
+      }
+      if (lo.intuitive.hasOwnProperty("additionalVideo")) {
+        const name = lo.intuitive.additionalVideo.name.replace(/ /g, "+");
+
+        const additionalVideo: ILearningResource = {
+          name: lo.intuitive.additionalVideo.name,
+          type: "video",
+          style: "intuitive",
+          subStyle: "additionalVideo",
+          size: lo.intuitive.additionalVideo.size,
+          duration: lo.intuitive.additionalVideo.duration,
+          url: `https://spark-courses.s3.ap-south-1.amazonaws.com/62272fbfc8ea4d8b75b76aa2/concepts/files/${name}`,
+        };
+        const response = await LearningResourceService.getInstance().createLearningResource(additionalVideo);
+        learningObject.intuitive.additionalVideo = response._id;
+      }
+      if (lo.intuitive.hasOwnProperty("additionalMaterials")) {
+        const name = lo.intuitive.additionalMaterials.name.replace(/ /g, "+");
+
+        const additionalMaterials: ILearningResource = {
+          name: lo.intuitive.additionalMaterials.name,
+          type: "file",
+          style: "intuitive",
+          subStyle: "additionalMaterials",
+          size: lo.intuitive.additionalMaterials.size,
+          duration: "00:05:00",
+          url: `https://spark-courses.s3.ap-south-1.amazonaws.com/62272fbfc8ea4d8b75b76aa2/concepts/files/${name}`,
+        };
+        const response = await LearningResourceService.getInstance().createLearningResource(additionalMaterials);
+        learningObject.intuitive.additionalMaterials = response._id;
+      }
+      if (lo.active.quiz.length > 0) {
+        let quizIds = [];
+        var activeQuizPromise = lo.active.quiz.map(async (quiz) => {
+          const question: IQuiz = {
+            question: quiz.title,
+            explanation: quiz.explanation,
+            answers: quiz.answers,
+            correctAnswer: quiz.correctAnswer,
+          };
+          const quizResponse: IQuiz = await QuizService.getInstance().createQuiz(question);
+          quizIds.push(quizResponse._id);
+        });
+        learningObject.active.quiz = quizIds;
+        await activeQuizPromise.reduce((m, o) => m.then(() => o), Promise.resolve());
+      }
+      // const video: ILearningResource = {
+      //   name: lo.video.name,
+      //   type: "video",
+      //   url: `https://spark-courses.s3.ap-south-1.amazonaws.com/62272fbfc8ea4d8b75b76aa2/concepts/videos/${lo.video.name}`,
+      // };
+      // const audio: ILearningResource = {
+      //   name: lo.audio.name,
+      //   type: "audio",
+      //   url: `https://spark-courses.s3.ap-south-1.amazonaws.com/62272fbfc8ea4d8b75b76aa2/concepts/audios/${lo.audio.name}`,
+      // };
+      var LoQuizPromise = lo.quiz.map(async (quiz) => {
         const question: IQuiz = {
           question: quiz.title,
           explanation: quiz.explanation,
@@ -55,16 +202,20 @@ export class ConceptService implements IConceptService {
         quizIds.push(quizResponse._id);
       });
 
-      const videoResponse = await LearningResourceService.getInstance().createLearningResource(video);
-      const audioResponse = await LearningResourceService.getInstance().createLearningResource(audio);
+      // const videoResponse = await LearningResourceService.getInstance().createLearningResource(video);
+      // const audioResponse = await LearningResourceService.getInstance().createLearningResource(audio);
 
-      const learningObject: ILearningObject = {
-        name: lo.name,
-        audio: audioResponse._id,
-        video: videoResponse._id,
-        resources: [],
-        quiz: quizIds,
-      };
+      // const learningObject: ILearningObject = {
+      //   name: lo.name,
+      //   audio: audioResponse._id,
+      //   video: videoResponse._id,
+      //   resources: [],
+      //   quiz: quizIds,
+      // };
+      learningObject.quiz = quizIds;
+
+      await LoQuizPromise.reduce((m, o) => m.then(() => o), Promise.resolve());
+
       const learningObjectResponse = await LearningObjectService.getInstance().createLearningObject(learningObject);
       loIds.push(learningObjectResponse._id);
     });
@@ -146,11 +297,11 @@ export class ConceptService implements IConceptService {
         throw error;
       });
   }
-  public async getAudioSignedUrl(fileName: string): Promise<Object> {
+  public async getFileSignedUrl(fileName: string): Promise<Object> {
     this.logger.info("ConceptService - getAudioSignedUrl()");
 
     const bucketName = `spark-courses`;
-    const key = `concepts/audio/${fileName}`;
+    const key = `62272fbfc8ea4d8b75b76aa2/concepts/files/${fileName}`;
 
     return getPreSignedUrl(bucketName, key)
       .then((data) => {

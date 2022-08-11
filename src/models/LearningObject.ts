@@ -9,9 +9,66 @@ const LearningObjectSchema = new Schema(
       required: true,
       trim: true,
     },
-    video: { type: Schema.Types.ObjectId, required: true, ref: "LearningResources", autopopulate: true },
-    audio: { type: Schema.Types.ObjectId, required: true, ref: "LearningResources", autopopulate: true },
-    resources: [{ type: Schema.Types.ObjectId, required: true, ref: "LearningResources", autopopulate: true }],
+    visual: {
+      video: {
+        type: Schema.Types.ObjectId,
+        required: false,
+        ref: "LearningResources",
+        autopopulate: true,
+      },
+      visualNote: {
+        type: Schema.Types.ObjectId,
+        required: false,
+        ref: "LearningResources",
+        autopopulate: true,
+      },
+      mindmap: {
+        type: Schema.Types.ObjectId,
+        required: false,
+        ref: "LearningResources",
+        autopopulate: true,
+      },
+    },
+    verbal: {
+      textRichFile: {
+        type: Schema.Types.ObjectId,
+        required: false,
+        ref: "LearningResources",
+        autopopulate: true,
+      },
+    },
+    sensing: {
+      realExampleVideo: {
+        type: Schema.Types.ObjectId,
+        required: false,
+        ref: "LearningResources",
+        autopopulate: true,
+      },
+      realExampleDoc: {
+        type: Schema.Types.ObjectId,
+        required: false,
+        ref: "LearningResources",
+        autopopulate: true,
+      },
+    },
+    intuitive: {
+      additionalVideo: {
+        type: Schema.Types.ObjectId,
+        required: false,
+        ref: "LearningResources",
+        autopopulate: true,
+      },
+      additionalMaterials: {
+        type: Schema.Types.ObjectId,
+        required: false,
+        ref: "LearningResources",
+        autopopulate: true,
+      },
+    },
+    active: {
+      quiz: [{ type: Schema.Types.ObjectId, required: false, ref: "quiz", autopopulate: true }],
+    },
+
     quiz: [{ type: Schema.Types.ObjectId, required: true, ref: "quiz", autopopulate: true }],
   },
   { timestamps: true }

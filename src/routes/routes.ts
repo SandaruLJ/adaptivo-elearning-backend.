@@ -15,6 +15,8 @@ import DrmController from "../controllers/DrmController.js";
 import UserActivityController from "../controllers/UserActivityController.js";
 import LearningPathController from "../controllers/learningPathController.js";
 import PreferenceController from "../controllers/PreferenceController.js";
+import LearningStyleController from "../controllers/LearningStyleController.js";
+import UserCourseController from "../controllers/UserCourseController.js";
 import QuizSelectionController from '../controllers/QuizSelectionController.js';
 
 export default function setRoutes(app: any) {
@@ -34,7 +36,10 @@ export default function setRoutes(app: any) {
   const UserActivityControl = new UserActivityController();
   const learningPathControl = new LearningPathController();
   const preferenceControl = new PreferenceController();
+  const learningStyleControl = new LearningStyleController();
+  const userCourseControl = new UserCourseController();
   const quizSelectionControl = new QuizSelectionController();
+  
   app.use("/api", router);
 
   //Routes
@@ -72,7 +77,7 @@ export default function setRoutes(app: any) {
   router.route("/concepts").post(conceptControl.createConcept);
   router.route("/concepts").get(conceptControl.getAllConcepts);
   router.route("/concepts/url/video/:fileName").get(conceptControl.getVideoSignedUrl);
-  router.route("/concepts/url/audio/:fileName").get(conceptControl.getAudioSignedUrl);
+  router.route("/concepts/url/file/:fileName").get(conceptControl.getFileSignedUrl);
 
   router.route("/concepts/:id").get(conceptControl.getConceptById);
   router.route("/concepts/:id").put(conceptControl.updateConcept);
@@ -83,6 +88,7 @@ export default function setRoutes(app: any) {
   router.route("/learningResources").get(learningResourceControl.getAllLearningResources);
   router.route("/learningResources/url/video/:fileName").get(learningResourceControl.getVideoSignedUrl);
   router.route("/learningResources/url/audio/:fileName").get(learningResourceControl.getAudioSignedUrl);
+  router.route("/learningResources/url/file/:fileName").get(learningResourceControl.getFileSignedUrl);
   router.route("/learningResources/:id").get(learningResourceControl.getLearningResourceById);
   router.route("/learningResources/:id").put(learningResourceControl.updateLearningResource);
   router.route("/learningResources/:id").delete(learningResourceControl.deleteLearningResource);
@@ -143,6 +149,26 @@ export default function setRoutes(app: any) {
   router.route("/preferences/:id").get(preferenceControl.getPreferenceById);
   router.route("/preferences/:id").put(preferenceControl.updatePreference);
   router.route("/preferences/:id").delete(preferenceControl.deletePreference);
+
+  //Learning Style Routes
+  router.route("/learningstyles").post(learningStyleControl.createLearningStyle);
+  router.route("/learningstyles/onboarding").post(learningStyleControl.analyzeInitialUserPreference);
+  router.route("/learningstyles").get(learningStyleControl.getAllLearningStyle);
+  router.route("/learningstyles/:id").get(learningStyleControl.getLearningStyleById);
+  router.route("/learningstyles/user/:id").get(learningStyleControl.getLearningStyleByUserId);
+  router.route("/learningstyles/:id").put(learningStyleControl.updateLearningStyle);
+  router.route("/learningstyles/:id").delete(learningStyleControl.deleteLearningStyle);
+
+  //UserCourse Routes
+  router.route("/usercourse").post(userCourseControl.createUserCourse);
+  router.route("/usercourse").get(userCourseControl.getAllUserCourse);
+  router.route("/usercourse/user/:email").get(userCourseControl.getUserCourseByUserId);
+  router.route("/usercourse/:id").get(userCourseControl.getUserCourseById);
+  router.route("/usercourse/markcomplete").put(userCourseControl.markIsCompleted);
+  router.route("/usercourse/markduration").put(userCourseControl.markDuration);
+  router.route("/usercourse/currentunit").put(userCourseControl.changeCurrentUnit);
+  router.route("/usercourse/:id").put(userCourseControl.updateUserCourse);
+  router.route("/usercourse/:id").delete(userCourseControl.deleteUserCourse);
 
   // Quiz Selection Routes
   router.route("/quiz-selection").get(quizSelectionControl.selectQuiz);
