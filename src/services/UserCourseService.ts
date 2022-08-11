@@ -5,6 +5,7 @@ import { UserCourseDao } from "../dao/UserCourseDao.js";
 import { CourseService } from "./CourseService.js";
 import { ICourse } from "../interfaces/ICourse.js";
 import UserService from "./UserService.js";
+import { adaptUserCourse } from '../recommendation/user_course_adaptor.js';
 
 export class UserCourseService implements IUserCourseService {
   private logger = Logger.getInstance();
@@ -19,29 +20,8 @@ export class UserCourseService implements IUserCourseService {
 
   public async createUserCourse(request: IUserCourse): Promise<IUserCourse> {
     this.logger.info("UserCourseService - createUserCourse()");
-    const course: any = await CourseService.getInstance().getCourseById(request.courseId);
-    let temp = course.curriculum;
-    let sectionCount = 0;
-    for (let section of temp) {
-      let unitCount = 0;
-      for (let unit of section.units) {
-        const newUnit = {
-          ...unit._doc,
-          isCompleted: false,
-          duration: "0",
-          currentUnit: {
-            sectionNum: 0,
-            unitNum: 0,
-            duration: 0,
-          },
-        };
-        temp[sectionCount]["units"][unitCount]._doc = newUnit;
-
-        unitCount++;
-      }
-      sectionCount++;
-    }
-    request.learningPath = temp;
+    
+    request.learningPath = await adaptUserCourse(request.userId, request.courseId);
     request.progress = 0;
 
     return this.UserCourseDao.save(request)

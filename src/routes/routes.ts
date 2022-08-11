@@ -153,6 +153,7 @@ export default function setRoutes(app: any) {
   router.route("/learningstyles/onboarding").post(learningStyleControl.analyzeInitialUserPreference);
   router.route("/learningstyles").get(learningStyleControl.getAllLearningStyle);
   router.route("/learningstyles/:id").get(learningStyleControl.getLearningStyleById);
+  router.route("/learningstyles/user/:id").get(learningStyleControl.getLearningStyleByUserId);
   router.route("/learningstyles/:id").put(learningStyleControl.updateLearningStyle);
   router.route("/learningstyles/:id").delete(learningStyleControl.deleteLearningStyle);
 

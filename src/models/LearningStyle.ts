@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 const LearningStyleSchema = new Schema(
   {
     userId: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: 'Users',
       required: true,
       trim: true,
     },
