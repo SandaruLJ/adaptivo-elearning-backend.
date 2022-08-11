@@ -73,40 +73,42 @@ first_quiz = True if prev_concept_id == '0' else False
 if first_quiz:
     target_concept = get_concept(target, concepts)
     
-    target_lo_id = target_concept['learningObjects'][0]
-    target_learning_object = get_learning_object(target_lo_id, learning_objects)
+    target_learning_object = target_concept['learningObjects'][0]
     
-    quiz_id = random.choice(target_learning_object['quiz'])
-    quiz = get_quiz(quiz_id, quizzes)
+    quiz = random.choice(target_learning_object['quiz'])
     
     print(json.dumps(quiz))
 else:
     prev_concept = get_concept(prev_concept_id, concepts)
 
     if answer_correct:
-        lo_index = prev_concept['learningObjects'].index(prev_learning_object_id)
+        # lo_index = prev_concept['learningObjects'].index(prev_learning_object_id)
+        lo_index = 0
+        for index, lo in enumerate(prev_concept['learningObjects']):
+            if lo['_id'] == prev_learning_object_id:
+                lo_index = index
+                break
+        else:
+            sys.exit(0)
 
         if lo_index + 1 < len(prev_concept['learningObjects']):
-            next_learning_object = get_learning_object(prev_concept['learningObjects'][lo_index + 1], learning_objects)
-            next_quiz_id = random.choice(next_learning_object['quiz'])
-            next_quiz = get_quiz(next_quiz_id, quizzes)
-
+            next_learning_object = prev_concept['learningObjects'][lo_index + 1]
+            next_quiz = random.choice(next_learning_object['quiz'])
             print(json.dumps(next_quiz))
         else:
-            print('Quiz Done!')
+            print(json.dumps({ 'passed': True, 'msg': 'Quiz Done!' }))
             status = "pass"
     else:
         if not prev_concept['preRequisites']:
             status = "fail"
-            print('Failed!')
+            print(json.dumps({ 'passed': False, 'msg': 'Failed!' }))
             sys.exit(0)
 
         prerequisite_id = random.choice(prev_concept['preRequisites'])
         prerequisite = get_concept(prerequisite_id, concepts)
         
-        learning_object_id = prerequisite['learningObjects'][0]
-        learning_object = get_learning_object(learning_object_id, learning_objects)
+        learning_object = prerequisite['learningObjects'][0]
 
-        next_quiz_id = random.choice(learning_object['quiz'])
-        next_quiz = get_quiz(next_quiz_id, quizzes)
+        next_quiz = random.choice(learning_object['quiz'])
+
         print(json.dumps(next_quiz))

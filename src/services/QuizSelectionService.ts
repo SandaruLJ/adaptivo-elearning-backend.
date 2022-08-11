@@ -4,6 +4,9 @@ import { getConcepts } from '../quiz-selection/concepts.js';
 import { getLearningObjects } from '../quiz-selection/learning_objects.js';
 import { getQuizzes } from '../quiz-selection/quizzes.js';
 import { spawn } from 'child_process';
+import { ConceptService } from './ConceptService.js';
+import { LearningObjectService } from './LearningObjectService.js';
+import { QuizService } from './QuizService.js';
 
 export class QuizSelectionService implements IQuizSelectionService {
   private logger = Logger.getInstance();
@@ -62,9 +65,9 @@ export class QuizSelectionService implements IQuizSelectionService {
           Quizzes: [],
       }
       
-      data.concepts = await getConcepts();
-      data.learningObjects = await getLearningObjects();
-      data.quizzes = await getQuizzes();
+      data.concepts = await ConceptService.getInstance().getAllConcept();
+      data.learningObjects = await LearningObjectService.getInstance().getAllLearningObject();
+      data.quizzes = await QuizService.getInstance().getAllQuiz();
 
       return data;
   }
