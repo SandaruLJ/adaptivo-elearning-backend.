@@ -174,6 +174,7 @@ export class LearningStyleService implements ILearningStyleService {
         throw error;
       });
   }
+
   public async getLearningStyleByUserId(id: string): Promise<any> {
     this.logger.info("LearningStyleService - getLearningStyleByUserId()");
     return this.LearningStyleDao.getByUserId(id)

@@ -6,6 +6,7 @@ export interface ILearningStyleService {
   getAllLearningStyle(): Promise<ILearningStyle[]>;
   getLearningStyleById(id: string): Promise<ILearningStyle | Object>;
   updateLearningStyle(data: any): Promise<Object>;
+  getLearningStyleByUserId(id: string): Promise<ILearningStyle | Object>;
   deleteLearningStyle(id: string): Promise<ILearningStyle | Object>;
   analyzeLearningStyles(): Promise<any>;
 }
