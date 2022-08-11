@@ -74,6 +74,19 @@ export default class LearningStyleController {
       });
   }
 
+  public async getLearningStyleByUserId(req: any, res: any) {
+    this.logger.info("LearningStyleController - getLearningStyleByUserId()");
+    const id = req.params.id;
+    await this.LearningStyleService.getLearningStyleByUserId(id)
+      .then((data) => {
+        res.status(200).send(data);
+      })
+      .catch((error) => {
+        this.logger.error(error.message);
+        res.status(500).send({ err: error.message });
+      });
+  }
+
   public async updateLearningStyle(req: any, res: any) {
     this.logger.info("LearningStyleController - updateLearningStyle()");
     const id = req.params.id;

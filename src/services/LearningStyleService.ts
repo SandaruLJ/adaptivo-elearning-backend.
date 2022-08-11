@@ -157,6 +157,18 @@ export class LearningStyleService implements ILearningStyleService {
       });
   }
 
+  public async getLearningStyleByUserId(id: string): Promise<ILearningStyle | Object> {
+    this.logger.info("LearningStyleService - getLearningStyleByUserId()");
+    return this.LearningStyleDao.getByUserId(id)
+      .then((data) => {
+        return data;
+      })
+      .catch((error) => {
+        this.logger.error(error.message);
+        throw error;
+      });
+  }
+
   public async updateLearningStyle(id: string, Course: ILearningStyle): Promise<ILearningStyle | Object> {
     this.logger.info("Customer Services - updateCustomer()");
     return this.LearningStyleDao.update(id, Course)
