@@ -17,10 +17,10 @@ export default class QuizSelectionController {
     public async selectQuiz(req: any, res: any): Promise<void> {
       this.logger.info('QuizSelectionController - selectQuiz()');
 
-      const target = req.params.target;
-      const prevConcept = req.params.prevConcept;
-      const prevLearningObject = req.params.prevLearningObject;
-      const answerCorrect = req.params.answerCorrect;
+      const target = req.body.target;
+      const prevConcept = req.body.prevConcept;
+      const prevLearningObject = req.body.prevLearningObject;
+      const answerCorrect = req.body.answerCorrect;
 
       await this.quizSelectionService.selectQuiz(target, prevConcept, prevLearningObject, answerCorrect)
         .then((data) => {

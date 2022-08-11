@@ -145,5 +145,5 @@ export default function setRoutes(app: any) {
   router.route("/preferences/:id").delete(preferenceControl.deletePreference);
 
   // Quiz Selection Routes
-  router.route("/quiz-selection/:target/:prevConcept/:prevLearningObject/:answerCorrect").get(quizSelectionControl.selectQuiz);
+  router.route("/quiz-selection").get(quizSelectionControl.selectQuiz);
 }
