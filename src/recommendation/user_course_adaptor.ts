@@ -47,6 +47,10 @@ export const adaptUserCourse = async (userId: string, courseId: string) => {
         // Consider perception dimension
         switch (perceptionStyle) {
           case 'visual':
+            // Add video
+            let video = populateNewUnit(adaptedUnit, 'video', learningObject.visual);
+            adaptedLesson.units.push(video);
+
             // Add visual note
             let visualNote = populateNewUnit(adaptedUnit, 'visualNote', learningObject.visual);
             adaptedLesson.units.push(visualNote);
@@ -59,15 +63,13 @@ export const adaptUserCourse = async (userId: string, courseId: string) => {
           
           case 'verbal':
           case 'balanced':
+            // Add video
+            let videoBalanced = populateNewUnit(adaptedUnit, 'video', learningObject.visual);
+            adaptedLesson.units.push(videoBalanced);
+
             // Add text-rich file
             let textRichFile = populateNewUnit(adaptedUnit, 'textRichFile', learningObject.verbal);
             adaptedLesson.units.push(textRichFile);
-            break;
-
-          default:
-            // Add video regardless of style
-            let video = populateNewUnit(adaptedUnit, 'video', learningObject.visual);
-            adaptedLesson.units.push(video);
             break;
         }
 
@@ -141,7 +143,7 @@ export const adaptUserCourse = async (userId: string, courseId: string) => {
       }
     });
 
-    adaptedCurriculum.push(adaptedLesson); 
+    adaptedCurriculum.push(adaptedLesson);
   });
 
   return adaptedCurriculum;
@@ -150,7 +152,7 @@ export const adaptUserCourse = async (userId: string, courseId: string) => {
 const populateNewUnit = (unitBase: any, unitType: string, loForStyle: any): any => {
   let unit = JSON.parse(JSON.stringify(unitBase));
   unit['type'] = unitType;
-  unit[unitType] = loForStyle[unitType];
+  unit[unitType] = loForStyle[unitType]._id;
 
   return unit;
 }
