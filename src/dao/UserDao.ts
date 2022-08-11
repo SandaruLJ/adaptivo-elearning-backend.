@@ -57,7 +57,7 @@ export default class UserDao {
     return await User.find({ email }).then((data) => {
       if (data.length > 0) {
         this.logger.info("Users retrieved successfully.");
-        return data[0]._id;
+        return data[0];
       } else {
         this.logger.error("Users not found.");
         throw new UserNotFoundError(`User '${email}' not found`);

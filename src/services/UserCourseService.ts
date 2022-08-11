@@ -4,7 +4,7 @@ import { IUserCourseService } from "./interfaces/IUserCourseService.js";
 import { UserCourseDao } from "../dao/UserCourseDao.js";
 import { CourseService } from "./CourseService.js";
 import { ICourse } from "../interfaces/ICourse.js";
-import UserService from "./UserService.js";
+import { UserService } from "./UserService.js";
 
 export class UserCourseService implements IUserCourseService {
   private logger = Logger.getInstance();

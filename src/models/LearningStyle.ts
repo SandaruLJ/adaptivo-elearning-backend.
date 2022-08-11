@@ -4,9 +4,9 @@ const Schema = mongoose.Schema;
 const LearningStyleSchema = new Schema(
   {
     userId: {
-      type: String,
+      type: Schema.Types.ObjectId,
       required: true,
-      trim: true,
+      ref: "users",
     },
     input: {
       sensing: {
@@ -29,7 +29,7 @@ const LearningStyleSchema = new Schema(
       reflective: {
         type: Number,
       },
-      processingStrength: {
+      activeStrength: {
         type: String,
       },
       reflectiveStrength: {
@@ -88,6 +88,25 @@ const LearningStyleSchema = new Schema(
         type: String,
       },
     },
+    initialLearningStyle: {
+      input: {
+        type: String,
+      },
+      processing: {
+        type: String,
+      },
+      understanding: {
+        type: String,
+      },
+      perception: {
+        type: String,
+      },
+    },
+    history: [
+      {
+        type: Object,
+      },
+    ],
   },
   { timestamps: true }
 );

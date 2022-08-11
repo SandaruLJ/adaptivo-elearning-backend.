@@ -61,6 +61,19 @@ export default class LearningStyleController {
         res.status(500).send({ err: error.message });
       });
   }
+
+  public async analyzeLearningStyles(req: any, res: any) {
+    this.logger.info("LearningStyleController - analyzeLearningStyles()");
+
+    await this.LearningStyleService.analyzeLearningStyles()
+      .then((data) => {
+        res.status(200).send(data);
+      })
+      .catch((error) => {
+        this.logger.error(error.message);
+        res.status(500).send({ err: error.message });
+      });
+  }
   public async getLearningStyleById(req: any, res: any) {
     this.logger.info("LearningStyleController - getLearningStyleById()");
     const id = req.params.id;
@@ -76,12 +89,11 @@ export default class LearningStyleController {
 
   public async updateLearningStyle(req: any, res: any) {
     this.logger.info("LearningStyleController - updateLearningStyle()");
-    const id = req.params.id;
 
     if (req.body) {
       const LearningStyle: ILearningStyle = req.body;
 
-      await this.LearningStyleService.updateLearningStyle(id, LearningStyle)
+      await this.LearningStyleService.updateLearningStyle(LearningStyle)
         .then((data) => {
           res.status(200).send(data);
         })

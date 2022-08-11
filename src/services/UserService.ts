@@ -3,7 +3,7 @@ import UserDao from "../dao/UserDao.js";
 import IUser from "../interfaces/IUser.js";
 import IUserService from "./interfaces/IUserService.js";
 
-export default class UserService implements IUserService {
+export class UserService implements IUserService {
   private logger = Logger.getInstance();
   private userDao = UserDao.getInstance();
 
@@ -65,7 +65,7 @@ export default class UserService implements IUserService {
     return this.userDao
       .getIdByEmail(email)
       .then((data) => {
-        return data;
+        return data._id;
       })
       .catch((error) => {
         this.logger.error(error.message);

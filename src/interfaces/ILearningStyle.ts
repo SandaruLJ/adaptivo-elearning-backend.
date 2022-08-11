@@ -1,6 +1,6 @@
 export interface ILearningStyle {
   _id?: string;
-  userId: string;
+  userId: Object;
   input: Object;
   processing: Object;
   understanding: Object;
@@ -8,4 +8,6 @@ export interface ILearningStyle {
   isOnboardingTourCompleted: boolean;
   isDetectedByAlgorithm: boolean;
   detectedLearningStyle: Object;
+  initialLearningStyle: Object;
+  history: [any];
 }

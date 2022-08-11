@@ -62,6 +62,25 @@ export class LearningStyleDao {
       });
   }
 
+  public async getByUserId(id: string) {
+    this.logger.info("LearningStyleDao - getByUserId()");
+    console.log(id);
+    return LearningStyle.find({ userId: id })
+      .then((data) => {
+        if (data.length > 0) {
+          this.logger.info(`LearningStyle Retrieved Successfully`);
+          return data[0];
+        } else {
+          this.logger.info(`LearningStyle Not Found`);
+          return [];
+        }
+      })
+      .catch((error) => {
+        this.logger.error("Error in retrieving LearningStyle" + error.message);
+        throw error;
+      });
+  }
+
   public async update(id: string, course: ILearningStyle) {
     this.logger.info("LearningStyleDao - update()");
     return LearningStyle.findByIdAndUpdate(id, { $set: course }, { new: true })
