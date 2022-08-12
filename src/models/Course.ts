@@ -96,7 +96,17 @@ const CourseSchema = new Schema(
               required: false,
               trim: true,
             },
+            preTest: {
+              type: String,
+              required: false,
+              trim: true,
+            },
             note: {
+              type: String,
+              required: false,
+              trim: true,
+            },
+            file: {
               type: String,
               required: false,
               trim: true,
@@ -117,6 +127,12 @@ const CourseSchema = new Schema(
               type: Schema.Types.ObjectId,
               required: false,
               ref: "LearningObjects",
+              autopopulate: true,
+            },
+            conceptId: {
+              type: Schema.Types.ObjectId,
+              required: false,
+              ref: "concepts",
               autopopulate: true,
             },
             quiz: [

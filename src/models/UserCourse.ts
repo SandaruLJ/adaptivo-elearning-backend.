@@ -15,7 +15,7 @@ const UserCourseSchema = new Schema(
       required: true,
       trim: true,
       ref: "courses",
-      //   autopopulate: true,
+      autopopulate: true,
     },
     learningPath: [
       {
@@ -62,6 +62,48 @@ const UserCourseSchema = new Schema(
               ref: "LearningResources",
               autopopulate: true,
             },
+            visualNote: {
+              type: Schema.Types.ObjectId,
+              required: false,
+              ref: "LearningResources",
+              autopopulate: true,
+            },
+            mindmap: {
+              type: Schema.Types.ObjectId,
+              required: false,
+              ref: "LearningResources",
+              autopopulate: true,
+            },
+            textRichFile: {
+              type: Schema.Types.ObjectId,
+              required: false,
+              ref: "LearningResources",
+              autopopulate: true,
+            },
+            realExampleVideo: {
+              type: Schema.Types.ObjectId,
+              required: false,
+              ref: "LearningResources",
+              autopopulate: true,
+            },
+            realExampleDoc: {
+              type: Schema.Types.ObjectId,
+              required: false,
+              ref: "LearningResources",
+              autopopulate: true,
+            },
+            additionalVideo: {
+              type: Schema.Types.ObjectId,
+              required: false,
+              ref: "LearningResources",
+              autopopulate: true,
+            },
+            additionalMaterials: {
+              type: Schema.Types.ObjectId,
+              required: false,
+              ref: "LearningResources",
+              autopopulate: true,
+            },
             audio: {
               type: Schema.Types.ObjectId,
               required: false,
@@ -91,6 +133,20 @@ const UserCourseSchema = new Schema(
       required: true,
       trim: true,
       default: 0,
+    },
+    currentUnit: {
+      sectionNum: {
+        type: Number,
+        required: true,
+        trim: true,
+        default: 0,
+      },
+      unitNum: {
+        type: Number,
+        required: true,
+        trim: true,
+        default: 0,
+      },
     },
   },
   { timestamps: true }

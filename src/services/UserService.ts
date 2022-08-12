@@ -59,6 +59,20 @@ export default class UserService implements IUserService {
       });
   }
 
+  public async getUserIdByEmail(email: string): Promise<string> {
+    this.logger.info("UserService - getUserIdByEmail()");
+
+    return this.userDao
+      .getIdByEmail(email)
+      .then((data) => {
+        return data;
+      })
+      .catch((error) => {
+        this.logger.error(error.message);
+        throw error;
+      });
+  }
+
   public async updateUser(id: string, user: IUser): Promise<IUser | Object> {
     this.logger.info("UserService - updateUser()");
 

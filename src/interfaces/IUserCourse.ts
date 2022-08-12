@@ -4,4 +4,5 @@ export interface IUserCourse {
   courseId: string;
   learningPath: object[];
   progress: number;
+  currentUnit: object;
 }

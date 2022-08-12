@@ -8,4 +8,6 @@ export interface ILearningResourceService {
   deleteLearningResource(id: string): Promise<ILearningResource | Object>;
   getVideoSignedUrl(fileName: string): Promise<Object>;
   getAudioSignedUrl(fileName: string): Promise<Object>;
+  getFileSignedUrl(fileName: string): Promise<Object>;
+
 }

@@ -1,6 +1,7 @@
 import { Logger } from "../loaders/logger.js";
 import { ILearningStyle } from "../interfaces/ILearningStyle.js";
 import LearningStyle from "../models/LearningStyle.js";
+import mongoose from 'mongoose';
 
 export class LearningStyleDao {
   private logger = Logger.getInstance();
@@ -53,6 +54,24 @@ export class LearningStyleDao {
           return data;
         } else {
           this.logger.info(`LearningStyle ${id} Not Found`);
+          return { msg: "LearningStyle Not Found" };
+        }
+      })
+      .catch((error) => {
+        this.logger.error(`Error in retrieving LearningStyle ${id} ${error.message}`);
+        throw error;
+      });
+  }
+
+  public async getByUserId(id: string) {
+    this.logger.info("LearningStyleDao - getByUserId()");
+    return LearningStyle.findOne({ userId: id })
+      .then((data) => {
+        if (data) {
+          this.logger.info(`${data._id} LearningStyle Retrieved Successfully`);
+          return data;
+        } else {
+          this.logger.info(`LearningStyle of user ${id} Not Found`);
           return { msg: "LearningStyle Not Found" };
         }
       })
