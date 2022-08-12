@@ -3,6 +3,7 @@ import { CourseService } from '../services/CourseService.js';
 import { LearningStyleService } from '../services/LearningStyleService.js';
 import { LearningObjectService } from '../services/LearningObjectService.js';
 import { randomUUID } from 'crypto';
+import { UserService } from '../services/UserService.js';
 
 export const adaptUserCourse = async (userId: string, courseId: string) => {
   const course: any = await CourseService.getInstance().getCourseById(courseId);
@@ -64,15 +65,15 @@ export const adaptUserCourse = async (userId: string, courseId: string) => {
         switch (perceptionStyle) {
           case "visual":
             // Add video
-            let video = populateNewUnit(adaptedUnit, "video", learningObject.visual);
+            let video = populateNewUnit(adaptedUnit, "video", learningObject.visual, true);
             video && adaptedLesson.units.push(video);
 
             // Add visual note
-            let visualNote = populateNewUnit(adaptedUnit, "visualNote", learningObject.visual);
+            let visualNote = populateNewUnit(adaptedUnit, "visualNote", learningObject.visual, true);
             visualNote && adaptedLesson.units.push(visualNote);
 
             // Add mindmap
-            let mindmap = populateNewUnit(adaptedUnit, "mindmap", learningObject.visual);
+            let mindmap = populateNewUnit(adaptedUnit, "mindmap", learningObject.visual, true);
             mindmap && adaptedLesson.units.push(mindmap);
 
             break;
@@ -80,11 +81,11 @@ export const adaptUserCourse = async (userId: string, courseId: string) => {
           case "verbal":
           case "balanced":
             // Add video
-            let videoBalanced = populateNewUnit(adaptedUnit, "video", learningObject.visual);
+            let videoBalanced = populateNewUnit(adaptedUnit, "video", learningObject.visual, true);
             videoBalanced && adaptedLesson.units.push(videoBalanced);
 
             // Add text-rich file
-            let textRichFile = populateNewUnit(adaptedUnit, "textRichFile", learningObject.verbal);
+            let textRichFile = populateNewUnit(adaptedUnit, "textRichFile", learningObject.verbal, true);
             textRichFile && adaptedLesson.units.push(textRichFile);
             break;
         }
@@ -95,23 +96,23 @@ export const adaptUserCourse = async (userId: string, courseId: string) => {
             switch (perceptionStyle) {
               case "visual":
                 // Add additional video
-                let additionalVideo = populateNewUnit(adaptedUnit, "additionalVideo", learningObject.intuitive);
+                let additionalVideo = populateNewUnit(adaptedUnit, "additionalVideo", learningObject.intuitive, true);
                 additionalVideo && adaptedLesson.units.push(additionalVideo);
                 break;
 
               case "verbal":
                 // Add additional materials
-                let additionalMaterials = populateNewUnit(adaptedUnit, "additionalMaterials", learningObject.intuitive);
+                let additionalMaterials = populateNewUnit(adaptedUnit, "additionalMaterials", learningObject.intuitive, true);
                 additionalMaterials && adaptedLesson.units.push(additionalMaterials);
                 break;
 
               case "balanced":
                 // Add additional video
-                let additionalVideoBalanced = populateNewUnit(adaptedUnit, "additionalVideo", learningObject.intuitive);
+                let additionalVideoBalanced = populateNewUnit(adaptedUnit, "additionalVideo", learningObject.intuitive, true);
                 additionalVideoBalanced && adaptedLesson.units.push(additionalVideoBalanced);
 
                 // Add additional materials
-                let additionalMaterialsBalanced = populateNewUnit(adaptedUnit, "additionalMaterials", learningObject.intuitive);
+                let additionalMaterialsBalanced = populateNewUnit(adaptedUnit, "additionalMaterials", learningObject.intuitive, true);
                 additionalMaterialsBalanced && adaptedLesson.units.push(additionalMaterialsBalanced);
 
                 break;
@@ -123,13 +124,13 @@ export const adaptUserCourse = async (userId: string, courseId: string) => {
             switch (perceptionStyle) {
               case "visual":
                 // Add real example video
-                let realExampleVideo = populateNewUnit(adaptedUnit, "realExampleVideo", learningObject.sensing);
+                let realExampleVideo = populateNewUnit(adaptedUnit, "realExampleVideo", learningObject.sensing, true);
                 realExampleVideo && adaptedLesson.units.push(realExampleVideo);
                 break;
 
               case "verbal":
                 // Add real example doc
-                let realExampleDoc = populateNewUnit(adaptedUnit, "realExampleDoc", learningObject.sensing);
+                let realExampleDoc = populateNewUnit(adaptedUnit, "realExampleDoc", learningObject.sensing, true);
                 realExampleDoc && adaptedLesson.units.push(realExampleDoc);
                 break;
             }
@@ -141,14 +142,14 @@ export const adaptUserCourse = async (userId: string, courseId: string) => {
         switch (processingStyle) {
           case "active":
             // Add quiz
-            let quiz = populateNewUnit(adaptedUnit, "quiz", learningObject.active);
+            let quiz = populateNewUnit(adaptedUnit, "quiz", learningObject.active, true);
             quiz && adaptedLesson.units.push(quiz);
             break;
 
           case "reflective":
             // Add mindmap if perception style is not visual (to avoid duplicates)
             if (perceptionStyle !== "visual") {
-              let mindmap = populateNewUnit(adaptedUnit, "mindmap", learningObject.visual);
+              let mindmap = populateNewUnit(adaptedUnit, "mindmap", learningObject.visual, true);
               mindmap && adaptedLesson.units.push(mindmap);
               break;
             }
@@ -167,15 +168,16 @@ export const adaptUserCourse = async (userId: string, courseId: string) => {
 
 
 export const adjustCurriculumToKnowledgeTest = async (req: any, res: any) => {
-  const userId = req.params.userId;
+  const email = req.params.email;
   const quizResults = req.body;
 
-  const results =  await adjustCurriculumToKnowledge(userId, quizResults);
+  const results =  await adjustCurriculumToKnowledge(email, quizResults);
   res.status(200).send(results);
 }
 
 
-export const adjustCurriculumToKnowledge = async (userId: string, quizResults: any[]) => {
+export const adjustCurriculumToKnowledge = async (email: string, quizResults: any[]) => {
+  const userId: any = await UserService.getInstance().getUserIdByEmail(email);
   const learningStyle: any = await LearningStyleService.getInstance().getLearningStyleByUserId(userId);
 
   const inputStyle = learningStyle.detectedLearningStyle.input;
@@ -201,8 +203,7 @@ export const adjustCurriculumToKnowledge = async (userId: string, quizResults: a
     }
   }
 
-  const promises = quizResults.map(async (concept: any) => {
-    const loPromises = concept['learningObjects'].map(async (loId: any) => {
+  const promises = quizResults.map(async (loId: any) => {
       const lo: any = await LearningObjectService.getInstance().getLearningObjectById(loId);
        
       recommendationUnitBase['name'] = `[Supplementary] ${lo.name}`;
@@ -301,20 +302,18 @@ export const adjustCurriculumToKnowledge = async (userId: string, quizResults: a
           }
       }
     });
-    await Promise.all(loPromises);
-  });
 
   await Promise.all(promises);
   return recommendations;
 }
 
 
-const populateNewUnit = (unitBase: any, unitType: string, loForStyle: any): any => {
+const populateNewUnit = (unitBase: any, unitType: string, loForStyle: any, idOnly: boolean = false): any => {
   let unit = JSON.parse(JSON.stringify(unitBase));
   unit["type"] = unitType;
 
   if (loForStyle[unitType]) {
-    unit[unitType] = loForStyle[unitType]._id;
+    unit[unitType] = idOnly ? loForStyle[unitType]._id : loForStyle[unitType];
     return unit;
   }
 

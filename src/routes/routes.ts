@@ -145,6 +145,7 @@ export default function setRoutes(app: any) {
   // Learning Path Routes
   router.route("/learning-path/recommendations/:user").post(learningPathControl.generateRecommendations);
   router.route("/learning-path/:user/:target").get(learningPathControl.generateLearningPath);
+  router.route('/learning-path/adjust-to-knowledge/:email').post(adjustCurriculumToKnowledgeTest);
 
   //Preference Routes
   router.route("/preferences").post(preferenceControl.createPreference);
@@ -174,10 +175,8 @@ export default function setRoutes(app: any) {
   router.route("/usercourse/currentunit").put(userCourseControl.changeCurrentUnit);
   router.route("/usercourse/:id").put(userCourseControl.updateUserCourse);
   router.route("/usercourse/:id").delete(userCourseControl.deleteUserCourse);
+  router.route("/usercourse/update-curriculum/:id").put(userCourseControl.updateCurriculum);
 
   // Quiz Selection Routes
   router.route("/quiz-selection").post(quizSelectionControl.selectQuiz);
-
-  // Test Routes
-  router.route('/learning-path/adjust-to-knowledge/:userId').post(adjustCurriculumToKnowledgeTest);
 }
