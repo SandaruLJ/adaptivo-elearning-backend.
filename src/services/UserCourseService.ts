@@ -95,9 +95,24 @@ export class UserCourseService implements IUserCourseService {
   }
 
   public async markDuration(request: any): Promise<IUserCourse | Object> {
-    this.logger.info("UserCourseService - markWatchTime()");
+    this.logger.info("UserCourseService - markDuration()");
     const userCourse: any = await this.getUserCourseById(request._id);
     userCourse.learningPath[request.sectionCount]["units"][request.unitCount].duration = request.duration;
+
+    return this.UserCourseDao.update(request._id, userCourse)
+      .then((data) => {
+        return data;
+      })
+      .catch((error) => {
+        this.logger.error(error.message);
+        throw error;
+      });
+  }
+
+  public async setQuizScore(request: any): Promise<IUserCourse | Object> {
+    this.logger.info("UserCourseService - setQuizScore()");
+    const userCourse: any = await this.getUserCourseById(request._id);
+    userCourse.learningPath[request.sectionCount]["units"][request.unitCount].quiz.score = request.score;
 
     return this.UserCourseDao.update(request._id, userCourse)
       .then((data) => {
