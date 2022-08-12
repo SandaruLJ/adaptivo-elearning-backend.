@@ -171,6 +171,7 @@ export default function setRoutes(app: any) {
   router.route("/usercourse/:id").get(userCourseControl.getUserCourseById);
   router.route("/usercourse/markcomplete").put(userCourseControl.markIsCompleted);
   router.route("/usercourse/markduration").put(userCourseControl.markDuration);
+  router.route("/usercourse/quizscore").put(userCourseControl.setQuizScore);
   router.route("/usercourse/currentunit").put(userCourseControl.changeCurrentUnit);
   router.route("/usercourse/:id").put(userCourseControl.updateUserCourse);
   router.route("/usercourse/:id").delete(userCourseControl.deleteUserCourse);

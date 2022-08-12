@@ -9,5 +9,6 @@ export interface IUserCourseService {
   deleteUserCourse(id: string): Promise<IUserCourse | Object>;
   markIsCompleted(request: any): Promise<IUserCourse | Object>;
   markDuration(request: any): Promise<IUserCourse | Object>;
+  setQuizScore(request: any): Promise<IUserCourse | Object>;
   changeCurrentUnit(request: any): Promise<IUserCourse | Object>;
 }
