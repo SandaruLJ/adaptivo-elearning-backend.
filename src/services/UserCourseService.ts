@@ -196,7 +196,7 @@ export class UserCourseService implements IUserCourseService {
 
   public async updateUserCourse(id: string, Course: IUserCourse): Promise<IUserCourse | Object> {
     this.logger.info("Customer Services - updateCustomer()");
-    return this.UserCourseDao.update(id, Course)
+    return this.UserCourseDao.updateCurriculum(id, Course)
       .then((data) => {
         return data;
       })
@@ -205,6 +205,23 @@ export class UserCourseService implements IUserCourseService {
         throw error;
       });
   }
+
+  public async updateCurriculum(id: string, learningPath: any): Promise<IUserCourse | Object> {
+    this.logger.info("UserCourseService - updateCurriculum()");
+
+    const userCourse: any = await this.getUserCourseById(id);
+    userCourse.learningPath = learningPath;
+
+    return this.UserCourseDao.updateCurriculum(id, userCourse)
+      .then((data) => {
+        return data;
+      })
+      .catch((error) => {
+        this.logger.error(error.message);
+        throw error;
+      });
+  }
+
   public async deleteUserCourse(id: string): Promise<IUserCourse | Object> {
     this.logger.info("UserCourseService - deleteUserCourse()");
     return this.UserCourseDao.delete(id)

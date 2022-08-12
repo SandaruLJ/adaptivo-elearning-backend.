@@ -175,6 +175,7 @@ export default function setRoutes(app: any) {
   router.route("/usercourse/currentunit").put(userCourseControl.changeCurrentUnit);
   router.route("/usercourse/:id").put(userCourseControl.updateUserCourse);
   router.route("/usercourse/:id").delete(userCourseControl.deleteUserCourse);
+  router.route("/usercourse/update-curriculum/:id").put(userCourseControl.updateCurriculum);
 
   // Quiz Selection Routes
   router.route("/quiz-selection").post(quizSelectionControl.selectQuiz);

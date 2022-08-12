@@ -6,6 +6,7 @@ export interface IUserCourseService {
   getUserCourseById(id: string): Promise<IUserCourse | Object>;
   getUserCourseByUserId(email: string): Promise<IUserCourse[] | Object>;
   updateUserCourse(id: string, request: IUserCourse): Promise<IUserCourse | Object>;
+  updateCurriculum(id: string, request: IUserCourse): Promise<IUserCourse | Object>;
   deleteUserCourse(id: string): Promise<IUserCourse | Object>;
   markIsCompleted(request: any): Promise<IUserCourse | Object>;
   markDuration(request: any): Promise<IUserCourse | Object>;
