@@ -10,7 +10,7 @@ const conceptSchema = new Schema(
       required: true,
       trim: true,
     },
-    preRequisites: [{ type: Schema.Types.ObjectId, required: true, ref: "concepts", autopopulate: true }],
+    preRequisites: [{ type: Schema.Types.ObjectId, required: true, ref: "concepts" }],
     learningObjects: [{ type: Schema.Types.ObjectId, required: true, ref: "LearningObjects", autopopulate: true }],
   },
   { timestamps: true }
