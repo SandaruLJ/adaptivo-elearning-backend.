@@ -17,6 +17,7 @@ import LearningPathController from "../controllers/learningPathController.js";
 import PreferenceController from "../controllers/PreferenceController.js";
 import LearningStyleController from "../controllers/LearningStyleController.js";
 import UserCourseController from "../controllers/UserCourseController.js";
+import QuizSelectionController from '../controllers/QuizSelectionController.js';
 
 export default function setRoutes(app: any) {
   const router = express();
@@ -37,7 +38,8 @@ export default function setRoutes(app: any) {
   const preferenceControl = new PreferenceController();
   const learningStyleControl = new LearningStyleController();
   const userCourseControl = new UserCourseController();
-
+  const quizSelectionControl = new QuizSelectionController();
+  
   app.use("/api", router);
 
   //Routes
@@ -167,4 +169,7 @@ export default function setRoutes(app: any) {
   router.route("/usercourse/currentunit").put(userCourseControl.changeCurrentUnit);
   router.route("/usercourse/:id").put(userCourseControl.updateUserCourse);
   router.route("/usercourse/:id").delete(userCourseControl.deleteUserCourse);
+
+  // Quiz Selection Routes
+  router.route("/quiz-selection").get(quizSelectionControl.selectQuiz);
 }
