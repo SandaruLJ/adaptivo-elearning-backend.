@@ -97,9 +97,11 @@ const CourseSchema = new Schema(
               trim: true,
             },
             preTest: {
-              type: String,
+              type: Schema.Types.ObjectId,
               required: false,
               trim: true,
+              ref: "concepts",
+              autopopulate: true,
             },
             note: {
               type: String,

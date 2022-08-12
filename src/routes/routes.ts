@@ -155,7 +155,7 @@ export default function setRoutes(app: any) {
   router.route("/learningstyles").get(learningStyleControl.getAllLearningStyle);
   router.route("/learningstyles/:id").get(learningStyleControl.getLearningStyleById);
   router.route("/learningstyles").put(learningStyleControl.updateLearningStyle);
-  router.route("/learningstyles/user/:id").get(learningStyleControl.getLearningStyleByUserId);
+  router.route("/learningstyles/user/:email").get(learningStyleControl.getLearningStyleByUserEmail);
   router.route("/learningstyles/:id").delete(learningStyleControl.deleteLearningStyle);
 
   //UserCourse Routes

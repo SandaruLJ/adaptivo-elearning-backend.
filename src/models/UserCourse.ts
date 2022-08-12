@@ -62,6 +62,11 @@ const UserCourseSchema = new Schema(
               ref: "LearningResources",
               autopopulate: true,
             },
+            preTest: {
+              type: Schema.Types.ObjectId,
+              required: false,
+              ref: "concepts",
+            },
             visualNote: {
               type: Schema.Types.ObjectId,
               required: false,

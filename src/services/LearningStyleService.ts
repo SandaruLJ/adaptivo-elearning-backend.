@@ -91,8 +91,9 @@ export class LearningStyleService implements ILearningStyleService {
         return "weak";
       }
     };
+    const userId = await UserService.getInstance().getUserIdByEmail(request.email);
     let learningStyle: any = {
-      userId: request.userId,
+      userId: userId,
       input: {
         sensing: sensing / 2,
         intuitive: intuitive / 2,

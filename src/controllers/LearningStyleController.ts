@@ -5,6 +5,7 @@ import { ILearningStyleService } from "../services/interfaces/ILearningStyleServ
 import LearningStyle from "../models/LearningStyle.js";
 
 import autoBind from "auto-bind";
+import { UserService } from "../services/UserService.js";
 
 export default class LearningStyleController {
   private logger: Logger;
@@ -87,10 +88,13 @@ export default class LearningStyleController {
       });
   }
 
-  public async getLearningStyleByUserId(req: any, res: any) {
+  public async getLearningStyleByUserEmail(req: any, res: any) {
     this.logger.info("LearningStyleController - getLearningStyleByUserId()");
-    const id = req.params.id;
-    await this.LearningStyleService.getLearningStyleByUserId(id)
+    const email = req.params.email;
+
+    const userId = await UserService.getInstance().getUserIdByEmail(email);
+
+    await this.LearningStyleService.getLearningStyleByUserId(userId)
       .then((data) => {
         res.status(200).send(data);
       })

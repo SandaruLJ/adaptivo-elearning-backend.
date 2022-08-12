@@ -247,7 +247,7 @@ export class ConceptService implements IConceptService {
         throw error;
       });
   }
-  public async getConceptById(id: string): Promise<IConcept | Object> {
+  public async getConceptById(id: string): Promise<any> {
     this.logger.info("ConceptService - getConceptById()");
     return this.ConceptDao.getById(id)
       .then((data) => {

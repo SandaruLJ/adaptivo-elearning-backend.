@@ -51,10 +51,21 @@ export class UserCourseService implements IUserCourseService {
     // }
     // request.learningPath = temp;
 
-    request.learningPath = await adaptUserCourse(request.userId, request.courseId);
+    try {
+      request.learningPath = await adaptUserCourse(request.userId, request.courseId);
+    } catch (error) {
+      this.logger.error(error.message);
+      throw error;
+    }
+
+    request.currentUnit = {
+      sectionNum: 0,
+      unitNum: 0,
+      duration: 0,
+    };
 
     request.progress = 0;
-
+    // return request;
     return this.UserCourseDao.save(request)
       .then((data) => {
         return data;
@@ -146,7 +157,7 @@ export class UserCourseService implements IUserCourseService {
   }
   public async getUserCourseByUserId(email: string): Promise<IUserCourse[]> {
     this.logger.info("UserCourseService - getUserCourseByUserId()");
-    const userId = await UserService.getInstance().getUserIdByEmail("johndoe@email.com");
+    const userId = await UserService.getInstance().getUserIdByEmail(email);
     return this.UserCourseDao.getByUserId(userId)
       .then((data) => {
         return data;
