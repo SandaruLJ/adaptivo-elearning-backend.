@@ -52,32 +52,33 @@ def select_learning_resources(concept_path, learning_resources, lr_type):
     return concept_path
 
 
-concepts = json.loads(sys.argv[1])
-learning_resources = json.loads(sys.argv[2])
-knowledge = json.loads(sys.argv[3])
-learning_style = json.loads(sys.argv[4])
-target = sys.argv[5]
+if __name__ == '__main__':
+    concepts = json.loads(sys.argv[1])
+    learning_resources = json.loads(sys.argv[2])
+    knowledge = json.loads(sys.argv[3])
+    learning_style = json.loads(sys.argv[4])
+    target = sys.argv[5]
 
-# Get target concept
-target_concept = get_concept(target, concepts)
+    # Get target concept
+    target_concept = get_concept(target, concepts)
 
-# Generate concept path
-concept_path = generate_concept_path(target_concept, concepts)
+    # Generate concept path
+    concept_path = generate_concept_path(target_concept, concepts)
 
-# Adjust concept path to existing knowledge
-concept_path = adjust_concept_path_to_knowledge(concept_path, knowledge)
+    # Adjust concept path to existing knowledge
+    concept_path = adjust_concept_path_to_knowledge(concept_path, knowledge)
 
-# Determine learning resource type according to learning style
-lr_type = determine_learning_resource_type(learning_style)
+    # Determine learning resource type according to learning style
+    lr_type = determine_learning_resource_type(learning_style)
 
-# Select learning resources and create learning path
-learning_path = select_learning_resources(concept_path, learning_resources, lr_type)
+    # Select learning resources and create learning path
+    learning_path = select_learning_resources(concept_path, learning_resources, lr_type)
 
-# for index, concept in enumerate(learning_path):
-#     print(f"({concept['_id']}, {concept['learningObjects']})", end="")
-#     if index != len(concept_path) - 1:
-#         print(" -> ", end="")
-#     else:
-#         print("")
+    # for index, concept in enumerate(learning_path):
+    #     print(f"({concept['_id']}, {concept['learningObjects']})", end="")
+    #     if index != len(concept_path) - 1:
+    #         print(" -> ", end="")
+    #     else:
+    #         print("")
 
-print(json.dumps(learning_path))
+    print(json.dumps(learning_path))

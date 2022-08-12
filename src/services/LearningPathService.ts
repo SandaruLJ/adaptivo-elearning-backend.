@@ -56,6 +56,42 @@ export class LearningPathService implements ILearningPathService {
         });
     }
 
+    public async getRecommendations(userId: string, targetConcepts: any[]): Promise<Object> {
+        return new Promise(async (resolve, reject) => {
+            // Get required data
+            const data = await this.fetchRequiredData(userId);
+
+            // Stringify data
+            const concepts = JSON.stringify(targetConcepts);
+            const learningResources = JSON.stringify(data['learningResources']);
+            const learningStyle = JSON.stringify(data['learningStyle']);
+
+            // Run Python script for generating recommendations
+            const script = spawn('python3', [
+                'dist/recommendation/adaptive_recommender.py',
+                concepts,
+                learningResources,
+                learningStyle
+            ]);
+
+            let recommendations = [];
+
+            script.stdout.on('data', (data) => {
+                recommendations = JSON.parse(data.toString());
+            });
+
+            script.stderr.on('data', (error) => {
+                console.log(error.toString());
+                reject();
+            });
+
+            script.on('close', () => {
+                console.log(recommendations)
+                resolve(recommendations);
+            });
+        });
+    }
+
     private async fetchRequiredData(userId: string): Promise<Object> {
         let data: any = {
             concepts: [],
