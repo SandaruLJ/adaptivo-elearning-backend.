@@ -1,7 +1,7 @@
 import { Logger } from "../loaders/logger.js";
 import IUser from "../interfaces/IUser.js";
 import IUserService from "../services/interfaces/IUserService.js";
-import UserService from "../services/UserService.js";
+import { UserService } from "../services/UserService.js";
 import autoBind from "auto-bind";
 import UserNotFoundError from "../errors/UserNotFoundError.js";
 

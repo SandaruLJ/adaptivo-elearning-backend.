@@ -5,6 +5,7 @@ import { ILearningStyleService } from "../services/interfaces/ILearningStyleServ
 import LearningStyle from "../models/LearningStyle.js";
 
 import autoBind from "auto-bind";
+import { UserService } from "../services/UserService.js";
 
 export default class LearningStyleController {
   private logger: Logger;
@@ -61,6 +62,19 @@ export default class LearningStyleController {
         res.status(500).send({ err: error.message });
       });
   }
+
+  public async analyzeLearningStyles(req: any, res: any) {
+    this.logger.info("LearningStyleController - analyzeLearningStyles()");
+
+    await this.LearningStyleService.analyzeLearningStyles()
+      .then((data) => {
+        res.status(200).send(data);
+      })
+      .catch((error) => {
+        this.logger.error(error.message);
+        res.status(500).send({ err: error.message });
+      });
+  }
   public async getLearningStyleById(req: any, res: any) {
     this.logger.info("LearningStyleController - getLearningStyleById()");
     const id = req.params.id;
@@ -74,10 +88,13 @@ export default class LearningStyleController {
       });
   }
 
-  public async getLearningStyleByUserId(req: any, res: any) {
+  public async getLearningStyleByUserEmail(req: any, res: any) {
     this.logger.info("LearningStyleController - getLearningStyleByUserId()");
-    const id = req.params.id;
-    await this.LearningStyleService.getLearningStyleByUserId(id)
+    const email = req.params.email;
+
+    const userId = await UserService.getInstance().getUserIdByEmail(email);
+
+    await this.LearningStyleService.getLearningStyleByUserId(userId)
       .then((data) => {
         res.status(200).send(data);
       })
@@ -89,12 +106,11 @@ export default class LearningStyleController {
 
   public async updateLearningStyle(req: any, res: any) {
     this.logger.info("LearningStyleController - updateLearningStyle()");
-    const id = req.params.id;
 
     if (req.body) {
       const LearningStyle: ILearningStyle = req.body;
 
-      await this.LearningStyleService.updateLearningStyle(id, LearningStyle)
+      await this.LearningStyleService.updateLearningStyle(LearningStyle)
         .then((data) => {
           res.status(200).send(data);
         })

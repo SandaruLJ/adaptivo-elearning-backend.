@@ -4,8 +4,9 @@ import { IUserCourseService } from "./interfaces/IUserCourseService.js";
 import { UserCourseDao } from "../dao/UserCourseDao.js";
 import { CourseService } from "./CourseService.js";
 import { ICourse } from "../interfaces/ICourse.js";
-import UserService from "./UserService.js";
-import { adaptUserCourse } from '../recommendation/user_course_adaptor.js';
+
+import { UserService } from "./UserService.js";
+import { adaptUserCourse } from "../recommendation/user_course_adaptor.js";
 
 export class UserCourseService implements IUserCourseService {
   private logger = Logger.getInstance();
@@ -20,10 +21,51 @@ export class UserCourseService implements IUserCourseService {
 
   public async createUserCourse(request: IUserCourse): Promise<IUserCourse> {
     this.logger.info("UserCourseService - createUserCourse()");
-    
-    request.learningPath = await adaptUserCourse(request.userId, request.courseId);
-    request.progress = 0;
 
+    // const course: any = await CourseService.getInstance().getCourseById(request.courseId);
+    // let temp = course.curriculum;
+    // let sectionCount = 0;
+    // for (let section of temp) {
+    //   let unitCount = 0;
+    //   for (let unit of section.units) {
+    //     const newUnit = {
+    //       ...unit._doc,
+    //       isCompleted: false,
+    //       duration: "0",
+    //       currentUnit: {
+    //         sectionNum: 0,
+    //         unitNum: 0,
+    //         duration: 0,
+    //       },
+    //       quiz: {
+    //         questions: unit._doc.quiz,
+    //         score: 0,
+    //         analysis: {},
+    //       },
+    //     };
+    //     temp[sectionCount]["units"][unitCount]._doc = newUnit;
+
+    //     unitCount++;
+    //   }
+    //   sectionCount++;
+    // }
+    // request.learningPath = temp;
+
+    try {
+      request.learningPath = await adaptUserCourse(request.userId, request.courseId);
+    } catch (error) {
+      this.logger.error(error.message);
+      throw error;
+    }
+
+    request.currentUnit = {
+      sectionNum: 0,
+      unitNum: 0,
+      duration: 0,
+    };
+
+    request.progress = 0;
+    // return request;
     return this.UserCourseDao.save(request)
       .then((data) => {
         return data;
@@ -115,7 +157,7 @@ export class UserCourseService implements IUserCourseService {
   }
   public async getUserCourseByUserId(email: string): Promise<IUserCourse[]> {
     this.logger.info("UserCourseService - getUserCourseByUserId()");
-    const userId = await UserService.getInstance().getUserIdByEmail("johndoe@email.com");
+    const userId = await UserService.getInstance().getUserIdByEmail(email);
     return this.UserCourseDao.getByUserId(userId)
       .then((data) => {
         return data;

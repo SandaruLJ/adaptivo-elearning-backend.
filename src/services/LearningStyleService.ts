@@ -3,6 +3,10 @@ import { Logger } from "../loaders/logger.js";
 import { ILearningStyleService } from "./interfaces/ILearningStyleService.js";
 import { LearningStyleDao } from "../dao/LearningStyleDao.js";
 import { PreferenceDao } from "../dao/PreferenceDao.js";
+import fetch from "node-fetch";
+import { UserActivityDao } from "../dao/UserActivityDao.js";
+import { UserActivityService } from "./UserActivityService.js";
+import { UserService } from "./UserService.js";
 
 export class LearningStyleService implements ILearningStyleService {
   private logger = Logger.getInstance();
@@ -87,8 +91,9 @@ export class LearningStyleService implements ILearningStyleService {
         return "weak";
       }
     };
-    let learningStyle: ILearningStyle = {
-      userId: request.userId,
+    const userId = await UserService.getInstance().getUserIdByEmail(request.email);
+    let learningStyle: any = {
+      userId: userId,
       input: {
         sensing: sensing / 2,
         intuitive: intuitive / 2,
@@ -121,8 +126,22 @@ export class LearningStyleService implements ILearningStyleService {
         understanding: detectStyle("sequential", sequential, "global", global),
         perception: detectStyle("visual", visual, "verbal", verbal),
       },
+      initialLearningStyle: {
+        input: detectStyle("sensing", sensing, "intuitive", intuitive),
+        processing: detectStyle("active", active, "reflective", reflective),
+        understanding: detectStyle("sequential", sequential, "global", global),
+        perception: detectStyle("visual", visual, "verbal", verbal),
+      },
     };
-    console.log(learningStyle);
+    learningStyle.history = [
+      {
+        input: learningStyle.input,
+        processing: learningStyle.processing,
+        understanding: learningStyle.understanding,
+        perception: learningStyle.perception,
+        detectedLearningStyle: learningStyle.detectedLearningStyle,
+      },
+    ];
 
     return this.LearningStyleDao.save(learningStyle)
       .then((data) => {
@@ -157,7 +176,7 @@ export class LearningStyleService implements ILearningStyleService {
       });
   }
 
-  public async getLearningStyleByUserId(id: string): Promise<ILearningStyle | Object> {
+  public async getLearningStyleByUserId(id: string): Promise<any> {
     this.logger.info("LearningStyleService - getLearningStyleByUserId()");
     return this.LearningStyleDao.getByUserId(id)
       .then((data) => {
@@ -169,9 +188,86 @@ export class LearningStyleService implements ILearningStyleService {
       });
   }
 
-  public async updateLearningStyle(id: string, Course: ILearningStyle): Promise<ILearningStyle | Object> {
-    this.logger.info("Customer Services - updateCustomer()");
-    return this.LearningStyleDao.update(id, Course)
+  public async updateLearningStyle(data: any): Promise<Object> {
+    this.logger.info("LearningStyleService - updateLearningStyle()");
+    let response = [];
+
+    const detectStyle = (style1, style2, score) => {
+      let style;
+      if (score == 0) {
+        style = "balanced";
+      } else if (score > 0) {
+        style = style1;
+      } else if (score < 0) {
+        style = style2;
+      }
+
+      return style;
+    };
+    data.styles.map(async (style) => {
+      const userId = await UserService.getInstance().getUserIdByEmail(style.user);
+      const learningStyle = await this.getLearningStyleByUserId(userId);
+      // console.log(learningStyle);
+      if (learningStyle) {
+        learningStyle.input = {
+          sensing: style.sensing.value,
+          intuitive: style.intuitive.value,
+          sensingStrength: style.sensing.strength,
+          intuitiveStrength: style.intuitive.strength,
+        };
+        learningStyle.processing = {
+          active: style.active.value,
+          reflective: style.reflective.value,
+          activeStrength: style.active.strength,
+          reflectiveStrength: style.reflective.strength,
+        };
+        learningStyle.understanding = {
+          sequential: style.sequential.value,
+          global: style.global.value,
+          sequentialStrength: style.sequential.strength,
+          globalStrength: style.global.strength,
+        };
+        learningStyle.perception = {
+          visual: style.visual.value,
+          verbal: style.verbal.value,
+          visualStrength: style.visual.strength,
+          verbalStrength: style.verbal.strength,
+        };
+
+        learningStyle.isDetectedByAlgorithm = true;
+
+        learningStyle.detectedLearningStyle = {
+          input: detectStyle("sensing", "intuitive", style.sensing.value + style.intuitive.value),
+          processing: detectStyle("active", "reflective", style.active.value + style.reflective.value),
+          understanding: detectStyle("global", "sequential", style.global.value + style.sequential.value),
+          perception: detectStyle("visual", "verbal", style.visual.value + style.verbal.value),
+        };
+
+        learningStyle.history.push({
+          input: learningStyle.input,
+          processing: learningStyle.processing,
+          understanding: learningStyle.understanding,
+          perception: learningStyle.perception,
+          detectedLearningStyle: learningStyle.detectedLearningStyle,
+          date: new Date().toJSON(),
+        });
+      }
+
+      await this.LearningStyleDao.update(learningStyle._id, learningStyle)
+        .then((data) => {
+          this.logger.info(`LearningStyle for user ${style.user} updated successfully`);
+        })
+        .catch((error) => {
+          this.logger.error(error.message);
+          throw error;
+        });
+    });
+
+    return response;
+  }
+  public async deleteLearningStyle(id: string): Promise<ILearningStyle | Object> {
+    this.logger.info("LearningStyleService - deleteLearningStyle()");
+    return this.LearningStyleDao.delete(id)
       .then((data) => {
         return data;
       })
@@ -180,11 +276,13 @@ export class LearningStyleService implements ILearningStyleService {
         throw error;
       });
   }
-  public async deleteLearningStyle(id: string): Promise<ILearningStyle | Object> {
-    this.logger.info("LearningStyleService - deleteLearningStyle()");
-    return this.LearningStyleDao.delete(id)
-      .then((data) => {
-        return data;
+  public async analyzeLearningStyles(): Promise<any> {
+    this.logger.info("LearningStyleService - analyzeLearningStyle()");
+    return UserActivityService.getInstance()
+      .getAllUserActivity()
+      .then(async (data) => {
+        const response = fetch("http://localhost:5000/api/v1/analyse/", { method: "POST", body: JSON.stringify(data) });
+        return { status: "Success" };
       })
       .catch((error) => {
         this.logger.error(error.message);

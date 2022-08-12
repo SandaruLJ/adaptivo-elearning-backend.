@@ -5,9 +5,8 @@ const LearningStyleSchema = new Schema(
   {
     userId: {
       type: Schema.Types.ObjectId,
-      ref: 'Users',
       required: true,
-      trim: true,
+      ref: "users",
     },
     input: {
       sensing: {
@@ -30,7 +29,7 @@ const LearningStyleSchema = new Schema(
       reflective: {
         type: Number,
       },
-      processingStrength: {
+      activeStrength: {
         type: String,
       },
       reflectiveStrength: {
@@ -89,6 +88,25 @@ const LearningStyleSchema = new Schema(
         type: String,
       },
     },
+    initialLearningStyle: {
+      input: {
+        type: String,
+      },
+      processing: {
+        type: String,
+      },
+      understanding: {
+        type: String,
+      },
+      perception: {
+        type: String,
+      },
+    },
+    history: [
+      {
+        type: Object,
+      },
+    ],
   },
   { timestamps: true }
 );

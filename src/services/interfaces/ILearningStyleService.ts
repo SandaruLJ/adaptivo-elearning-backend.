@@ -5,7 +5,8 @@ export interface ILearningStyleService {
   createLearningStyle(request: ILearningStyle): Promise<ILearningStyle>;
   getAllLearningStyle(): Promise<ILearningStyle[]>;
   getLearningStyleById(id: string): Promise<ILearningStyle | Object>;
+  updateLearningStyle(data: any): Promise<Object>;
   getLearningStyleByUserId(id: string): Promise<ILearningStyle | Object>;
-  updateLearningStyle(id: string, product: ILearningStyle): Promise<ILearningStyle | Object>;
   deleteLearningStyle(id: string): Promise<ILearningStyle | Object>;
+  analyzeLearningStyles(): Promise<any>;
 }
