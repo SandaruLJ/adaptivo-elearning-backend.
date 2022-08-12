@@ -17,6 +17,7 @@ import LearningPathController from "../controllers/learningPathController.js";
 import PreferenceController from "../controllers/PreferenceController.js";
 import LearningStyleController from "../controllers/LearningStyleController.js";
 import UserCourseController from "../controllers/UserCourseController.js";
+import QuizSelectionController from "../controllers/QuizSelectionController.js";
 
 export default function setRoutes(app: any) {
   const router = express();
@@ -37,6 +38,7 @@ export default function setRoutes(app: any) {
   const preferenceControl = new PreferenceController();
   const learningStyleControl = new LearningStyleController();
   const userCourseControl = new UserCourseController();
+  const quizSelectionControl = new QuizSelectionController();
 
   app.use("/api", router);
 
@@ -153,10 +155,11 @@ export default function setRoutes(app: any) {
   //Learning Style Routes
   router.route("/learningstyles").post(learningStyleControl.createLearningStyle);
   router.route("/learningstyles/onboarding").post(learningStyleControl.analyzeInitialUserPreference);
+  router.route("/learningstyles/analyze").post(learningStyleControl.analyzeLearningStyles);
   router.route("/learningstyles").get(learningStyleControl.getAllLearningStyle);
   router.route("/learningstyles/:id").get(learningStyleControl.getLearningStyleById);
-  router.route("/learningstyles/user/:id").get(learningStyleControl.getLearningStyleByUserId);
-  router.route("/learningstyles/:id").put(learningStyleControl.updateLearningStyle);
+  router.route("/learningstyles").put(learningStyleControl.updateLearningStyle);
+  router.route("/learningstyles/user/:email").get(learningStyleControl.getLearningStyleByUserEmail);
   router.route("/learningstyles/:id").delete(learningStyleControl.deleteLearningStyle);
 
   //UserCourse Routes
@@ -169,4 +172,7 @@ export default function setRoutes(app: any) {
   router.route("/usercourse/currentunit").put(userCourseControl.changeCurrentUnit);
   router.route("/usercourse/:id").put(userCourseControl.updateUserCourse);
   router.route("/usercourse/:id").delete(userCourseControl.deleteUserCourse);
+
+  // Quiz Selection Routes
+  router.route("/quiz-selection").post(quizSelectionControl.selectQuiz);
 }
