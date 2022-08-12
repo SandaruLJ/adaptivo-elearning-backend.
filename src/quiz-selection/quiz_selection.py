@@ -60,16 +60,18 @@ def check_knowledge(correctAnswers): # From the questions of LOs
         return 'fail'
 
 
+params = json.loads(sys.stdin.readline())
+concepts = params['concepts']         # concepts.json
+learning_objects = params['learningObjects']  # learning_objects.json
+quizzes = params['quizzes']          # quizzes.json
+target = params['target']                        # e.g. 4
+prev_concept_id = params['prevConcept']              # e.g. 4
+prev_learning_object_id = params['prevLearningObject']       # e.g. 12
+answer_correct = bool(int(params['answerCorrect']))     # e.g. 1 for correct, 0 for incorrect
+
+
 I_DONT_KNOW = "<p><span style=\"color: rgba(0,0,0,0.87);background-color: rgb(255,255,255);font-size: medium;font-family: Poppins, sans-serif;\">I don't know</span>&nbsp;</p>\n"
 
-
-concepts = json.loads(sys.argv[1])          # concepts.json
-learning_objects = json.loads(sys.argv[2])  # learning_objects.json
-quizzes = json.loads(sys.argv[3])           # quizzes.json
-target = sys.argv[4]                        # e.g. 4
-prev_concept_id = sys.argv[5]               # e.g. 4
-prev_learning_object_id = sys.argv[6]       # e.g. 12
-answer_correct = bool(int(sys.argv[7]))     # e.g. 1 for correct, 0 for incorrect
 
 first_quiz = True if prev_concept_id == '0' else False
 

@@ -33,6 +33,15 @@ export const adaptUserCourse = async (userId: string, courseId: string) => {
         };
         unit._doc.preTest = unit.preTest._id;
       }
+
+      if (unit.type == "quiz") {
+        const questions = unit._doc.quiz;
+        unit._doc.quiz = {
+          questions: [questions],
+          score: 0,
+          analysis: {},
+        };
+      }
       // Check if linked to a concept
       if (unit.isConceptLink) {
         let adaptedUnit = {
