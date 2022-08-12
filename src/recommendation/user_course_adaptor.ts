@@ -3,6 +3,7 @@ import { CourseService } from '../services/CourseService.js';
 import { LearningStyleService } from '../services/LearningStyleService.js';
 import { LearningObjectService } from '../services/LearningObjectService.js';
 import { randomUUID } from 'crypto';
+import { UserService } from '../services/UserService.js';
 
 export const adaptUserCourse = async (userId: string, courseId: string) => {
   const course: any = await CourseService.getInstance().getCourseById(courseId);
@@ -158,15 +159,16 @@ export const adaptUserCourse = async (userId: string, courseId: string) => {
 
 
 export const adjustCurriculumToKnowledgeTest = async (req: any, res: any) => {
-  const userId = req.params.userId;
+  const email = req.params.email;
   const quizResults = req.body;
 
-  const results =  await adjustCurriculumToKnowledge(userId, quizResults);
+  const results =  await adjustCurriculumToKnowledge(email, quizResults);
   res.status(200).send(results);
 }
 
 
-export const adjustCurriculumToKnowledge = async (userId: string, quizResults: any[]) => {
+export const adjustCurriculumToKnowledge = async (email: string, quizResults: any[]) => {
+  const userId: any = await UserService.getInstance().getUserIdByEmail(email);
   const learningStyle: any = await LearningStyleService.getInstance().getLearningStyleByUserId(userId);
 
   const inputStyle = learningStyle.detectedLearningStyle.input;
