@@ -1,8 +1,8 @@
-import { ConceptService } from '../services/ConceptService.js';
-import { CourseService } from '../services/CourseService.js';
-import { LearningStyleService } from '../services/LearningStyleService.js';
-import { LearningObjectService } from '../services/LearningObjectService.js';
-import { randomUUID } from 'crypto';
+import { ConceptService } from "../services/ConceptService.js";
+import { CourseService } from "../services/CourseService.js";
+import { LearningStyleService } from "../services/LearningStyleService.js";
+import { LearningObjectService } from "../services/LearningObjectService.js";
+import { randomUUID } from "crypto";
 
 export const adaptUserCourse = async (userId: string, courseId: string) => {
   const course: any = await CourseService.getInstance().getCourseById(courseId);
@@ -37,11 +37,15 @@ export const adaptUserCourse = async (userId: string, courseId: string) => {
       if (unit.type == "quiz") {
         const questions = unit._doc.quiz;
         unit._doc.quiz = {
-          questions: [questions],
+          questions: [...questions],
           score: 0,
           analysis: {},
         };
       }
+      if (unit.type == "note") {
+        console.log(unit);
+      }
+
       // Check if linked to a concept
       if (unit.isConceptLink) {
         let adaptedUnit = {
@@ -69,10 +73,13 @@ export const adaptUserCourse = async (userId: string, courseId: string) => {
 
             // Add visual note
             let visualNote = populateNewUnit(adaptedUnit, "visualNote", learningObject.visual);
+            visualNote.name = `Note: ${unit.name}`;
             visualNote && adaptedLesson.units.push(visualNote);
 
             // Add mindmap
             let mindmap = populateNewUnit(adaptedUnit, "mindmap", learningObject.visual);
+            mindmap.name = `Mind Map: ${unit.name}`;
+
             mindmap && adaptedLesson.units.push(mindmap);
 
             break;
@@ -85,6 +92,8 @@ export const adaptUserCourse = async (userId: string, courseId: string) => {
 
             // Add text-rich file
             let textRichFile = populateNewUnit(adaptedUnit, "textRichFile", learningObject.verbal);
+            textRichFile.name = `Note: ${unit.name}`;
+
             textRichFile && adaptedLesson.units.push(textRichFile);
             break;
         }
@@ -96,22 +105,30 @@ export const adaptUserCourse = async (userId: string, courseId: string) => {
               case "visual":
                 // Add additional video
                 let additionalVideo = populateNewUnit(adaptedUnit, "additionalVideo", learningObject.intuitive);
+                additionalVideo.name = `Additional Video: ${unit.name}`;
+
                 additionalVideo && adaptedLesson.units.push(additionalVideo);
                 break;
 
               case "verbal":
                 // Add additional materials
                 let additionalMaterials = populateNewUnit(adaptedUnit, "additionalMaterials", learningObject.intuitive);
+                additionalMaterials.name = `Additional Materials: ${unit.name}`;
+
                 additionalMaterials && adaptedLesson.units.push(additionalMaterials);
                 break;
 
               case "balanced":
                 // Add additional video
                 let additionalVideoBalanced = populateNewUnit(adaptedUnit, "additionalVideo", learningObject.intuitive);
+                additionalVideoBalanced.name = `Additional Video: ${unit.name}`;
+
                 additionalVideoBalanced && adaptedLesson.units.push(additionalVideoBalanced);
 
                 // Add additional materials
                 let additionalMaterialsBalanced = populateNewUnit(adaptedUnit, "additionalMaterials", learningObject.intuitive);
+                additionalMaterialsBalanced.name = `Additional Materials: ${unit.name}`;
+
                 additionalMaterialsBalanced && adaptedLesson.units.push(additionalMaterialsBalanced);
 
                 break;
@@ -124,12 +141,16 @@ export const adaptUserCourse = async (userId: string, courseId: string) => {
               case "visual":
                 // Add real example video
                 let realExampleVideo = populateNewUnit(adaptedUnit, "realExampleVideo", learningObject.sensing);
+                realExampleVideo.name = `Real World Examples: ${unit.name}`;
+
                 realExampleVideo && adaptedLesson.units.push(realExampleVideo);
                 break;
 
               case "verbal":
                 // Add real example doc
                 let realExampleDoc = populateNewUnit(adaptedUnit, "realExampleDoc", learningObject.sensing);
+                realExampleDoc.name = `Real World Examples: ${unit.name}`;
+
                 realExampleDoc && adaptedLesson.units.push(realExampleDoc);
                 break;
             }
@@ -142,6 +163,8 @@ export const adaptUserCourse = async (userId: string, courseId: string) => {
           case "active":
             // Add quiz
             let quiz = populateNewUnit(adaptedUnit, "quiz", learningObject.active);
+            quiz.name = `Quiz: ${unit.name}`;
+
             quiz && adaptedLesson.units.push(quiz);
             break;
 
@@ -149,9 +172,15 @@ export const adaptUserCourse = async (userId: string, courseId: string) => {
             // Add mindmap if perception style is not visual (to avoid duplicates)
             if (perceptionStyle !== "visual") {
               let mindmap = populateNewUnit(adaptedUnit, "mindmap", learningObject.visual);
+              mindmap.name = `Mind Map: ${unit.name}`;
+
               mindmap && adaptedLesson.units.push(mindmap);
-              break;
             }
+            let quizReflective = populateNewUnit(adaptedUnit, "quiz", learningObject.active);
+            quizReflective.name = `Quiz: ${unit.name}`;
+
+            quiz && adaptedLesson.units.push(quiz);
+            break;
         }
       } else {
         unit._doc.isCompleted = false;
@@ -165,15 +194,13 @@ export const adaptUserCourse = async (userId: string, courseId: string) => {
   return adaptedCurriculum;
 };
 
-
 export const adjustCurriculumToKnowledgeTest = async (req: any, res: any) => {
   const userId = req.params.userId;
   const quizResults = req.body;
 
-  const results =  await adjustCurriculumToKnowledge(userId, quizResults);
+  const results = await adjustCurriculumToKnowledge(userId, quizResults);
   res.status(200).send(results);
-}
-
+};
 
 export const adjustCurriculumToKnowledge = async (userId: string, quizResults: any[]) => {
   const learningStyle: any = await LearningStyleService.getInstance().getLearningStyleByUserId(userId);
@@ -185,9 +212,9 @@ export const adjustCurriculumToKnowledge = async (userId: string, quizResults: a
 
   let recommendations = {
     _id: randomUUID(),
-    name: 'Recommendations',
+    name: "Recommendations",
     units: [],
-  }
+  };
 
   let recommendationUnitBase = {
     _id: randomUUID(),
@@ -198,85 +225,85 @@ export const adjustCurriculumToKnowledge = async (userId: string, quizResults: a
       sectionNum: 0,
       unitNum: 0,
       duration: 0,
-    }
-  }
+    },
+  };
 
   const promises = quizResults.map(async (concept: any) => {
-    const loPromises = concept['learningObjects'].map(async (loId: any) => {
+    const loPromises = concept["learningObjects"].map(async (loId: any) => {
       const lo: any = await LearningObjectService.getInstance().getLearningObjectById(loId);
-       
-      recommendationUnitBase['name'] = `[Supplementary] ${lo.name}`;
+
+      recommendationUnitBase["name"] = `[Supplementary] ${lo.name}`;
 
       // Consider perception dimension
       switch (perceptionStyle) {
-        case 'visual':
+        case "visual":
           // Add video
-          let video = populateNewUnit(recommendationUnitBase, 'video', lo.visual);
+          let video = populateNewUnit(recommendationUnitBase, "video", lo.visual);
           video && recommendations.units.push(video);
 
           // Add visual note
-          let visualNote = populateNewUnit(recommendationUnitBase, 'visualNote', lo.visual);
+          let visualNote = populateNewUnit(recommendationUnitBase, "visualNote", lo.visual);
           visualNote && recommendations.units.push(visualNote);
 
           // Add mindmap
-          let mindmap = populateNewUnit(recommendationUnitBase, 'mindmap', lo.visual);
+          let mindmap = populateNewUnit(recommendationUnitBase, "mindmap", lo.visual);
           mindmap && recommendations.units.push(mindmap);
-        
+
           break;
-        
-        case 'verbal':
-        case 'balanced':
+
+        case "verbal":
+        case "balanced":
           // Add video
-          let videoBalanced = populateNewUnit(recommendationUnitBase, 'video', lo.visual);
+          let videoBalanced = populateNewUnit(recommendationUnitBase, "video", lo.visual);
           videoBalanced && recommendations.units.push(videoBalanced);
 
           // Add text-rich file
-          let textRichFile = populateNewUnit(recommendationUnitBase, 'textRichFile', lo.verbal);
+          let textRichFile = populateNewUnit(recommendationUnitBase, "textRichFile", lo.verbal);
           textRichFile && recommendations.units.push(textRichFile);
           break;
       }
 
       // Consider input dimension
       switch (inputStyle) {
-        case 'intuitive':
+        case "intuitive":
           switch (perceptionStyle) {
-            case 'visual':
+            case "visual":
               // Add additional video
-              let additionalVideo = populateNewUnit(recommendationUnitBase, 'additionalVideo', lo.intuitive);
+              let additionalVideo = populateNewUnit(recommendationUnitBase, "additionalVideo", lo.intuitive);
               additionalVideo && recommendations.units.push(additionalVideo);
               break;
-            
-            case 'verbal':
+
+            case "verbal":
               // Add additional materials
-              let additionalMaterials = populateNewUnit(recommendationUnitBase, 'additionalMaterials', lo.intuitive);
+              let additionalMaterials = populateNewUnit(recommendationUnitBase, "additionalMaterials", lo.intuitive);
               additionalMaterials && recommendations.units.push(additionalMaterials);
               break;
 
-            case 'balanced':
+            case "balanced":
               // Add additional video
-              let additionalVideoBalanced = populateNewUnit(recommendationUnitBase, 'additionalVideo', lo.intuitive);
+              let additionalVideoBalanced = populateNewUnit(recommendationUnitBase, "additionalVideo", lo.intuitive);
               additionalVideoBalanced && recommendations.units.push(additionalVideoBalanced);
 
               // Add additional materials
-              let additionalMaterialsBalanced = populateNewUnit(recommendationUnitBase, 'additionalMaterials', lo.intuitive);
+              let additionalMaterialsBalanced = populateNewUnit(recommendationUnitBase, "additionalMaterials", lo.intuitive);
               additionalMaterialsBalanced && recommendations.units.push(additionalMaterialsBalanced);
 
               break;
           }
-          
+
           break;
-        
-        case 'sensing':
+
+        case "sensing":
           switch (perceptionStyle) {
-            case 'visual':
+            case "visual":
               // Add real example video
-              let realExampleVideo = populateNewUnit(recommendationUnitBase, 'realExampleVideo', lo.intuitive);
+              let realExampleVideo = populateNewUnit(recommendationUnitBase, "realExampleVideo", lo.intuitive);
               realExampleVideo && recommendations.units.push(realExampleVideo);
               break;
-            
-            case 'verbal':
+
+            case "verbal":
               // Add real example doc
-              let realExampleDoc = populateNewUnit(recommendationUnitBase, 'realExampleDoc', lo.intuitive);
+              let realExampleDoc = populateNewUnit(recommendationUnitBase, "realExampleDoc", lo.intuitive);
               realExampleDoc && recommendations.units.push(realExampleDoc);
               break;
           }
@@ -286,16 +313,16 @@ export const adjustCurriculumToKnowledge = async (userId: string, quizResults: a
 
       // Consider processing dimension
       switch (processingStyle) {
-        case 'active':
+        case "active":
           // Add quiz
-          let quiz = populateNewUnit(recommendationUnitBase, 'quiz', lo.active);
+          let quiz = populateNewUnit(recommendationUnitBase, "quiz", lo.active);
           quiz && recommendations.units.push(quiz);
           break;
 
-        case 'reflective':
+        case "reflective":
           // Add mindmap if perception style is not visual (to avoid duplicates)
-          if (perceptionStyle !== 'visual') {
-            let mindmap = populateNewUnit(recommendationUnitBase, 'mindmap', lo.visual);
+          if (perceptionStyle !== "visual") {
+            let mindmap = populateNewUnit(recommendationUnitBase, "mindmap", lo.visual);
             mindmap && recommendations.units.push(mindmap);
             break;
           }
@@ -306,8 +333,7 @@ export const adjustCurriculumToKnowledge = async (userId: string, quizResults: a
 
   await Promise.all(promises);
   return recommendations;
-}
-
+};
 
 const populateNewUnit = (unitBase: any, unitType: string, loForStyle: any): any => {
   let unit = JSON.parse(JSON.stringify(unitBase));
