@@ -32,6 +32,8 @@ COPY --from=dependencies /app/package.json ./
 
 RUN npm install
 
+RUN apk add python3
+
 COPY --from=build /app/dist ./dist
 
 RUN mkdir ./logs
