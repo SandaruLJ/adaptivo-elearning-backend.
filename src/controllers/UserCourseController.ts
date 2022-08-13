@@ -205,8 +205,6 @@ export default class UserCourseController {
     const userIds = req.body.userIds;
     const courseId = req.body.courseId;
 
-    const users = await UserService.getInstance().getAllUsers();
-
     await userIds.map(async (userId) => {
       const request = {
         courseId: courseId,
