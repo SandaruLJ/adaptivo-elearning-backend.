@@ -1,7 +1,7 @@
 import { IUserCourse } from "../../interfaces/IUserCourse.js";
 
 export interface IUserCourseService {
-  createUserCourse(request: IUserCourse): Promise<IUserCourse>;
+  createUserCourse(request: any): Promise<IUserCourse>;
   getAllUserCourse(): Promise<IUserCourse[]>;
   getUserCourseById(id: string): Promise<IUserCourse | Object>;
   getUserCourseByUserId(email: string): Promise<IUserCourse[] | Object>;

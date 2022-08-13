@@ -19,7 +19,7 @@ export class UserCourseService implements IUserCourseService {
     return this.instance;
   }
 
-  public async createUserCourse(request: IUserCourse): Promise<IUserCourse> {
+  public async createUserCourse(request: any): Promise<IUserCourse> {
     this.logger.info("UserCourseService - createUserCourse()");
 
     // const course: any = await CourseService.getInstance().getCourseById(request.courseId);
@@ -112,7 +112,16 @@ export class UserCourseService implements IUserCourseService {
   public async setQuizScore(request: any): Promise<IUserCourse | Object> {
     this.logger.info("UserCourseService - setQuizScore()");
     const userCourse: any = await this.getUserCourseById(request._id);
+
+    if (userCourse.learningPath[request.sectionCount]["units"][request.unitCount].quiz.score > 0) {
+      return request;
+    }
+
     userCourse.learningPath[request.sectionCount]["units"][request.unitCount].quiz.score = request.score;
+
+    if (request.hasOwnProperty("analysis")) {
+      userCourse.learningPath[request.sectionCount]["units"][request.unitCount].quiz.analysis = request.analysis;
+    }
 
     return this.UserCourseDao.update(request._id, userCourse)
       .then((data) => {
