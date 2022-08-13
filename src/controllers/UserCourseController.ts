@@ -5,6 +5,8 @@ import { IUserCourseService } from "../services/interfaces/IUserCourseService.js
 import UserCourse from "../models/UserCourse.js";
 
 import autoBind from "auto-bind";
+import { UserService } from "../services/UserService.js";
+import IUser from "../interfaces/IUser.js";
 
 export default class UserCourseController {
   private logger: Logger;
@@ -197,4 +199,27 @@ export default class UserCourseController {
         res.status(500).send({ err: error.message });
       });
   }
+
+  public async bulkCreateUserCourse(req: any, res: any) {
+    this.logger.info("UserCourseController - bulkCreateUserCourse()");
+    const userIds = req.body.userIds;
+    const courseId = req.body.courseId;
+
+    const users = await UserService.getInstance().getAllUsers();
+
+    await userIds.map(async (userId) => {
+      const request = {
+        courseId: courseId,
+        userId: userId,
+      };
+      await this.UserCourseService.createUserCourse(request).catch((error) => {
+        this.logger.error(error.message);
+        res.status(500).send({ err: error.message });
+      });
+    });
+
+    res.status(200).send({ response: "Success" });
+  }
+
+  // const nonAdaptedUsers = ["62f69e6db9190a542c45c61f", "62f69e6cb9190a542c45c61d", "62f69e69b9190a542c45c61b", "62f69e95b9190a542c45c625"];
 }
