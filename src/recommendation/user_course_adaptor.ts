@@ -171,10 +171,13 @@ export const adaptUserCourse = async (userId: string, courseId: string) => {
           case "active":
             // Add quiz
 
-            let quiz = populateNewUnit(adaptedUnit, "quiz", learningObject.active);
-            quiz.name = `Quiz: ${unit.name}`;
-
-            quiz && adaptedLesson.units.push(quiz);
+            let quiz = learningObject.active.quiz.map((quizObject: any) => quizObject._id);
+            adaptedUnit.name = `Quiz: ${unit.name}`;
+            adaptedUnit['quiz'] = {};
+            adaptedUnit['type'] = 'quiz';
+            adaptedUnit['quiz'].questions = quiz;
+            adaptedUnit['quiz'].score = 0;
+            quiz && adaptedLesson.units.push(adaptedUnit);
             break;
 
           case "reflective":
@@ -185,10 +188,14 @@ export const adaptUserCourse = async (userId: string, courseId: string) => {
 
               mindmap && adaptedLesson.units.push(mindmap);
             }
-            let quizReflective = populateNewUnit(adaptedUnit, "quiz", learningObject.active);
-            quizReflective.name = `Quiz: ${unit.name}`;
+            let quizReflective = learningObject.active.quiz.map((quizObject: any) => quizObject._id);
+            adaptedUnit['quiz'] = {};
+            adaptedUnit['type'] = 'quiz';
+            adaptedUnit['quiz'].questions = quizReflective;
+            adaptedUnit['quiz'].score = 0;
+            adaptedUnit.name = `Quiz: ${unit.name}`;
 
-            quizReflective && adaptedLesson.units.push(quizReflective);
+            quizReflective && adaptedLesson.units.push(adaptedUnit);
             break;
         }
       } else {
