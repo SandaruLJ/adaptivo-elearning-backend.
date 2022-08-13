@@ -19,7 +19,7 @@ export class UserCourseService implements IUserCourseService {
     return this.instance;
   }
 
-  public async createUserCourse(request: IUserCourse): Promise<IUserCourse> {
+  public async createUserCourse(request: any): Promise<IUserCourse> {
     this.logger.info("UserCourseService - createUserCourse()");
 
     // const course: any = await CourseService.getInstance().getCourseById(request.courseId);

@@ -188,7 +188,7 @@ export const adaptUserCourse = async (userId: string, courseId: string) => {
             let quizReflective = populateNewUnit(adaptedUnit, "quiz", learningObject.active);
             quizReflective.name = `Quiz: ${unit.name}`;
 
-            quiz && adaptedLesson.units.push(quiz);
+            quizReflective && adaptedLesson.units.push(quizReflective);
             break;
         }
       } else {
