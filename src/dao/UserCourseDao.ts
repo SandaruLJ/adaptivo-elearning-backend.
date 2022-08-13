@@ -97,6 +97,11 @@ export class UserCourseDao {
       });
   }
 
+  public async updateCurriculum(id: string, learningPath: any) {
+    this.logger.info("UserCourseDao - updateCurriculum()");
+    return UserCourse.findByIdAndUpdate(id, { $set: learningPath }, { upsert: true, new: true });
+  }
+
   public async delete(id: string) {
     this.logger.info("UserCourseDao - delete()");
     return UserCourse.findByIdAndDelete(id)
