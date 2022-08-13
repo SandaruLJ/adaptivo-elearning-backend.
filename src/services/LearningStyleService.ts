@@ -154,6 +154,12 @@ export class LearningStyleService implements ILearningStyleService {
             courseId: "62ea7ec10adc970a2ee22b00",
           };
           await UserCourseService.getInstance().createUserCourse(request);
+          //Maths Adaptive Course
+          const requestMaths = {
+            userId: userId,
+            courseId: "62f7fce07447892f99ccedf2",
+          };
+          await UserCourseService.getInstance().createUserCourse(requestMaths);
         } else {
           //Non adapted Course
           const request = {
@@ -161,6 +167,13 @@ export class LearningStyleService implements ILearningStyleService {
             courseId: "62ea45d24263e1a13311391b",
           };
           await UserCourseService.getInstance().createUserCourse(request);
+
+          //Maths NonAdaptive Course
+          const requestMaths = {
+            userId: userId,
+            courseId: "62f7ff5c7447892f99ccef47",
+          };
+          await UserCourseService.getInstance().createUserCourse(requestMaths);
         }
 
         return data;
