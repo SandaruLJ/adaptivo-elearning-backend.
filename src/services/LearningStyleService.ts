@@ -7,6 +7,7 @@ import fetch from "node-fetch";
 import { UserActivityDao } from "../dao/UserActivityDao.js";
 import { UserActivityService } from "./UserActivityService.js";
 import { UserService } from "./UserService.js";
+import { UserCourseService } from "./UserCourseService.js";
 
 export class LearningStyleService implements ILearningStyleService {
   private logger = Logger.getInstance();
@@ -144,7 +145,24 @@ export class LearningStyleService implements ILearningStyleService {
     ];
 
     return this.LearningStyleDao.save(learningStyle)
-      .then((data) => {
+      .then(async (data) => {
+        const nonAdaptedUsers = ["62f69e6db9190a542c45c61f", "62f69e6cb9190a542c45c61d", "62f69e69b9190a542c45c61b", "62f69e95b9190a542c45c625"];
+        if (!nonAdaptedUsers.includes(userId.toString())) {
+          // Science Adaptive Course
+          const request = {
+            userId: userId,
+            courseId: "62ea7ec10adc970a2ee22b00",
+          };
+          await UserCourseService.getInstance().createUserCourse(request);
+        } else {
+          //Non adapted Course
+          const request = {
+            userId: userId,
+            courseId: "62ea45d24263e1a13311391b",
+          };
+          await UserCourseService.getInstance().createUserCourse(request);
+        }
+
         return data;
       })
       .catch((error) => {

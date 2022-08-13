@@ -90,6 +90,27 @@ export default class UserCourseController {
     }
   }
 
+  public async updateCurriculum(req: any, res: any) {
+    this.logger.info("UserCourseController - updateCurriculum()");
+    const id = req.params.id;
+
+    if (req.body) {
+      const learningPath: any = req.body.learningPath;
+      console.log(learningPath);
+
+      await this.UserCourseService.updateCurriculum(id, learningPath)
+        .then((data) => {
+          res.status(200).send(data);
+        })
+        .catch((error) => {
+          this.logger.error(error.message);
+          res.status(500).send({ err: error.message });
+        });
+    } else {
+      res.status(404);
+    }
+  }
+
   public async markIsCompleted(req: any, res: any) {
     this.logger.info("UserCourseController - markIsCompleted()");
 
@@ -97,6 +118,24 @@ export default class UserCourseController {
       const request = req.body;
 
       await this.UserCourseService.markIsCompleted(request)
+        .then((data) => {
+          res.status(200).send(data);
+        })
+        .catch((error) => {
+          this.logger.error(error.message);
+          res.status(500).send({ err: error.message });
+        });
+    } else {
+      res.status(404);
+    }
+  }
+  public async setQuizScore(req: any, res: any) {
+    this.logger.info("UserCourseController - markIsCompleted()");
+
+    if (req.body) {
+      const request = req.body;
+
+      await this.UserCourseService.setQuizScore(request)
         .then((data) => {
           res.status(200).send(data);
         })

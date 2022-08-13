@@ -60,13 +60,18 @@ def check_knowledge(correctAnswers): # From the questions of LOs
         return 'fail'
 
 
-concepts = json.loads(sys.argv[1])          # concepts.json
-learning_objects = json.loads(sys.argv[2])  # learning_objects.json
-quizzes = json.loads(sys.argv[3])           # quizzes.json
-target = sys.argv[4]                        # e.g. 4
-prev_concept_id = sys.argv[5]               # e.g. 4
-prev_learning_object_id = sys.argv[6]       # e.g. 12
-answer_correct = bool(int(sys.argv[7]))     # e.g. 1 for correct, 0 for incorrect
+params = json.loads(sys.stdin.readline())
+concepts = params['concepts']         # concepts.json
+learning_objects = params['learningObjects']  # learning_objects.json
+quizzes = params['quizzes']          # quizzes.json
+target = params['target']                        # e.g. 4
+prev_concept_id = params['prevConcept']              # e.g. 4
+prev_learning_object_id = params['prevLearningObject']       # e.g. 12
+answer_correct = bool(int(params['answerCorrect']))     # e.g. 1 for correct, 0 for incorrect
+
+
+I_DONT_KNOW = "<p><span style=\"color: rgba(0,0,0,0.87);background-color: rgb(255,255,255);font-size: medium;font-family: Poppins, sans-serif;\">I don't know</span>&nbsp;</p>\n"
+
 
 first_quiz = True if prev_concept_id == '0' else False
 
@@ -77,6 +82,11 @@ if first_quiz:
     
     quiz = random.choice(target_learning_object['quiz'])
     
+    # Append additional information
+    quiz['concept'] = target_concept['_id']
+    quiz['lo'] = target_learning_object['_id']
+    quiz['answers'].append(I_DONT_KNOW)
+
     print(json.dumps(quiz))
 else:
     prev_concept = get_concept(prev_concept_id, concepts)
@@ -94,6 +104,12 @@ else:
         if lo_index + 1 < len(prev_concept['learningObjects']):
             next_learning_object = prev_concept['learningObjects'][lo_index + 1]
             next_quiz = random.choice(next_learning_object['quiz'])
+
+            # Append additional information
+            next_quiz['concept'] = prev_concept['_id']
+            next_quiz['lo'] = next_learning_object['_id']
+            next_quiz['answers'].append(I_DONT_KNOW)
+            
             print(json.dumps(next_quiz))
         else:
             print(json.dumps({ 'passed': True, 'msg': 'Quiz Done!' }))
@@ -110,5 +126,10 @@ else:
         learning_object = prerequisite['learningObjects'][0]
 
         next_quiz = random.choice(learning_object['quiz'])
+
+        # Append additional information
+        next_quiz['concept'] = prerequisite['_id']
+        next_quiz['lo'] = learning_object['_id']
+        next_quiz['answers'].append(I_DONT_KNOW)
 
         print(json.dumps(next_quiz))

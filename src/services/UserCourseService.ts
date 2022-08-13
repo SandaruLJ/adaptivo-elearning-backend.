@@ -19,7 +19,7 @@ export class UserCourseService implements IUserCourseService {
     return this.instance;
   }
 
-  public async createUserCourse(request: IUserCourse): Promise<IUserCourse> {
+  public async createUserCourse(request: any): Promise<IUserCourse> {
     this.logger.info("UserCourseService - createUserCourse()");
 
     // const course: any = await CourseService.getInstance().getCourseById(request.courseId);
@@ -95,9 +95,33 @@ export class UserCourseService implements IUserCourseService {
   }
 
   public async markDuration(request: any): Promise<IUserCourse | Object> {
-    this.logger.info("UserCourseService - markWatchTime()");
+    this.logger.info("UserCourseService - markDuration()");
     const userCourse: any = await this.getUserCourseById(request._id);
     userCourse.learningPath[request.sectionCount]["units"][request.unitCount].duration = request.duration;
+
+    return this.UserCourseDao.update(request._id, userCourse)
+      .then((data) => {
+        return data;
+      })
+      .catch((error) => {
+        this.logger.error(error.message);
+        throw error;
+      });
+  }
+
+  public async setQuizScore(request: any): Promise<IUserCourse | Object> {
+    this.logger.info("UserCourseService - setQuizScore()");
+    const userCourse: any = await this.getUserCourseById(request._id);
+
+    if (userCourse.learningPath[request.sectionCount]["units"][request.unitCount].quiz.score > 0) {
+      return request;
+    }
+
+    userCourse.learningPath[request.sectionCount]["units"][request.unitCount].quiz.score = request.score;
+
+    if (request.hasOwnProperty("analysis")) {
+      userCourse.learningPath[request.sectionCount]["units"][request.unitCount].quiz.analysis = request.analysis;
+    }
 
     return this.UserCourseDao.update(request._id, userCourse)
       .then((data) => {
@@ -181,7 +205,7 @@ export class UserCourseService implements IUserCourseService {
 
   public async updateUserCourse(id: string, Course: IUserCourse): Promise<IUserCourse | Object> {
     this.logger.info("Customer Services - updateCustomer()");
-    return this.UserCourseDao.update(id, Course)
+    return this.UserCourseDao.updateCurriculum(id, Course)
       .then((data) => {
         return data;
       })
@@ -190,6 +214,23 @@ export class UserCourseService implements IUserCourseService {
         throw error;
       });
   }
+
+  public async updateCurriculum(id: string, learningPath: any): Promise<IUserCourse | Object> {
+    this.logger.info("UserCourseService - updateCurriculum()");
+
+    const userCourse: any = await this.getUserCourseById(id);
+    userCourse.learningPath = learningPath;
+
+    return this.UserCourseDao.updateCurriculum(id, userCourse)
+      .then((data) => {
+        return data;
+      })
+      .catch((error) => {
+        this.logger.error(error.message);
+        throw error;
+      });
+  }
+
   public async deleteUserCourse(id: string): Promise<IUserCourse | Object> {
     this.logger.info("UserCourseService - deleteUserCourse()");
     return this.UserCourseDao.delete(id)

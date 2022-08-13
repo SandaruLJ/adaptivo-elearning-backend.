@@ -46,6 +46,12 @@ const UserCourseSchema = new Schema(
               required: false,
               trim: true,
             },
+            file: {
+              type: Schema.Types.ObjectId,
+              required: false,
+              ref: "LearningResources",
+              autopopulate: true,
+            },
             isCompleted: {
               type: Boolean,
               required: false,
@@ -66,6 +72,7 @@ const UserCourseSchema = new Schema(
               type: Schema.Types.ObjectId,
               required: false,
               ref: "concepts",
+              autopopulate: true,
             },
             visualNote: {
               type: Schema.Types.ObjectId,

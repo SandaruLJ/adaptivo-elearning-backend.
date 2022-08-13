@@ -142,7 +142,7 @@ const CourseSchema = new Schema(
                 type: Schema.Types.ObjectId,
                 required: false,
                 ref: "quiz",
-                autopopulate: true,
+                // autopopulate: true,
               },
             ],
           },

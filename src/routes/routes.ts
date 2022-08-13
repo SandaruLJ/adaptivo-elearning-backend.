@@ -18,6 +18,7 @@ import PreferenceController from "../controllers/PreferenceController.js";
 import LearningStyleController from "../controllers/LearningStyleController.js";
 import UserCourseController from "../controllers/UserCourseController.js";
 import QuizSelectionController from "../controllers/QuizSelectionController.js";
+import { adjustCurriculumToKnowledgeTest } from '../recommendation/user_course_adaptor.js';
 
 export default function setRoutes(app: any) {
   const router = express();
@@ -140,8 +141,11 @@ export default function setRoutes(app: any) {
   //Use Routes
   router.route("/activity").post(UserActivityControl.createUserActivity);
   router.route("/activity").get(UserActivityControl.getAllUserActivity);
+
   // Learning Path Routes
+  router.route("/learning-path/recommendations/:user").post(learningPathControl.generateRecommendations);
   router.route("/learning-path/:user/:target").get(learningPathControl.generateLearningPath);
+  router.route('/learning-path/adjust-to-knowledge/:email').post(adjustCurriculumToKnowledgeTest);
 
   //Preference Routes
   router.route("/preferences").post(preferenceControl.createPreference);
@@ -167,9 +171,11 @@ export default function setRoutes(app: any) {
   router.route("/usercourse/:id").get(userCourseControl.getUserCourseById);
   router.route("/usercourse/markcomplete").put(userCourseControl.markIsCompleted);
   router.route("/usercourse/markduration").put(userCourseControl.markDuration);
+  router.route("/usercourse/quizscore").put(userCourseControl.setQuizScore);
   router.route("/usercourse/currentunit").put(userCourseControl.changeCurrentUnit);
   router.route("/usercourse/:id").put(userCourseControl.updateUserCourse);
   router.route("/usercourse/:id").delete(userCourseControl.deleteUserCourse);
+  router.route("/usercourse/update-curriculum/:id").put(userCourseControl.updateCurriculum);
 
   // Quiz Selection Routes
   router.route("/quiz-selection").post(quizSelectionControl.selectQuiz);
