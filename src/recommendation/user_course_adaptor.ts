@@ -73,16 +73,18 @@ export const adaptUserCourse = async (userId: string, courseId: string) => {
             video && adaptedLesson.units.push(video);
 
             // Add visual note
-
             let visualNote = populateNewUnit(adaptedUnit, "visualNote", learningObject.visual);
-            visualNote.name = `Note: ${unit.name}`;
-            visualNote && adaptedLesson.units.push(visualNote);
+            if (visualNote) {
+              visualNote.name = `Note: ${unit.name}`;
+              adaptedLesson.units.push(visualNote);
+            }
 
             // Add mindmap
             let mindmap = populateNewUnit(adaptedUnit, "mindmap", learningObject.visual);
-            mindmap.name = `Mind Map: ${unit.name}`;
-
-            mindmap && adaptedLesson.units.push(mindmap);
+            if (mindmap) {
+              mindmap.name = `Mind Map: ${unit.name}`;
+              adaptedLesson.units.push(mindmap);
+            }
 
             break;
 
@@ -93,11 +95,12 @@ export const adaptUserCourse = async (userId: string, courseId: string) => {
             videoBalanced && adaptedLesson.units.push(videoBalanced);
 
             // Add text-rich file
-
             let textRichFile = populateNewUnit(adaptedUnit, "textRichFile", learningObject.verbal);
-            textRichFile.name = `Note: ${unit.name}`;
-
-            textRichFile && adaptedLesson.units.push(textRichFile);
+            if (textRichFile) {
+              textRichFile.name = `Note: ${unit.name}`;
+              adaptedLesson.units.push(textRichFile);
+            }
+            
             break;
         }
 
@@ -107,35 +110,38 @@ export const adaptUserCourse = async (userId: string, courseId: string) => {
             switch (perceptionStyle) {
               case "visual":
                 // Add additional video
-
                 let additionalVideo = populateNewUnit(adaptedUnit, "additionalVideo", learningObject.intuitive);
-                additionalVideo.name = `Additional Video: ${unit.name}`;
+                if (additionalVideo) {
+                  additionalVideo.name = `Additional Video: ${unit.name}`;
+                  additionalVideo && adaptedLesson.units.push(additionalVideo);
+                }
 
-                additionalVideo && adaptedLesson.units.push(additionalVideo);
                 break;
 
               case "verbal":
                 // Add additional materials
-
                 let additionalMaterials = populateNewUnit(adaptedUnit, "additionalMaterials", learningObject.intuitive);
-                additionalMaterials.name = `Additional Materials: ${unit.name}`;
-
-                additionalMaterials && adaptedLesson.units.push(additionalMaterials);
+                if (additionalMaterials) {
+                  additionalMaterials.name = `Additional Materials: ${unit.name}`;
+                  adaptedLesson.units.push(additionalMaterials);
+                }
+                
                 break;
 
               case "balanced":
                 // Add additional video
-
                 let additionalVideoBalanced = populateNewUnit(adaptedUnit, "additionalVideo", learningObject.intuitive);
-                additionalVideoBalanced.name = `Additional Video: ${unit.name}`;
-
-                additionalVideoBalanced && adaptedLesson.units.push(additionalVideoBalanced);
+                if (additionalVideoBalanced) {
+                  additionalVideoBalanced.name = `Additional Video: ${unit.name}`;
+                  adaptedLesson.units.push(additionalVideoBalanced);
+                }
 
                 // Add additional materials
                 let additionalMaterialsBalanced = populateNewUnit(adaptedUnit, "additionalMaterials", learningObject.intuitive);
-                additionalMaterialsBalanced.name = `Additional Materials: ${unit.name}`;
-
-                additionalMaterialsBalanced && adaptedLesson.units.push(additionalMaterialsBalanced);
+                if (additionalMaterialsBalanced) {
+                  additionalMaterialsBalanced.name = `Additional Materials: ${unit.name}`;
+                  adaptedLesson.units.push(additionalMaterialsBalanced);
+                }
 
                 break;
             }
@@ -146,20 +152,22 @@ export const adaptUserCourse = async (userId: string, courseId: string) => {
             switch (perceptionStyle) {
               case "visual":
                 // Add real example video
-
                 let realExampleVideo = populateNewUnit(adaptedUnit, "realExampleVideo", learningObject.sensing);
-                realExampleVideo.name = `Real World Examples: ${unit.name}`;
-
-                realExampleVideo && adaptedLesson.units.push(realExampleVideo);
+                if (realExampleVideo) {
+                  realExampleVideo.name = `Real World Examples: ${unit.name}`;
+                  adaptedLesson.units.push(realExampleVideo);
+                }
+                
                 break;
 
               case "verbal":
                 // Add real example doc
-
                 let realExampleDoc = populateNewUnit(adaptedUnit, "realExampleDoc", learningObject.sensing);
-                realExampleDoc.name = `Real World Examples: ${unit.name}`;
+                if (realExampleDoc) {
+                  realExampleDoc.name = `Real World Examples: ${unit.name}`;
+                  adaptedLesson.units.push(realExampleDoc);
+                }
 
-                realExampleDoc && adaptedLesson.units.push(realExampleDoc);
                 break;
             }
 
@@ -168,6 +176,7 @@ export const adaptUserCourse = async (userId: string, courseId: string) => {
 
         // Consider processing dimension
         switch (processingStyle) {
+          case "balanced":
           case "active":
             // Add quiz
 
@@ -178,24 +187,27 @@ export const adaptUserCourse = async (userId: string, courseId: string) => {
             adaptedUnit['quiz'].questions = quiz;
             adaptedUnit['quiz'].score = 0;
             quiz && adaptedLesson.units.push(adaptedUnit);
+            
             break;
 
           case "reflective":
             // Add mindmap if perception style is not visual (to avoid duplicates)
             if (perceptionStyle !== "visual") {
               let mindmap = populateNewUnit(adaptedUnit, "mindmap", learningObject.visual);
-              mindmap.name = `Mind Map: ${unit.name}`;
-
-              mindmap && adaptedLesson.units.push(mindmap);
+              if (mindmap) {
+                mindmap.name = `Mind Map: ${unit.name}`;
+                adaptedLesson.units.push(mindmap);
+              }
             }
+
             let quizReflective = learningObject.active.quiz.map((quizObject: any) => quizObject._id);
             adaptedUnit['quiz'] = {};
             adaptedUnit['type'] = 'quiz';
             adaptedUnit['quiz'].questions = quizReflective;
             adaptedUnit['quiz'].score = 0;
             adaptedUnit.name = `Quiz: ${unit.name}`;
-
             quizReflective && adaptedLesson.units.push(adaptedUnit);
+            
             break;
         }
       } else {
