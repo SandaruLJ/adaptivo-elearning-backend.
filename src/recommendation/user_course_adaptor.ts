@@ -344,8 +344,13 @@ export const adjustCurriculumToKnowledge = async (email: string, quizResults: an
     switch (processingStyle) {
       case "active":
         // Add quiz
-        let quiz = populateNewUnit(recommendationUnitBase, "quiz", lo.active);
-        quiz && recommendations.units.push(quiz);
+        let quiz = lo.active.quiz.map((quizObject: any) => quizObject._id);
+        recommendationUnitBase["name"] = `[Supplementary] Quiz: ${lo.name}`;
+        recommendationUnitBase['quiz'] = {};
+        recommendationUnitBase['type'] = 'quiz';
+        recommendationUnitBase['quiz'].questions = quiz;
+        recommendationUnitBase['quiz'].score = 0;
+        quiz && recommendations.units.push(recommendationUnitBase);
         break;
 
       case "reflective":
