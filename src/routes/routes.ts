@@ -167,6 +167,7 @@ export default function setRoutes(app: any) {
   //UserCourse Routes
   router.route("/usercourse").post(userCourseControl.createUserCourse);
   router.route("/usercourse").get(userCourseControl.getAllUserCourse);
+  router.route("/usercourse/bulk").post(userCourseControl.bulkCreateUserCourse);
   router.route("/usercourse/user/:email").get(userCourseControl.getUserCourseByUserId);
   router.route("/usercourse/:id").get(userCourseControl.getUserCourseById);
   router.route("/usercourse/markcomplete").put(userCourseControl.markIsCompleted);
