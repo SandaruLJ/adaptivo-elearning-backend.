@@ -96,42 +96,50 @@ export class LearningStyleService implements ILearningStyleService {
     let learningStyle: any = {
       userId: userId,
       input: {
-        sensing: sensing / 2,
-        intuitive: intuitive / 2,
-        sensingStrength: detectStrength(sensing / 2),
-        intuitiveStrength: detectStrength(intuitive / 2),
+        initial: {
+          visual: visual / 2,
+          verbal: verbal / 2,
+          visualStrength: detectStrength(visual / 2),
+          verbalStrength: detectStrength(verbal / 2),
+        },
       },
       processing: {
-        active: active / 2,
-        reflective: reflective / 2,
-        activeStrength: detectStrength(active / 2),
-        reflectiveStrength: detectStrength(reflective / 2),
+        initial: {
+          active: active / 2,
+          reflective: reflective / 2,
+          activeStrength: detectStrength(active / 2),
+          reflectiveStrength: detectStrength(reflective / 2),
+        },
       },
       understanding: {
-        sequential: sequential / 2,
-        global: global / 2,
-        sequentialStrength: detectStrength(sequential / 2),
-        globalStrength: detectStrength(global / 2),
+        initial: {
+          sequential: sequential / 2,
+          global: global / 2,
+          sequentialStrength: detectStrength(sequential / 2),
+          globalStrength: detectStrength(global / 2),
+        },
       },
       perception: {
-        visual: visual / 2,
-        verbal: verbal / 2,
-        visualStrength: detectStrength(visual / 2),
-        verbalStrength: detectStrength(verbal / 2),
+        initial: {
+          sensing: sensing / 2,
+          intuitive: intuitive / 2,
+          sensingStrength: detectStrength(sensing / 2),
+          intuitiveStrength: detectStrength(intuitive / 2),
+        },
       },
       isOnboardingTourCompleted: true,
       isDetectedByAlgorithm: false,
       detectedLearningStyle: {
-        input: detectStyle("sensing", sensing, "intuitive", intuitive),
+        input: detectStyle("visual", visual, "verbal", verbal),
         processing: detectStyle("active", active, "reflective", reflective),
         understanding: detectStyle("sequential", sequential, "global", global),
-        perception: detectStyle("visual", visual, "verbal", verbal),
+        perception: detectStyle("sensing", sensing, "intuitive", intuitive),
       },
       initialLearningStyle: {
-        input: detectStyle("sensing", sensing, "intuitive", intuitive),
+        input: detectStyle("visual", visual, "verbal", verbal),
         processing: detectStyle("active", active, "reflective", reflective),
         understanding: detectStyle("sequential", sequential, "global", global),
-        perception: detectStyle("visual", visual, "verbal", verbal),
+        perception: detectStyle("sensing", sensing, "intuitive", intuitive),
       },
     };
     learningStyle.history = [
@@ -227,10 +235,14 @@ export class LearningStyleService implements ILearningStyleService {
       let style;
       if (score == 0) {
         style = "balanced";
-      } else if (score > 0) {
-        style = style1;
-      } else if (score < 0) {
-        style = style2;
+      } else if (score == 1) {
+        style = `moderate ${style1}`;
+      } else if (score == -1) {
+        style = `moderate ${style2}`;
+      } else if (score >= 2) {
+        style = `strong ${style1}`;
+      } else if (score <= -2) {
+        style = `strong ${style2}`;
       }
 
       return style;
@@ -238,7 +250,7 @@ export class LearningStyleService implements ILearningStyleService {
     data.styles.map(async (style) => {
       const userId = await UserService.getInstance().getUserIdByEmail(style.user);
       const learningStyle = await this.getLearningStyleByUserId(userId);
-      // console.log(learningStyle);
+
       if (learningStyle) {
         learningStyle.input = {
           sensing: style.sensing.value,
@@ -267,11 +279,15 @@ export class LearningStyleService implements ILearningStyleService {
 
         learningStyle.isDetectedByAlgorithm = true;
 
+        let courseId = data.courseId;
+
         learningStyle.detectedLearningStyle = {
-          input: detectStyle("sensing", "intuitive", style.sensing.value + style.intuitive.value),
-          processing: detectStyle("active", "reflective", style.active.value + style.reflective.value),
-          understanding: detectStyle("global", "sequential", style.global.value + style.sequential.value),
-          perception: detectStyle("visual", "verbal", style.visual.value + style.verbal.value),
+          courseId: {
+            input: detectStyle("sensing", "intuitive", style.sensing.value + style.intuitive.value),
+            processing: detectStyle("active", "reflective", style.active.value + style.reflective.value),
+            understanding: detectStyle("global", "sequential", style.global.value + style.sequential.value),
+            perception: detectStyle("visual", "verbal", style.visual.value + style.verbal.value),
+          },
         };
 
         learningStyle.history.push({
@@ -281,6 +297,7 @@ export class LearningStyleService implements ILearningStyleService {
           perception: learningStyle.perception,
           detectedLearningStyle: learningStyle.detectedLearningStyle,
           date: new Date().toJSON(),
+          courseId: courseId,
         });
       }
 
