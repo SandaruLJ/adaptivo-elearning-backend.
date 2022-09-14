@@ -286,7 +286,7 @@ export class ConceptService implements IConceptService {
     this.logger.info("ConceptService - getVideoSignedUrl()");
 
     const bucketName = `spark-courses`;
-    const key = `62272fbfc8ea4d8b75b76aa2/concepts/videos/${fileName}`;
+    const key = `62272fbfc8ea4d8b75b76aa2/concepts/videos/${fileName.split(".")[0].replace(/\s/g, "")}/${fileName}`;
 
     return getPreSignedUrl(bucketName, key)
       .then((data) => {

@@ -64,7 +64,7 @@ export class LearningResourceDao {
 
   public async update(id: string, learningResource: ILearningResource) {
     this.logger.info("LearningResourceDao - update()");
-    return LearningResource.findByIdAndUpdate(id, { $set: LearningResource }, { new: true })
+    return LearningResource.findByIdAndUpdate(id, { $set: learningResource }, { new: true })
       .then((data) => {
         if (data) {
           this.logger.info(`${data.name} LearningResource Updated Successfully`);

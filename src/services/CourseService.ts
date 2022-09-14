@@ -7,6 +7,7 @@ import { ILearningResource } from "../interfaces/ILearningResource.js";
 import { LearningResourceService } from "./LearningResourceService.js";
 import { IQuiz } from "../interfaces/IQuiz.js";
 import { QuizService } from "./QuizService.js";
+import { DrmService } from "./DrmService.js";
 
 export class CourseService implements ICourseService {
   private logger = Logger.getInstance();
@@ -140,7 +141,7 @@ export class CourseService implements ICourseService {
         throw error;
       });
   }
-  public async getCourseById(id: string): Promise<ICourse | Object> {
+  public async getCourseById(id: string): Promise<ICourse | any> {
     this.logger.info("CourseService - getCourseById()");
     return this.CourseDao.getById(id)
       .then((data) => {
@@ -203,5 +204,38 @@ export class CourseService implements ICourseService {
         this.logger.error(error.message);
         throw error;
       });
+  }
+
+  public async encodeCourse(courseId: string) {
+    this.logger.info("CourseService - encodeCourse()");
+
+    // const course = await this.getCourseById(courseId);
+
+    const input = "https://spark-courses.s3.ap-south-1.amazonaws.com/62272fbfc8ea4d8b75b76aa2/concepts/videos/Newton's+First+Law+of+Motion.mp4";
+    const output = "https://spark-courses.s3.ap-south-1.amazonaws.com/62ea7ec10adc970a2ee22b00/encoded/concepts/62e94af64b2cdca5b1245d94/videos";
+
+    return DrmService.getInstance()
+      .encodeFile(input, output)
+      .then((data) => {
+        return data;
+      })
+      .catch((error) => {
+        this.logger.error(error.message);
+        throw error;
+      });
+
+    // course.curriculum.map((section) => {
+    //   section.units.map((unit) => {
+    //     if (unit.isConceptLink) {
+    //       unit.conceptId.learningObjects.map((lo) => {
+    //         let outputlocation = `https://spark-courses.s3.ap-south-1.amazonaws.com/${courseId}/encoded/concepts/${unit.conceptId._id}/videos/`;
+    //         DrmService.getInstance().encodeFile(lo.visual.video.url, outputlocation);
+    //         lo.visual.video.url;
+    //         lo.sensing.realExampleVideo.url;
+    //         lo.intuitive.additionalVideo.url;
+    //       });
+    //     }
+    //   });
+    // });
   }
 }

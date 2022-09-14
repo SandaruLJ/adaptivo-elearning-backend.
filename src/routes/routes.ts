@@ -18,7 +18,7 @@ import PreferenceController from "../controllers/PreferenceController.js";
 import LearningStyleController from "../controllers/LearningStyleController.js";
 import UserCourseController from "../controllers/UserCourseController.js";
 import QuizSelectionController from "../controllers/QuizSelectionController.js";
-import { adjustCurriculumToKnowledgeTest } from '../recommendation/user_course_adaptor.js';
+import { adjustCurriculumToKnowledgeTest } from "../recommendation/user_course_adaptor.js";
 
 export default function setRoutes(app: any) {
   const router = express();
@@ -47,6 +47,7 @@ export default function setRoutes(app: any) {
 
   //Course Routes
   router.route("/courses").post(courseControl.createCourse);
+  router.route("/courses/encode").post(drmcontrol.encodeCourse);
   router.route("/courses").get(courseControl.getAllCourses);
   router.route("/courses/url/thumbnail/:fileName").get(courseControl.getThumbnailSignedUrl);
   router.route("/courses/url/trailer/:fileName").get(courseControl.getTrailerSignedUrl);
@@ -145,7 +146,7 @@ export default function setRoutes(app: any) {
   // Learning Path Routes
   router.route("/learning-path/recommendations/:user").post(learningPathControl.generateRecommendations);
   router.route("/learning-path/:user/:target").get(learningPathControl.generateLearningPath);
-  router.route('/learning-path/adjust-to-knowledge/:email').post(adjustCurriculumToKnowledgeTest);
+  router.route("/learning-path/adjust-to-knowledge/:email").post(adjustCurriculumToKnowledgeTest);
 
   //Preference Routes
   router.route("/preferences").post(preferenceControl.createPreference);

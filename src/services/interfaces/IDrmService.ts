@@ -1,4 +1,3 @@
-export interface IDrmService{
-generateLicenseToken(keyId:string);
-    
+export interface IDrmService {
+  generateLicenseToken(keyId: string);
 }

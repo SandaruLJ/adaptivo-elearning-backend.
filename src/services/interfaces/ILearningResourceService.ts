@@ -9,5 +9,4 @@ export interface ILearningResourceService {
   getVideoSignedUrl(fileName: string): Promise<Object>;
   getAudioSignedUrl(fileName: string): Promise<Object>;
   getFileSignedUrl(fileName: string): Promise<Object>;
-
 }
