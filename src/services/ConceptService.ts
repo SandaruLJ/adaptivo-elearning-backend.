@@ -49,6 +49,8 @@ export class ConceptService implements IConceptService {
 
       if (lo.visual.hasOwnProperty("video")) {
         const name = lo.visual.video.name.replace(/ /g, "+");
+        const folderName = lo.visual.video.name.split(".")[0].replace(/\s/g, "");
+
         const visualVideo: ILearningResource = {
           name: lo.visual.video.name,
           type: "video",
@@ -56,7 +58,7 @@ export class ConceptService implements IConceptService {
           subStyle: "video",
           size: lo.visual.video.size,
           duration: lo.visual.video.duration,
-          url: `https://spark-courses.s3.ap-south-1.amazonaws.com/62272fbfc8ea4d8b75b76aa2/concepts/videos/${name}`,
+          url: `https://spark-courses.s3.ap-south-1.amazonaws.com/62272fbfc8ea4d8b75b76aa2/concepts/videos/${folderName}/${name}`,
         };
         const response = await LearningResourceService.getInstance().createLearningResource(visualVideo);
         learningObject.visual.video = response._id;
@@ -108,6 +110,7 @@ export class ConceptService implements IConceptService {
       }
       if (lo.sensing.hasOwnProperty("realExampleVideo")) {
         const name = lo.sensing.realExampleVideo.name.replace(/ /g, "+");
+        const folderName = lo.sensing.realExampleVideo.name.split(".")[0].replace(/\s/g, "");
 
         const realExampleVideo: ILearningResource = {
           name: lo.sensing.realExampleVideo.name,
@@ -116,7 +119,7 @@ export class ConceptService implements IConceptService {
           subStyle: "realExampleVideo",
           size: lo.sensing.realExampleVideo.size,
           duration: lo.sensing.realExampleVideo.duration,
-          url: `https://spark-courses.s3.ap-south-1.amazonaws.com/62272fbfc8ea4d8b75b76aa2/concepts/files/${name}`,
+          url: `https://spark-courses.s3.ap-south-1.amazonaws.com/62272fbfc8ea4d8b75b76aa2/concepts/videos/${folderName}/${name}`,
         };
         const response = await LearningResourceService.getInstance().createLearningResource(realExampleVideo);
         learningObject.sensing.realExampleVideo = response._id;
@@ -138,6 +141,7 @@ export class ConceptService implements IConceptService {
       }
       if (lo.intuitive.hasOwnProperty("additionalVideo")) {
         const name = lo.intuitive.additionalVideo.name.replace(/ /g, "+");
+        const folderName = lo.intuitive.additionalVideo.name.split(".")[0].replace(/\s/g, "");
 
         const additionalVideo: ILearningResource = {
           name: lo.intuitive.additionalVideo.name,
@@ -146,7 +150,7 @@ export class ConceptService implements IConceptService {
           subStyle: "additionalVideo",
           size: lo.intuitive.additionalVideo.size,
           duration: lo.intuitive.additionalVideo.duration,
-          url: `https://spark-courses.s3.ap-south-1.amazonaws.com/62272fbfc8ea4d8b75b76aa2/concepts/files/${name}`,
+          url: `https://spark-courses.s3.ap-south-1.amazonaws.com/62272fbfc8ea4d8b75b76aa2/concepts/videos/${folderName}/${name}`,
         };
         const response = await LearningResourceService.getInstance().createLearningResource(additionalVideo);
         learningObject.intuitive.additionalVideo = response._id;
@@ -229,6 +233,7 @@ export class ConceptService implements IConceptService {
 
     return this.ConceptDao.save(concept)
       .then((data) => {
+        this.encodeConceptLearningResources(data._id);
         return data;
       })
       .catch((error) => {
@@ -280,6 +285,35 @@ export class ConceptService implements IConceptService {
         this.logger.error(error.message);
         throw error;
       });
+  }
+
+  public async encodeConceptLearningResources(conceptId: string) {
+    this.logger.info("ConceptService - encodeConceptLearningResources()");
+
+    let concept = await this.getConceptById(conceptId);
+    let LrsToEncode = [];
+    let promises = concept.learningObjects.map((lo) => {
+      if (lo._doc.hasOwnProperty("visual")) {
+        if (lo._doc.visual.hasOwnProperty("video")) {
+          LrsToEncode.push(lo.visual.video._id);
+        }
+      }
+      if (lo._doc.hasOwnProperty("sensing")) {
+        if (lo._doc.sensing.hasOwnProperty("realExampleVideo")) {
+          LrsToEncode.push(lo.sensing.realExampleVideo._id);
+        }
+      }
+      if (lo._doc.hasOwnProperty("intuitive")) {
+        if (lo._doc.intuitive.hasOwnProperty("additionalVideo")) {
+          LrsToEncode.push(lo.intuitive.additionalVideo._id);
+        }
+      }
+    });
+    await promises.reduce((m, o) => m.then(() => o), Promise.resolve());
+    console.log(LrsToEncode);
+    if (LrsToEncode.length > 0) {
+      LearningResourceService.getInstance().encodeLearningResources(LrsToEncode);
+    }
   }
 
   public async getVideoSignedUrl(fileName: string): Promise<Object> {

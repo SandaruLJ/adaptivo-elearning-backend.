@@ -101,7 +101,6 @@ export class DrmService implements IDrmService {
       },
     };
     const token = await this.getAcessToken();
-    console.log(token);
 
     const response = await fetch("https://vip-eu-west-1.axinom.com/Job", {
       method: "post",
@@ -148,7 +147,11 @@ export class DrmService implements IDrmService {
 
       // The keys list will be filled separately by the next code block.
       content_keys_source: {
-        inline: [{ id: keyId, usage_policy: "Policy A" }],
+        // inline: [{ id: keyId, usage_policy: "Policy A" }],
+        license_request: {
+          seed_id: "aba478f5-61d3-4695-b86c-ae7f00be2b91", // (1)
+          usage_policy: "Policy A", // (2)
+        },
       },
 
       // License configuration should be as permissive as possible for the scope of this guide.

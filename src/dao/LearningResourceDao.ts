@@ -62,6 +62,23 @@ export class LearningResourceDao {
       });
   }
 
+  public async getAllByIds(arr: any) {
+    this.logger.info("LearningResourceDao - getAllByIds()");
+    return LearningResource.find({ _id: { $in: arr } })
+      .then((data) => {
+        if (data.length > 0) {
+          this.logger.info(`List of LearningResources By Id Retrieved Successfully`);
+        } else {
+          this.logger.info(`LearningResource Not Found`);
+        }
+        return data;
+      })
+      .catch((error) => {
+        this.logger.error("Error in retrieving LearningResources" + error.message);
+        throw error;
+      });
+  }
+
   public async update(id: string, learningResource: ILearningResource) {
     this.logger.info("LearningResourceDao - update()");
     return LearningResource.findByIdAndUpdate(id, { $set: learningResource }, { new: true })
