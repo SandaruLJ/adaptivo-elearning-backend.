@@ -1,4 +1,3 @@
-import { ConceptService } from "../services/ConceptService.js";
 import { CourseService } from "../services/CourseService.js";
 import { LearningStyleService } from "../services/LearningStyleService.js";
 import { LearningObjectService } from "../services/LearningObjectService.js";
@@ -13,8 +12,6 @@ export const adaptUserCourse = async (userId: string, courseId: string) => {
   const adaptedCurriculum = [];
 
   await originalCurriculum.forEach((lesson: any, lessonIndex: number, lessonArray: any[]) => {
-    // lessonArray[lessonIndex] = { name: 'replaced...', _id: 'bogus_id' }
-    // console.log(index);
     let adaptedLesson = {
       _id: lesson._id,
       name: lesson.name,
@@ -25,7 +22,6 @@ export const adaptUserCourse = async (userId: string, courseId: string) => {
 
     units.forEach(async (unit: any, index: number, unitArray: any[]) => {
       if (unit.type == "preTest") {
-        // console.log(concept.learningObjects[0].quiz);
         const quizId = unit.preTest.learningObjects[0].quiz[0]._id;
         unit._doc.quiz = {
           questions: [quizId],
@@ -60,6 +56,7 @@ export const adaptUserCourse = async (userId: string, courseId: string) => {
 
         let learningObject = unit.loId;
 
+        // Get learning style preferences
         const inputStyle = learningStyle.detectedLearningStyle.input;
         const processingStyle = learningStyle.detectedLearningStyle.processing;
         const understandingStyle = learningStyle.detectedLearningStyle.understanding;
@@ -222,14 +219,6 @@ export const adaptUserCourse = async (userId: string, courseId: string) => {
   return adaptedCurriculum;
 };
 
-export const adjustCurriculumToKnowledgeTest = async (req: any, res: any) => {
-  const email = req.params.email;
-  const quizResults = req.body;
-
-  const results = await adjustCurriculumToKnowledge(email, quizResults);
-
-  res.status(200).send(results);
-};
 
 export const adjustCurriculumToKnowledge = async (email: string, quizResults: any[]) => {
   const userId: any = await UserService.getInstance().getUserIdByEmail(email);
@@ -344,8 +333,13 @@ export const adjustCurriculumToKnowledge = async (email: string, quizResults: an
     switch (processingStyle) {
       case "active":
         // Add quiz
-        let quiz = populateNewUnit(recommendationUnitBase, "quiz", lo.active);
-        quiz && recommendations.units.push(quiz);
+        let quiz = lo.active.quiz.map((quizObject: any) => quizObject._id);
+        recommendationUnitBase["name"] = `[Supplementary] Quiz: ${lo.name}`;
+        recommendationUnitBase['quiz'] = {};
+        recommendationUnitBase['type'] = 'quiz';
+        recommendationUnitBase['quiz'].questions = quiz;
+        recommendationUnitBase['quiz'].score = 0;
+        quiz && recommendations.units.push(recommendationUnitBase);
         break;
 
       case "reflective":
@@ -362,6 +356,7 @@ export const adjustCurriculumToKnowledge = async (email: string, quizResults: an
   return recommendations;
 };
 
+
 const populateNewUnit = (unitBase: any, unitType: string, loForStyle: any, idOnly: boolean = false): any => {
   let unit = JSON.parse(JSON.stringify(unitBase));
   unit["type"] = unitType;
@@ -372,4 +367,14 @@ const populateNewUnit = (unitBase: any, unitType: string, loForStyle: any, idOnl
   }
 
   return null;
+};
+
+
+export const adjustCurriculumToKnowledgeTest = async (req: any, res: any) => {
+  const email = req.params.email;
+  const quizResults = req.body;
+
+  const results = await adjustCurriculumToKnowledge(email, quizResults);
+
+  res.status(200).send(results);
 };
