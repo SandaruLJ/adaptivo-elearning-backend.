@@ -96,44 +96,36 @@ export class LearningStyleService implements ILearningStyleService {
     let learningStyle: any = {
       userId: userId,
       input: {
-        initial: {
-          visual: visual / 2,
-          verbal: verbal / 2,
-          visualStrength: detectStrength(visual / 2),
-          verbalStrength: detectStrength(verbal / 2),
-        },
+        sensing: sensing / 2,
+        intuitive: intuitive / 2,
+        sensingStrength: detectStrength(sensing / 2),
+        intuitiveStrength: detectStrength(intuitive / 2),
       },
       processing: {
-        initial: {
-          active: active / 2,
-          reflective: reflective / 2,
-          activeStrength: detectStrength(active / 2),
-          reflectiveStrength: detectStrength(reflective / 2),
-        },
+        active: active / 2,
+        reflective: reflective / 2,
+        activeStrength: detectStrength(active / 2),
+        reflectiveStrength: detectStrength(reflective / 2),
       },
       understanding: {
-        initial: {
-          sequential: sequential / 2,
-          global: global / 2,
-          sequentialStrength: detectStrength(sequential / 2),
-          globalStrength: detectStrength(global / 2),
-        },
+        sequential: sequential / 2,
+        global: global / 2,
+        sequentialStrength: detectStrength(sequential / 2),
+        globalStrength: detectStrength(global / 2),
       },
       perception: {
-        initial: {
-          sensing: sensing / 2,
-          intuitive: intuitive / 2,
-          sensingStrength: detectStrength(sensing / 2),
-          intuitiveStrength: detectStrength(intuitive / 2),
-        },
+        sensing: sensing / 2,
+        intuitive: intuitive / 2,
+        sensingStrength: detectStrength(sensing / 2),
+        intuitiveStrength: detectStrength(intuitive / 2),
       },
       isOnboardingTourCompleted: true,
       isDetectedByAlgorithm: false,
       detectedLearningStyle: {
-        input: detectStyle("visual", visual, "verbal", verbal),
+        input: detectStyle("sensing", sensing, "intuitive", intuitive),
         processing: detectStyle("active", active, "reflective", reflective),
         understanding: detectStyle("sequential", sequential, "global", global),
-        perception: detectStyle("sensing", sensing, "intuitive", intuitive),
+        perception: detectStyle("visual", visual, "verbal", verbal),
       },
       initialLearningStyle: {
         input: detectStyle("visual", visual, "verbal", verbal),

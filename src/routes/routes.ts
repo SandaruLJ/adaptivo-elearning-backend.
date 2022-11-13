@@ -71,6 +71,7 @@ export default function setRoutes(app: any) {
   // User routes
   router.route("/users").post(validateAuth, userControl.createUser);
   router.route("/users").get(validateAuth, userControl.getAllUsers);
+  router.route("/users/email/:email").get(userControl.getUserByEmail);
   router.route("/users/:id").get(userControl.getUserById);
   router.route("/users/:id").put(userControl.updateUser);
   router.route("/users/:id").delete(userControl.deleteUser);

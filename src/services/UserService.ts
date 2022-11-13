@@ -59,6 +59,20 @@ export class UserService implements IUserService {
       });
   }
 
+  public async getUserByEmail(email: string): Promise<IUser | Object> {
+    this.logger.info("UserService - getUserByEmail()");
+
+    return this.userDao
+      .getIdByEmail(email)
+      .then((data) => {
+        return data;
+      })
+      .catch((error) => {
+        this.logger.error(error.message);
+        throw error;
+      });
+  }
+
   public async getUserIdByEmail(email: string): Promise<string> {
     this.logger.info("UserService - getUserIdByEmail()");
 

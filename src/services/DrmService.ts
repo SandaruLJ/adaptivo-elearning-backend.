@@ -4,6 +4,8 @@ import { getServiceAccountToken } from "@axinom/mosaic-id-link-be";
 import moment from "moment";
 import pkg from "jsonwebtoken";
 import fetch from "node-fetch";
+import config from "../config/config.js";
+
 const { sign } = pkg;
 
 export class DrmService implements IDrmService {
@@ -24,53 +26,14 @@ export class DrmService implements IDrmService {
     return token.accessToken;
   }
   public async encodeFile(inputLocation: string, outputLocation: string) {
-    // const body = `{
-    //     "ExternalId": "job1",
-    //     "ExternalType": "video",
-    //     "ContentAcquisition": {
-    //       "Provider": "AmazonS3",
-    //       "UriPath": ${inputLocation},
-    //       "CredentialsName": "AKIAWLEVMKZ5MLZKE23K",
-    //       "CredentialsSecret":
-    //         "Ma+tqKSFfsqE4rgEKW0Ai1V12FfwB/iiL5F5GIvbzZpacRNtS0vt3GBvXyU0fOw4pBSwkHNDhY+ck68ShzfG9z+xAaFmDOd5qyXTDkbyrvCoz2h9ns3dp5USTHSakdhZUy4Rj0yFQ5gAhV/4QeL3EkAFGk6Wq7q1SYJnbQDWCa2QKvkth8BGEtc5svfahbbQBYJ8nsqUJvb4LYv9elCQWdrsrBywrzZrjfp5tFUd1PUcPA77GfHeTkZjNIicLxNpkLhhFA5O8hurNJI796EfnBEI9x2+XYHM/Z1+UTthslevUDghPOUUo48Ecvsg5r4ar/6jZjtMJgjFbd1/JFnSchECZI3q3CbP1U3acQ3wdlqV1TIjlZz8fFJR5miSNXQ0Ck79IOOFobcgXhcHzdzRwJlJi5gmAwE79ZkxYQld+06+jNc4oUgCrzi59ZCbFK/bWTlroCjyHLUzc9FKIMZzLON+Gp7L85o2r1HMzcmYNtiuOilOnQ+Gy6QEIu7o+SNY",
-    //       "CredentialsProtection": "Encrypted"
-    //     },
-    //     "MediaMappings": {
-    //       "VideoStreamExpression": "^.*\\.(mp4|avi|mov)$"
-    //     },
-    //     "ContentProcessing": {
-    //       "OutputFormat": ["Cmaf"],
-    //       "VideoFormat": "H264",
-    //       "OptimizeFor": "Balance",
-    //       "DrmProtection": "Managed",
-    //       "DrmManaged": {
-    //         "ApiUrl": "https://key-server-management.axprod.net/api",
-    //         "TenantId": "aeffe382-c139-4319-8056-acc511f9d369",
-    //         "ManagementKey": "6dd5dd1f-8e80-40eb-9765-0c4b0c18494f",
-    //         "KeySeed": "aba478f5-61d3-4695-b86c-ae7f00be2b91",
-    //         "Thumbprints": "Axinom Key Server Production,Axinom Key Server Testing,AxinomKeyServerTesting",
-    //         "MultiKey": false,
-    //         "Proxy": false
-    //       }
-    //     },
-    //     "ContentPublishing": {
-    //       "Provider": "AmazonS3",
-    //       "UriPath": ${outputLocation},
-    //       "CredentialsName": "AKIAWLEVMKZ5MLZKE23K",
-    //       "CredentialsSecret":
-    //         "Ma+tqKSFfsqE4rgEKW0Ai1V12FfwB/iiL5F5GIvbzZpacRNtS0vt3GBvXyU0fOw4pBSwkHNDhY+ck68ShzfG9z+xAaFmDOd5qyXTDkbyrvCoz2h9ns3dp5USTHSakdhZUy4Rj0yFQ5gAhV/4QeL3EkAFGk6Wq7q1SYJnbQDWCa2QKvkth8BGEtc5svfahbbQBYJ8nsqUJvb4LYv9elCQWdrsrBywrzZrjfp5tFUd1PUcPA77GfHeTkZjNIicLxNpkLhhFA5O8hurNJI796EfnBEI9x2+XYHM/Z1+UTthslevUDghPOUUo48Ecvsg5r4ar/6jZjtMJgjFbd1/JFnSchECZI3q3CbP1U3acQ3wdlqV1TIjlZz8fFJR5miSNXQ0Ck79IOOFobcgXhcHzdzRwJlJi5gmAwE79ZkxYQld+06+jNc4oUgCrzi59ZCbFK/bWTlroCjyHLUzc9FKIMZzLON+Gp7L85o2r1HMzcmYNtiuOilOnQ+Gy6QEIu7o+SNY",
-    //       "CredentialsProtection": "Encrypted"
-    //     }
-    //   }`;
     const body = {
       ExternalId: "job1",
       ExternalType: "video",
       ContentAcquisition: {
         Provider: "AmazonS3",
         UriPath: `${inputLocation}`,
-        CredentialsName: "AKIAWLEVMKZ5MLZKE23K",
-        CredentialsSecret:
-          "Ma+tqKSFfsqE4rgEKW0Ai1V12FfwB/iiL5F5GIvbzZpacRNtS0vt3GBvXyU0fOw4pBSwkHNDhY+ck68ShzfG9z+xAaFmDOd5qyXTDkbyrvCoz2h9ns3dp5USTHSakdhZUy4Rj0yFQ5gAhV/4QeL3EkAFGk6Wq7q1SYJnbQDWCa2QKvkth8BGEtc5svfahbbQBYJ8nsqUJvb4LYv9elCQWdrsrBywrzZrjfp5tFUd1PUcPA77GfHeTkZjNIicLxNpkLhhFA5O8hurNJI796EfnBEI9x2+XYHM/Z1+UTthslevUDghPOUUo48Ecvsg5r4ar/6jZjtMJgjFbd1/JFnSchECZI3q3CbP1U3acQ3wdlqV1TIjlZz8fFJR5miSNXQ0Ck79IOOFobcgXhcHzdzRwJlJi5gmAwE79ZkxYQld+06+jNc4oUgCrzi59ZCbFK/bWTlroCjyHLUzc9FKIMZzLON+Gp7L85o2r1HMzcmYNtiuOilOnQ+Gy6QEIu7o+SNY",
+        CredentialsName: config.awsCredentialsName,
+        CredentialsSecret: config.awsCredentialsSecret,
         CredentialsProtection: "Encrypted",
       },
       MediaMappings: {
@@ -83,9 +46,9 @@ export class DrmService implements IDrmService {
         DrmProtection: "Managed",
         DrmManaged: {
           ApiUrl: "https://key-server-management.axprod.net/api",
-          TenantId: "aeffe382-c139-4319-8056-acc511f9d369",
-          ManagementKey: "6dd5dd1f-8e80-40eb-9765-0c4b0c18494f",
-          KeySeed: "aba478f5-61d3-4695-b86c-ae7f00be2b91",
+          TenantId: config.tenantId,
+          ManagementKey: config.managementKey,
+          KeySeed: config.keySeed,
           Thumbprints: "Axinom Key Server Production,Axinom Key Server Testing,AxinomKeyServerTesting",
           MultiKey: false,
           Proxy: false,
@@ -94,41 +57,33 @@ export class DrmService implements IDrmService {
       ContentPublishing: {
         Provider: "AmazonS3",
         UriPath: `${outputLocation}`,
-        CredentialsName: "AKIAWLEVMKZ5MLZKE23K",
-        CredentialsSecret:
-          "Ma+tqKSFfsqE4rgEKW0Ai1V12FfwB/iiL5F5GIvbzZpacRNtS0vt3GBvXyU0fOw4pBSwkHNDhY+ck68ShzfG9z+xAaFmDOd5qyXTDkbyrvCoz2h9ns3dp5USTHSakdhZUy4Rj0yFQ5gAhV/4QeL3EkAFGk6Wq7q1SYJnbQDWCa2QKvkth8BGEtc5svfahbbQBYJ8nsqUJvb4LYv9elCQWdrsrBywrzZrjfp5tFUd1PUcPA77GfHeTkZjNIicLxNpkLhhFA5O8hurNJI796EfnBEI9x2+XYHM/Z1+UTthslevUDghPOUUo48Ecvsg5r4ar/6jZjtMJgjFbd1/JFnSchECZI3q3CbP1U3acQ3wdlqV1TIjlZz8fFJR5miSNXQ0Ck79IOOFobcgXhcHzdzRwJlJi5gmAwE79ZkxYQld+06+jNc4oUgCrzi59ZCbFK/bWTlroCjyHLUzc9FKIMZzLON+Gp7L85o2r1HMzcmYNtiuOilOnQ+Gy6QEIu7o+SNY",
+        CredentialsName: config.awsCredentialsName,
+        CredentialsSecret: config.awsCredentialsSecret,
         CredentialsProtection: "Encrypted",
       },
     };
     const token = await this.getAcessToken();
-
     const response = await fetch("https://vip-eu-west-1.axinom.com/Job", {
       method: "post",
       body: JSON.stringify(body),
-      //   headers: { Accept: "application/json", "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-      headers: { Accept: "application/json", "Content-Type": "application/json", Authorization: "Tenant-Auth b29d28bd-bc37-4270-b5e5-219949772e1f" },
+      headers: { Accept: "application/json", "Content-Type": "application/json", Authorization: config.tenantAuthorization },
     });
-
-    // console.log(response);
-    // return response;
     const data = await response.json();
     return data;
-    // console.log(data);
   }
 
   public async getJobStatus(jobId: string) {
-    console.log("jobId");
-    console.log(jobId);
     const response = await fetch(`https://vip-eu-west-1.axinom.com/reporting/${jobId}`, {
       method: "get",
-      headers: { Accept: "application/json", "Content-Type": "application/json", Authorization: "Tenant-Auth b29d28bd-bc37-4270-b5e5-219949772e1f" },
+      headers: { Accept: "application/json", "Content-Type": "application/json", Authorization: config.tenantAuthorization },
     });
     const data = await response.json();
     return data;
   }
+
   public async generateLicenseToken(keyId: string) {
-    const communicationKey = "vUv1fYKVeX7Ek6d8gx1hN/tzPeUhwrUH2hFPgaxLL6Q=";
-    const communicationKeyId = "e8313580-8791-4f73-9b4f-ae7f00be2b91";
+    const communicationKey = config.communicationKey;
+    const communicationKeyId = config.communicationKeyId;
 
     let communicationKeyAsBuffer = Buffer.from(communicationKey, "base64");
 
@@ -154,9 +109,6 @@ export class DrmService implements IDrmService {
         },
       },
 
-      // License configuration should be as permissive as possible for the scope of this guide.
-      // For this reason, some PlayReady-specific restrictions are relaxed below.
-      // There is no need to relax the default Widevine or FairPlay specific restrictions.
       content_key_usage_policies: [
         {
           name: "Policy A",
@@ -169,18 +121,7 @@ export class DrmService implements IDrmService {
         },
       ],
     };
-    // video.keys.forEach(function (key) {
-    //     // A key ID is always required. In this demo, we'll also reference the previously defined
-    //     // key usage policy.
-    //     let inlineKey = {
-    //         "id": key.keyId,
-    //         "usage_policy": "Policy A"
-    //     }
 
-    //     message.content_keys_source.inline.push(inlineKey);
-    // });
-
-    // For detailed information about these fields, refer to Axinom DRM documentation.
     let envelope = {
       version: 1,
       com_key_id: communicationKeyId,
