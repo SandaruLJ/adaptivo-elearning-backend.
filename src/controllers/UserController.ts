@@ -70,6 +70,27 @@ export default class UserController {
       });
   }
 
+  public async getUserByEmail(req: any, res: any) {
+    this.logger.info("UserController - getUserByEmail()");
+
+    const email = req.params.email;
+
+    await this.userService
+      .getUserByEmail(email)
+      .then((data) => {
+        res.status(200).send(data);
+      })
+      .catch((error) => {
+        this.logger.error(`Error occurred while retrieving user '${email}': ${error}`);
+
+        if (error instanceof UserNotFoundError) {
+          res.status(error.status).send({ err: error.message });
+        } else {
+          res.status(500).send({ err: error.message });
+        }
+      });
+  }
+
   public async updateUser(req: any, res: any) {
     this.logger.info("UserController - updateUser()");
 

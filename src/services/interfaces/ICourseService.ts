@@ -8,4 +8,5 @@ export interface ICourseService {
   deleteCourse(id: string): Promise<ICourse | Object>;
   getThumbnailSignedUrl(fileName: string): Promise<Object>;
   getTrailerSignedUrl(fileName: string): Promise<Object>;
+  encodeCourse(courseId: string);
 }

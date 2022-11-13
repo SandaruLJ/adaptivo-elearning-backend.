@@ -46,7 +46,7 @@ export const adaptUserCourse = async (userId: string, courseId: string) => {
       // Check if linked to a concept
       if (unit.isConceptLink) {
         let adaptedUnit = {
-          _id: unit._id,
+          // _id: unit._id,
           name: unit.name,
           isConceptLink: true,
           quiz: unit.quiz,
@@ -97,7 +97,7 @@ export const adaptUserCourse = async (userId: string, courseId: string) => {
               textRichFile.name = `Note: ${unit.name}`;
               adaptedLesson.units.push(textRichFile);
             }
-            
+
             break;
         }
 
@@ -122,7 +122,7 @@ export const adaptUserCourse = async (userId: string, courseId: string) => {
                   additionalMaterials.name = `Additional Materials: ${unit.name}`;
                   adaptedLesson.units.push(additionalMaterials);
                 }
-                
+
                 break;
 
               case "balanced":
@@ -154,7 +154,7 @@ export const adaptUserCourse = async (userId: string, courseId: string) => {
                   realExampleVideo.name = `Real World Examples: ${unit.name}`;
                   adaptedLesson.units.push(realExampleVideo);
                 }
-                
+
                 break;
 
               case "verbal":
@@ -179,12 +179,12 @@ export const adaptUserCourse = async (userId: string, courseId: string) => {
 
             let quiz = learningObject.active.quiz.map((quizObject: any) => quizObject._id);
             adaptedUnit.name = `Quiz: ${unit.name}`;
-            adaptedUnit['quiz'] = {};
-            adaptedUnit['type'] = 'quiz';
-            adaptedUnit['quiz'].questions = quiz;
-            adaptedUnit['quiz'].score = 0;
+            adaptedUnit["quiz"] = {};
+            adaptedUnit["type"] = "quiz";
+            adaptedUnit["quiz"].questions = quiz;
+            adaptedUnit["quiz"].score = 0;
             quiz && adaptedLesson.units.push(adaptedUnit);
-            
+
             break;
 
           case "reflective":
@@ -198,13 +198,13 @@ export const adaptUserCourse = async (userId: string, courseId: string) => {
             }
 
             let quizReflective = learningObject.active.quiz.map((quizObject: any) => quizObject._id);
-            adaptedUnit['quiz'] = {};
-            adaptedUnit['type'] = 'quiz';
-            adaptedUnit['quiz'].questions = quizReflective;
-            adaptedUnit['quiz'].score = 0;
+            adaptedUnit["quiz"] = {};
+            adaptedUnit["type"] = "quiz";
+            adaptedUnit["quiz"].questions = quizReflective;
+            adaptedUnit["quiz"].score = 0;
             adaptedUnit.name = `Quiz: ${unit.name}`;
             quizReflective && adaptedLesson.units.push(adaptedUnit);
-            
+
             break;
         }
       } else {
@@ -218,7 +218,6 @@ export const adaptUserCourse = async (userId: string, courseId: string) => {
 
   return adaptedCurriculum;
 };
-
 
 export const adjustCurriculumToKnowledge = async (email: string, quizResults: any[]) => {
   const userId: any = await UserService.getInstance().getUserIdByEmail(email);
@@ -335,10 +334,10 @@ export const adjustCurriculumToKnowledge = async (email: string, quizResults: an
         // Add quiz
         let quiz = lo.active.quiz.map((quizObject: any) => quizObject._id);
         recommendationUnitBase["name"] = `[Supplementary] Quiz: ${lo.name}`;
-        recommendationUnitBase['quiz'] = {};
-        recommendationUnitBase['type'] = 'quiz';
-        recommendationUnitBase['quiz'].questions = quiz;
-        recommendationUnitBase['quiz'].score = 0;
+        recommendationUnitBase["quiz"] = {};
+        recommendationUnitBase["type"] = "quiz";
+        recommendationUnitBase["quiz"].questions = quiz;
+        recommendationUnitBase["quiz"].score = 0;
         quiz && recommendations.units.push(recommendationUnitBase);
         break;
 
@@ -356,7 +355,6 @@ export const adjustCurriculumToKnowledge = async (email: string, quizResults: an
   return recommendations;
 };
 
-
 const populateNewUnit = (unitBase: any, unitType: string, loForStyle: any, idOnly: boolean = false): any => {
   let unit = JSON.parse(JSON.stringify(unitBase));
   unit["type"] = unitType;
@@ -368,7 +366,6 @@ const populateNewUnit = (unitBase: any, unitType: string, loForStyle: any, idOnl
 
   return null;
 };
-
 
 export const adjustCurriculumToKnowledgeTest = async (req: any, res: any) => {
   const email = req.params.email;
